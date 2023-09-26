@@ -1,3 +1,4 @@
+# Team C Proposal - PySpill
 ### Dataset Summary: 
 
 We are using a dataset of oil pipeline spills across the US. The dataset includes rows like costs, locations, how much oil was spilled, and how much was cleaned up. 
