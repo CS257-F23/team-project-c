@@ -1,5 +1,6 @@
 import json
 
+# we wan delete this sample data later, but it will make things easier while we wait for the load_data() function to be built
 sample_data = [ 
     # header row
     ['Report Number', 'Supplemental Number', 'Accident Year', 'Accident Date/Time', 'Operator ID', 'Operator Name', 'Pipeline/Facility Name', 'Pipeline Location', 'Pipeline Type', 'Liquid Type', 'Liquid Subtype', 'Liquid Name', 'Accident City', 'Accident County', 'Accident State', 'Accident Latitude', 'Accident Longitude', 'Cause Category', 'Cause Subcategory', 'Unintentional Release (Barrels)', 'Intentional Release (Barrels)', 'Liquid Recovery (Barrels)', 'Net Loss (Barrels)', 'Liquid Ignition', 'Liquid Explosion', 'Pipeline Shutdown', 'Shutdown Date/Time', 'Restart Date/Time', 'Public Evacuations', 'Operator Employee Injuries', 'Operator Contractor Injuries', 'Emergency Responder Injuries', 'Other Injuries', 'Public Injuries', 'All Injuries', 'Operator Employee Fatalities', 'Operator Contractor Fatalities', 'Emergency Responder Fatalities', 'Other Fatalities', 'Public Fatalities', 'All Fatalities', 'Property Damage Costs', 'Lost Commodity Costs', 'Public/Private Property Damage Costs', 'Emergency Response Costs', 'Environmental Remediation Costs', 'Other Costs', 'All Costs'], 
@@ -23,14 +24,6 @@ def load_dada():
        
 def lookup_by_company(company):
     """Return a dictionary with summary statistics about all accidents involving the given company.
-
-    Args:
-        company (str): The name of the company to search for.
-
-    Returns:
-        dict: the output dictionary creates by get_summary_stats()
-        If no accidents are found for the given company, returns None.
-    
     Author: Henry
     """
      
@@ -39,19 +32,8 @@ def lookup_by_company(company):
     return get_summary_stats(relevant_rows)
 
 def get_summary_stats(rows):
-    """Calculate summary statistics for a list of oil spill accidents.
-
-    Args:
-        rows (list of lists): a list of rows to compute stats for
-
-    Returns:
-        dict: 
-            - 'accidentCount': The total number of accidents.
-            - 'totalUnintentionalRelease': The total amount of unintentional release in barrels.
-            - 'totalNetLoss': The total net loss in barrels.
-            - 'totalCosts': The total cost of all accidents.
-        If the input list is empty, returns None.
-
+    """
+    Calculate summary statistics for a list of oil spill accidents.
     Author: Henry
     """
     
@@ -75,16 +57,11 @@ def get_summary_stats(rows):
         return None
 
 def get_numeric_value(headers, row, column_name):
-    """Given a list of headers, a row of data, and a column name, returns the value in the specified column as a float.
-
-    Args:
-        headers (list of str): A list of column headers.
-        row (list of str): A list of values corresponding to a single row of data.
-        column_name (str): The name of the column to retrieve the value from.
-
-    Returns:
-        float: The value in the specified column as a float.
     """
+    Given a list of headers, a row of data, and a column name, returns the value in the specified column as a float.
+    Author: Henry
+    """
+    
     index = headers.index(column_name)
     return float(row[index])
 
