@@ -23,7 +23,8 @@ def load_dada():
 
        
 def lookup_by_company(company):
-    """Return a dictionary with summary statistics about all accidents involving the given company.
+    """
+    Return a dictionary with summary statistics about all accidents involving the given company.
     Author: Henry
     """
      
@@ -61,7 +62,7 @@ def get_numeric_value(headers, row, column_name):
     Given a list of headers, a row of data, and a column name, returns the value in the specified column as a float.
     Author: Henry
     """
-    
+
     index = headers.index(column_name)
     return float(row[index])
 
