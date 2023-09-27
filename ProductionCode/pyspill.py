@@ -22,7 +22,7 @@ def load_dada():
     return
 
        
-def lookup_by_company(company):
+def lookup_company(company):
     """
     Return a dictionary with summary statistics about all accidents involving the given company.
     Author: Henry
@@ -37,7 +37,6 @@ def get_summary_stats(rows):
     Calculate summary statistics for a list of oil spill accidents.
     Author: Henry
     """
-    
     accidentCount = len(rows)
     if accidentCount > 0:
         totalUnintentionalRelease = 0 
@@ -62,11 +61,12 @@ def get_numeric_value(headers, row, column_name):
     Given a list of headers, a row of data, and a column name, returns the value in the specified column as a float.
     Author: Henry
     """
-
+    
     index = headers.index(column_name)
     return float(row[index])
 
-print(json.dumps(lookup_by_company("PORTLAND PIPELINE CORP"), indent=4))
+# Testing lookup_company() feature: -Henry
+# print(json.dumps(lookup_company("PORTLAND PIPELINE CORP"), indent=4))
       
 
 def lookup_by_location(city, county, state):
