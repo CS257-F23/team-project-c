@@ -1,4 +1,5 @@
 import json
+import sys
 
 # we wan delete this sample data later, but it will make things easier while we wait for the load_data() function to be built
 sample_data = [ 
@@ -15,7 +16,7 @@ sample_data = [
 headers = sample_data[0]
 
 
-def load_dada():
+def load_data():
     """
     Assigned: Feraidon 
     """
@@ -75,7 +76,38 @@ def lookup_by_location(city, county, state):
     """
     return
 
+def print_help_statement():
+    """ Print the help and usage statement to the command line. """
 
-# Command Line stuff - James
+    print('Usage: python3 pyspill.py <command> [options]\n\n'\
+          'Commands:\n'\
+          'lookup                          Look up information about pipeline accidents by location or company.\n'\
+          '  Options:\n'
+          '    To look up by company:\n'
+          '    -c --company                Specify the company.\n\n'
+          '    To look up by location:\n'
+          '    --city, --county, --state   Specify the location.\n\n'
+          'help                            Print this message.\n')
+    
+def parse_lookup_command(options):
+    """ Given options, determine which lookup function to call and pass it require arguments. """
 
+    return
 
+def parse_argv(argv):
+    """ Takes in the argv list as an argument and calls appropriate function based on command. """
+
+    if len(argv) == 1:
+        print_help_statement()
+    elif argv[1] == 'help':
+        print_help_statement()
+    elif argv[1] == 'lookup':
+        parse_lookup_command(argv[2:])
+    else:
+        print_help_statement()
+
+def main():
+    parse_argv(sys.argv)
+
+if __name__ == '__main__':
+    main()

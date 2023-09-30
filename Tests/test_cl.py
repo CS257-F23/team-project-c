@@ -60,7 +60,8 @@ class Test_get_numeric_value(unittest.TestCase):
         self.assertRaises(ValueError, get_numeric_value, self.headers, [], "fake column")
         self.assertRaises(ValueError, get_numeric_value, [], [], "fake column")
 
-
+class TestCommandLineInterface(unittest.TestCase):
+    pass
 
 if __name__ == "__main__":
     unittest.main()
