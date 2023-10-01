@@ -67,8 +67,7 @@ def get_numeric_value(headers, row, column_name):
     index = headers.index(column_name)
     return float(row[index])
       
-def lookup_by_location(city, county, state):
-    
+def lookup_by_location(city, county, state): 
     """
     Author: Paul Claudel Izabayo
     Given a city, a county and a state, returns the total number of spills 
@@ -77,6 +76,7 @@ def lookup_by_location(city, county, state):
     If the location (city, county, state) does not exist in the database, 
     return 0 for both the number of spills and their cost. 
     """
+
     city_data = lookup_by_city(city)
     county_data = lookup_by_county(county)
     state_data = lookup_by_state(state)
@@ -151,6 +151,11 @@ def print_help_statement():
           '    To look up by location:\n'
           '    --city, --county, --state   Specify the location.\n\n'
           'help                            Print this message.\n')
+    
+def print_lookup_data(data):
+    """ Print the data. For now just simply prints the data object. """
+
+    print(data)
 
 def parse_lookup_command(options):
     """ Given options, determine which lookup function to call and pass it require arguments. """
@@ -185,11 +190,17 @@ def parse_lookup_command(options):
         return
     
     if company != None:
-        print(lookup_company(company))
+        print_lookup_data(lookup_company(company))
     
     if not location_options_is_empty:
-        lookup_by_location(location_options['city'], location_options['county'], location_options['state'])
-
+        print_lookup_data(
+            lookup_by_location(
+                location_options['city'], 
+                location_options['county'], 
+                location_options['state']
+            )
+        )
+        
 def parse_argv(argv):
     """ Takes in the argv list as an argument and calls appropriate function based on command. """
 
