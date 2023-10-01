@@ -21,13 +21,19 @@ headers = []
 
 def load_data():
     rows = []
-    with open('Data/OilPipelineAccidents.csv', 'r') as file:
+    with open('../Data/OilPipelineAccidents.csv', 'r') as file:
         reader = csv.reader(file)
         for row in reader:
             rows.append(row)
+
+    global data
     data = rows
+
+    global headers
     headers = data[0]
-    print(headers)
+
+    print(len(data))
+    
     return
 
 def lookup_company(company):
