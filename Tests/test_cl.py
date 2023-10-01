@@ -28,7 +28,6 @@ class Test_lookup_by_company(unittest.TestCase):
                                     "totalCosts": 4008.0
                                 })
     
-
 class Test_get_summary_stats(unittest.TestCase):
     def setUp(self):
         load_data()
