@@ -13,7 +13,10 @@ sample_data = [
     ['20100254', '17331', '2010', '1/4/2010 8:30 AM', '15786', 'PORTLAND PIPELINE CORP', '24-INCH MAIN LINE', 'ONSHORE', 'ABOVEGROUND', 'CRUDE OIL', '', '', 'RAYMOND', 'CUMBERLAND', 'ME', '43.94028', '-70.49336', 'MATERIAL/WELD/EQUIP FAILURE', 'PUMP OR PUMP-RELATED EQUIPMENT', '0.12', '0', '0.12', '0', 'NO', 'NO', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '4000', '8', '0', '0', '0', '0', '4008']
 ]
 
-headers = sample_data[0]
+# headers = sample_data[0]
+
+data = []
+headers = []
 
 def load_data():
     rows = []
@@ -21,7 +24,9 @@ def load_data():
         reader = csv.reader(file)
         for row in reader:
             rows.append(row)
-    return rows
+    data = rows
+    headers = data[0]
+    return
 
 def lookup_company(company):
     """
@@ -30,7 +35,7 @@ def lookup_company(company):
     """
      
     indexOfOperatorName = headers.index("Operator Name")
-    relevant_rows = [accident for accident in sample_data if accident[indexOfOperatorName].lower() == company.lower()]
+    relevant_rows = [accident for accident in data if accident[indexOfOperatorName].lower() == company.lower()]
     return get_summary_stats(relevant_rows)
 
 def get_summary_stats(rows):
