@@ -21,7 +21,7 @@ headers = []
 
 def load_data():
     rows = []
-    with open('../Data/OilPipelineAccidents.csv', 'r') as file:
+    with open('Data/OilPipelineAccidents.csv', 'r') as file:
         reader = csv.reader(file)
         for row in reader:
             rows.append(row)
@@ -49,6 +49,7 @@ def get_summary_stats(rows):
     Calculate summary statistics for a list of oil spill accidents.
     Author: Henry
     """
+
     accidentCount = len(rows)
     if accidentCount > 0:
         totalUnintentionalRelease = 0 
@@ -194,7 +195,7 @@ def parse_lookup_command(options):
     location_args = list(location_options.values())
     location_options_is_empty = location_args.count(None) == len(location_args)
 
-    if company != None and location_options_is_empty:
+    if company != None and not location_options_is_empty:
         print('You can only lookup by location or company, not both at the same time.')
         return
     
@@ -218,7 +219,10 @@ def parse_argv(argv):
     elif argv[1] == 'help':
         print_help_statement()
     elif argv[1] == 'lookup':
-        parse_lookup_command(argv[2:])
+        try:
+            parse_lookup_command(argv[2:])
+        except IndexError:
+            print('Remember arguments after options must be in quotes if it contains whitespace.')
     else:
         print_help_statement()
 
