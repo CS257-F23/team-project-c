@@ -91,8 +91,41 @@ def print_help_statement():
     
 def parse_lookup_command(options):
     """ Given options, determine which lookup function to call and pass it require arguments. """
+    
+    parameters = options[::2]
+    arguments = options[1::2]
+    location_options = {
+        'city': None,
+        'county': None,
+        'state': None
+    }
+    company = None
+    
+    for i, param in enumerate(parameters):
+        if param == '--city':
+            location_options['city'] = arguments[i]
+        elif param == '--county':
+            location_options['county'] = arguments[i]
+        elif param == '--state':
+            location_options['state'] = arguments[i]
+        elif param == '--company' or '-c':
+            company = arguments[i]
+        else:
+            print_help_statement()
+            return
 
-    return
+    location_args = list(location_options.values())
+    location_options_is_empty = location_args.count(None) != len(location_args)
+
+    if company != None and location_options_is_empty:
+        print('You can only lookup by location or company, not both at the same time.')
+        return
+    
+    if company != None:
+        print(lookup_company(company))
+    
+    if not location_options_is_empty:
+        lookup_by_location(location_options['city'], location_options['county'], location_options['state'])
 
 def parse_argv(argv):
     """ Takes in the argv list as an argument and calls appropriate function based on command. """
