@@ -80,7 +80,7 @@ def print_help_statement():
     """ Print the help and usage statement to the command line. """
 
     print('Usage: python3 pyspill.py <command> [options]\n\n'\
-          'Commands:\n'\
+          'Commands:\n\n'\
           'lookup                          Look up information about pipeline accidents by location or company.\n'\
           '  Options:\n'
           '    To look up by company:\n'
