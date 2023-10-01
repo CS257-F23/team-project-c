@@ -1,5 +1,6 @@
 import json
 import csv
+import sys
 
 # we wan delete this sample data later, but it will make things easier while we wait for the load_data() function to be built
 sample_data = [ 
