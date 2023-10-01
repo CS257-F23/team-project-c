@@ -16,7 +16,7 @@ sample_data = [
 class Test_lookup_by_company(unittest.TestCase):
     def setUp(self):
         load_data()
-        
+
     def test_return_value(self):
         # TODO: this will need to change once real data is added in
         """Test that it returns the right info for Portland Pipeline Corp"""
@@ -30,6 +30,8 @@ class Test_lookup_by_company(unittest.TestCase):
     
 
 class Test_get_summary_stats(unittest.TestCase):
+    def setUp(self):
+        load_data()
 
     def test_summary_stat_computation(self):
         """Test that summary stats are computed as expected"""
@@ -45,6 +47,7 @@ class Test_get_summary_stats(unittest.TestCase):
 
 
 class Test_get_numeric_value(unittest.TestCase):
+
     headers = ['Column 1', 'Column 2', 'Column 3']
     row = ['1', '2.5', '3']
     def test_get_values(self):
