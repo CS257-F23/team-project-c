@@ -1,5 +1,4 @@
 import json
-import sys
 
 # we wan delete this sample data later, but it will make things easier while we wait for the load_data() function to be built
 sample_data = [ 
@@ -16,7 +15,7 @@ sample_data = [
 headers = sample_data[0]
 
 
-def load_data():
+def load_dada():
     """
     Assigned: Feraidon 
     """
@@ -71,43 +70,78 @@ def get_numeric_value(headers, row, column_name):
       
 
 def lookup_by_location(city, county, state):
-    """
-    Assigned: Paul
-    """
-    return
-
-def print_help_statement():
-    """ Print the help and usage statement to the command line. """
-
-    print('Usage: python3 pyspill.py <command> [options]\n\n'\
-          'Commands:\n'\
-          'lookup                          Look up information about pipeline accidents by location or company.\n'\
-          '  Options:\n'
-          '    To look up by company:\n'
-          '    -c --company                Specify the company.\n\n'
-          '    To look up by location:\n'
-          '    --city, --county, --state   Specify the location.\n\n'
-          'help                            Print this message.\n')
     
-def parse_lookup_command(options):
-    """ Given options, determine which lookup function to call and pass it require arguments. """
+    """
+    Author: Paul Claudel Izabayo
+    Given a city, a county and a state, returns the total number of spills 
+    as well as the total cost of all the spills that have happened in that city,
+    in that county and in that state. 
+    If the location (city, county, state) does not exist in the database, 
+    return 0 for both the number of spills and their cost. 
+    """
+    city_data = lookup_by_city(city)
+    county_data = lookup_by_county(county)
+    state_data = lookup_by_state(state)
 
-    return
+    return { 
+        
+        "city_spills": city_data["total_spills"],
+        "city_costs": city_data["total_cost"],
+        "county_spills": county_data["total_spills"],
+        "county_costs": county_data["county_cost"],
+        "state_spills": state_data["total_spills"], 
+        "state_costs": state_data["total_cost"]
+    }
+def iterate_through_dataset(area_typ, col_index):
 
-def parse_argv(argv):
-    """ Takes in the argv list as an argument and calls appropriate function based on command. """
+    """
+    Author: Paul Claudel Izabayo
+    This helper method allows you to iterate through the colums. 
+    """
+    total_spills = 0
+    total_cost = 0
+    raw_data = load_dada()
 
-    if len(argv) == 1:
-        print_help_statement()
-    elif argv[1] == 'help':
-        print_help_statement()
-    elif argv[1] == 'lookup':
-        parse_lookup_command(argv[2:])
-    else:
-        print_help_statement()
+    for i in range (1, len(raw_data)):
+        if area_typ == raw_data[i][col_index]:
+            total_spills = total_spills + 1
+            total_cost = total_cost + raw_data[i][-1]
 
-def main():
-    parse_argv(sys.argv)
+    return {
+        "total_cost":total_cost, 
+        "total_spills":total_spills
+        }
 
-if __name__ == '__main__':
-    main()
+def lookup_by_state(state):
+
+    """
+    Author: Paul Claudel Izabayo
+    Given a state, return the total number of spills that have happened in that state, 
+    as well as their total monetary cost. 
+    """
+    return iterate_through_dataset(state, 14)
+
+    
+def lookup_by_county(county):
+
+    """
+    Author: Paul Claudel Izabayo
+    Given a state, return the total  number of spills that have happened in that county, 
+    as well as ther total monetary cost. 
+    """
+    return iterate_through_dataset(county, 13)
+
+def lookup_by_city(city):
+    
+    """
+    Author: Paul Claudel Izabayo
+    Given a city, return the total number of spills that have occured in that city, 
+    as well as their monetary cost. 
+    
+    """
+    return iterate_through_dataset(city, 12)
+
+
+# Command Line stuff - James
+
+
