@@ -141,11 +141,6 @@ class Test_lookup_by_city(unittest.TestCase):
         """
         self.assertEqual(lookup_by_city("FARIBAULT", {"total_spills":2, "total_cost": 63349}))
         self.assertEqual(lookup_by_city("RANDOM"), {"total_spills":0, "total_cost": 0})
+
 if __name__ == "__main__":
-    unittest.main()
-
-
-        
-
-
-        
+    unittest.main() 
