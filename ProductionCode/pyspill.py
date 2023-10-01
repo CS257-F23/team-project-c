@@ -138,6 +138,19 @@ def lookup_by_city(city):
     """
     return iterate_through_dataset(city, 12)
 
+def print_help_statement():
+    """ Print the help and usage statement to the command line. """
+
+    print('Usage: python3 pyspill.py <command> [options]\n\n'\
+          'Commands:\n\n'\
+          'lookup                          Look up information about pipeline accidents by location or company.\n'\
+          '  Options:\n'
+          '    To look up by company:\n'
+          '    -c --company                Specify the company.\n\n'
+          '    To look up by location:\n'
+          '    --city, --county, --state   Specify the location.\n\n'
+          'help                            Print this message.\n')
+
 def parse_lookup_command(options):
     """ Given options, determine which lookup function to call and pass it require arguments. """
     
