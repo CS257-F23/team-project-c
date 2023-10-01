@@ -60,6 +60,7 @@ class Test_get_numeric_value(unittest.TestCase):
         self.assertRaises(ValueError, get_numeric_value, self.headers, [], "fake column")
         self.assertRaises(ValueError, get_numeric_value, [], [], "fake column")
 
+<<<<<<< HEAD
 class Test_iterate_through_dataset(unittest.TestCase):
 
     def test_iterare_through_dataset(self):
@@ -69,6 +70,10 @@ class Test_iterate_through_dataset(unittest.TestCase):
         self.assertEqual(iterate_through_dataset("WV", 14), {"total_spills":2, "total_cost": 11827941})
         self.assertEqual(iterate_through_dataset("RICE", 13), {"total_spills":6, "total_cost":49903})
         self.assertEqual(iterate_through_dataset("FARIBAULT", 12), {"total_spills":2, "total_cost": 63349})
+=======
+class TestCommandLineInterface(unittest.TestCase):
+    pass
+>>>>>>> 4bcf1beded9c3d10410f6c9dd0cdfc1103d79dc0
 
     def test_iterate_out_of_bounds(self):
         """
