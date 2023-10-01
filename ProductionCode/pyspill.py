@@ -27,6 +27,7 @@ def load_data():
             rows.append(row)
     data = rows
     headers = data[0]
+    print(headers)
     return
 
 def lookup_company(company):
