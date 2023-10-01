@@ -16,13 +16,12 @@ sample_data = [
 headers = sample_data[0]
 
 def load_data():
-   
+    rows = []
     with open('Data/OilPipelineAccidents.csv', 'r') as file:
         reader = csv.reader(file)
         for row in reader:
-            print(row)
-        
-    return
+            rows.append(row)
+    return rows
 
 def lookup_company(company):
     """
