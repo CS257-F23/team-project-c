@@ -221,8 +221,9 @@ def parse_argv(argv):
     elif argv[1] == 'lookup':
         try:
             parse_lookup_command(argv[2:])
-        except IndexError:
+        except IndexError as e:
             print('Remember arguments after options must be in quotes if it contains whitespace.')
+            print(e)
     else:
         print_help_statement()
 
