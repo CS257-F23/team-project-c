@@ -15,7 +15,6 @@ sample_data = [
 
 headers = sample_data[0]
 
-
 def load_data():
    
     with open('Data/OilPipelineAccidents.csv', 'r') as file:
@@ -25,7 +24,6 @@ def load_data():
         
     return
 
-       
 def lookup_company(company):
     """
     Return a dictionary with summary statistics about all accidents involving the given company.
@@ -68,11 +66,7 @@ def get_numeric_value(headers, row, column_name):
     
     index = headers.index(column_name)
     return float(row[index])
-
-# Testing lookup_company() feature: -Henry
-# print(json.dumps(lookup_company("PORTLAND PIPELINE CORP"), indent=4))
       
-
 def lookup_by_location(city, county, state):
     
     """
@@ -87,8 +81,7 @@ def lookup_by_location(city, county, state):
     county_data = lookup_by_county(county)
     state_data = lookup_by_state(state)
 
-    return { 
-        
+    return {        
         "city_spills": city_data["total_spills"],
         "city_costs": city_data["total_cost"],
         "county_spills": county_data["total_spills"],
@@ -96,12 +89,13 @@ def lookup_by_location(city, county, state):
         "state_spills": state_data["total_spills"], 
         "state_costs": state_data["total_cost"]
     }
-def iterate_through_dataset(area_typ, col_index):
 
+def iterate_through_dataset(area_typ, col_index):
     """
     Author: Paul Claudel Izabayo
     This helper method allows you to iterate through the colums. 
     """
+
     total_spills = 0
     total_cost = 0
     raw_data = load_data()
@@ -114,7 +108,7 @@ def iterate_through_dataset(area_typ, col_index):
     return {
         "total_cost":total_cost, 
         "total_spills":total_spills
-        }
+    }
 
 def lookup_by_state(state):
 
@@ -145,7 +139,58 @@ def lookup_by_city(city):
     """
     return iterate_through_dataset(city, 12)
 
+def parse_lookup_command(options):
+    """ Given options, determine which lookup function to call and pass it require arguments. """
+    
+    parameters = options[::2]
+    arguments = options[1::2]
+    location_options = {
+        'city': None,
+        'county': None,
+        'state': None
+    }
+    company = None
+    
+    for i, param in enumerate(parameters):
+        if param == '--city':
+            location_options['city'] = arguments[i]
+        elif param == '--county':
+            location_options['county'] = arguments[i]
+        elif param == '--state':
+            location_options['state'] = arguments[i]
+        elif param == '--company' or '-c':
+            company = arguments[i]
+        else:
+            print_help_statement()
+            return
 
-# Command Line stuff - James
+    location_args = list(location_options.values())
+    location_options_is_empty = location_args.count(None) != len(location_args)
 
+    if company != None and location_options_is_empty:
+        print('You can only lookup by location or company, not both at the same time.')
+        return
+    
+    if company != None:
+        print(lookup_company(company))
+    
+    if not location_options_is_empty:
+        lookup_by_location(location_options['city'], location_options['county'], location_options['state'])
 
+def parse_argv(argv):
+    """ Takes in the argv list as an argument and calls appropriate function based on command. """
+
+    if len(argv) == 1:
+        print_help_statement()
+    elif argv[1] == 'help':
+        print_help_statement()
+    elif argv[1] == 'lookup':
+        parse_lookup_command(argv[2:])
+    else:
+        print_help_statement()
+
+def main():
+    parse_argv(sys.argv)
+
+if __name__ == '__main__':
+    main()
