@@ -165,7 +165,7 @@ def print_lookup_data(data):
 def parse_lookup_command(options):
     """ Given options, determine which lookup function to call and pass it require arguments. """
     
-    parameters = options[::2]
+    parameters = options[0::2]
     arguments = options[1::2]
     location_options = {
         'city': None,
@@ -188,7 +188,7 @@ def parse_lookup_command(options):
             return
 
     location_args = list(location_options.values())
-    location_options_is_empty = location_args.count(None) != len(location_args)
+    location_options_is_empty = location_args.count(None) == len(location_args)
 
     if company != None and location_options_is_empty:
         print('You can only lookup by location or company, not both at the same time.')
