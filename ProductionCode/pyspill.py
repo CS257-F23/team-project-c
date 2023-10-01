@@ -32,8 +32,6 @@ def load_data():
     global headers
     headers = data[0]
 
-    print(len(data))
-    
     return
 
 def lookup_company(company):
@@ -110,12 +108,11 @@ def iterate_through_dataset(area_typ, col_index):
 
     total_spills = 0
     total_cost = 0
-    raw_data = load_data()
 
-    for i in range (1, len(raw_data)):
-        if area_typ == raw_data[i][col_index]:
+    for i in range (1, len(data)):
+        if area_typ == data[i][col_index]:
             total_spills = total_spills + 1
-            total_cost = total_cost + raw_data[i][-1]
+            total_cost = total_cost + data[i][-1]
 
     return {
         "total_cost":total_cost, 
