@@ -18,7 +18,6 @@ class Test_lookup_by_company(unittest.TestCase):
         load_data()
 
     def test_return_value(self):
-        # TODO: this will need to change once real data is added in
         """Test that it returns the right info for Portland Pipeline Corp"""
         result = lookup_company("PORTLAND PIPELINE CORP")
         self.assertEqual(result, {
