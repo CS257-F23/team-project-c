@@ -60,8 +60,84 @@ class Test_get_numeric_value(unittest.TestCase):
         self.assertRaises(ValueError, get_numeric_value, self.headers, [], "fake column")
         self.assertRaises(ValueError, get_numeric_value, [], [], "fake column")
 
+class Test_iterate_through_dataset(unittest.TestCase):
 
+    def test_iterare_through_dataset(self):
+        """
+        Tests if iterate_through_dataset return the right output.
+        """
+        self.assertEqual(iterate_through_dataset("WV", 14), {"total_spills":2, "total_cost": 11827941})
+        self.assertEqual(iterate_through_dataset("RICE", 13), {"total_spills":6, "total_cost":49903})
+        self.assertEqual(iterate_through_dataset("FARIBAULT", 12), {"total_spills":2, "total_cost": 63349})
 
+    def test_iterate_out_of_bounds(self):
+        """
+        Tests for when the index for the column entered is out of bounds
+        """
+        self.assertRaises(IndexError, iterate_through_dataset, "WV", 30)
+
+    def test_iterate_wrong_arguments(self):
+        """
+        Tests when the arguments are not either a state, a county or a city for 
+        first argument and/or when the second argument is not the right index for a 
+        column representing a city, county or state. 
+        """
+        self.assertEqual(iterate_through_dataset("WV", 12),{"total_spills":0, "total_cost":0} )
+        self.assertEqual(iterate_through_dataset("Random", 34), {"total_spills":0, "total_cost":0})
+
+class Test_lookup_by_location(unittest.TestCase):
+
+    def test_output(self):
+        """
+        Test if lookup_by_location return the right output
+        """
+        self.assertEqual(lookup_by_location("FARIBAULT", "WV", "RICE"), 
+                         { 
+        "city_spills": 2,
+        "city_costs": 63349,
+        "county_spills":6,
+        "county_costs": 49903,
+        "state_spills": 2, 
+        "state_costs": 11827941
+            })
+        
+        self.assertEqual (lookup_by_location("RANDOM", "Wallah", "Nukuri"),
+                          { 
+        "city_spills": 0,
+        "city_costs": 0,
+        "county_spills": 0,
+        "county_costs": 0,
+        "state_spills": 0, 
+        "state_costs": 0
+            } )
+        
+class Test_lookup_by_state(unittest.TestCase):
+
+    def test_lookup_by_state(self):
+
+        """
+        Tests if the function look_up_by_state return the right output
+        """
+        self.assertEqual(lookup_by_state("WV"), {"total_spills":2, "total_cost": 11827941})
+        self.assertEqual(lookup_by_state("Random"), {"total_spills":0, "total_cost": 0})
+
+class Test_lookup_by_county(unittest.TestCase):
+
+    def test_lookup_by_county(self):
+        """
+        Tests of the function lookup_by_county returns the right output
+        """
+        self.assertEqual (lookup_by_county("Rice"), {"total_spills":6, "total_cost":49903})
+        self.assertEqual (lookup_by_county("RANDOM"), {"total_spills":0, "total_cost":0})
+
+class Test_lookup_by_city(unittest.TestCase):
+
+    def test_lookup_by_city (self):
+        """
+        Tests if it generates the right output for lookup_by_city 
+        """
+        self.assertEqual(lookup_by_city("FARIBAULT", {"total_spills":2, "total_cost": 63349}))
+        self.assertEqual(lookup_by_city("RANDOM"), {"total_spills":0, "total_cost": 0})
 if __name__ == "__main__":
     unittest.main()
 
