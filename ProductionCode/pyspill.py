@@ -1,4 +1,5 @@
 import json
+import csv
 
 # we wan delete this sample data later, but it will make things easier while we wait for the load_data() function to be built
 sample_data = [ 
@@ -15,10 +16,13 @@ sample_data = [
 headers = sample_data[0]
 
 
-def load_dada():
-    """
-    Assigned: Feraidon 
-    """
+def load_data():
+   
+    with open('Data/OilPipelineAccidents.csv', 'r') as file:
+        reader = csv.reader(file)
+        for row in reader:
+            print(row)
+        
     return
 
        
@@ -100,7 +104,7 @@ def iterate_through_dataset(area_typ, col_index):
     """
     total_spills = 0
     total_cost = 0
-    raw_data = load_dada()
+    raw_data = load_data()
 
     for i in range (1, len(raw_data)):
         if area_typ == raw_data[i][col_index]:
