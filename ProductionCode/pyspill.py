@@ -74,11 +74,11 @@ def lookup_by_location(city, county, state):
     
     """
     if city: 
-        return lookup_by_city(city, county, state)
+        return lookup_by_city(city.upper(), county.upper(), state.upper())
     if county:
-        return lookup_state_or_county(county, 13)
+        return lookup_state_or_county(county.upper(), 13)
     if state:
-        return lookup_state_or_county(state,14)
+        return lookup_state_or_county(state.upper(), 14)
 
 
 def lookup_state_or_county (locat_typ, col_ind):
@@ -129,7 +129,10 @@ def print_help_statement():
           '    To look up by company:\n'
           '    -c --company                Specify the company.\n\n'
           '    To look up by location:\n'
-          '    --city, --county, --state   Specify the location.\n\n'
+          '    --city, --county, --state   Specify the location.\n'
+          '                                If the city is specified, a county or state must also be specified.\n'
+          '                                If no city is specified, all spills in the county are shown.\n'
+          '                                If no county or city is specified, all spills in the state are shown.\n\n'
           'help                            Print this message.\n')
     
 def print_lookup_data(data):
@@ -137,7 +140,7 @@ def print_lookup_data(data):
 
     print(data)
 
-def parse_lookup_command(options):
+def parse_lookup_command(options: list):
     """ Given options, determine which lookup function to call and pass it require arguments. """
     
     parameters = options[0::2]
