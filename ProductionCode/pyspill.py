@@ -67,73 +67,57 @@ def get_numeric_value(headers, row, column_name):
 def lookup_by_location(city, county, state): 
     """
     Author: Paul Claudel Izabayo
-    Given a city, a county and a state, returns the total number of spills 
-    as well as the total cost of all the spills that have happened in that city,
-    in that county and in that state. 
-    If the location (city, county, state) does not exist in the database, 
-    return 0 for both the number of spills and their cost. 
+    Given a city, county and/or state return the number of spills that happened in that city (county/state)
+    as well as their monetary value. If there is not city, we return the number of spills in the state, 
+    as well as their monetary value and if there neither the city nor a state, we return the number 
+    of spills in the county as well as their monetary value. 
+    
     """
+    if city: 
+        return lookup_by_city(city, county, state)
+    if county:
+        return lookup_state_or_county(county, 13)
+    if state:
+        return lookup_state_or_county(state,14)
 
-    city_data = lookup_by_city(city)
-    county_data = lookup_by_county(county)
-    state_data = lookup_by_state(state)
 
-    return {        
-        "city_spills": city_data["total_spills"],
-        "city_costs": city_data["total_cost"],
-        "county_spills": county_data["total_spills"],
-        "county_costs": county_data["county_cost"],
-        "state_spills": state_data["total_spills"], 
-        "state_costs": state_data["total_cost"]
-    }
-
-def iterate_through_dataset(area_typ, col_index):
+def lookup_state_or_county (locat_typ, col_ind):
     """
-    Author: Paul Claudel Izabayo
-    This helper method allows you to iterate through the colums. 
+    Given a location type i.e state or county or state as well as it column inde in the dataset, 
+    this helper method returns a dictionary containing the number of spills in that state/state/county as well as their monetary value. 
     """
-
     total_spills = 0
     total_cost = 0
 
-    for i in range (1, len(data)):
-        if area_typ == data[i][col_index]:
+    for row_index in range (1,len(data)):
+        if locat_typ == data[row_index][col_ind]:
             total_spills = total_spills + 1
-            total_cost = total_cost + data[i][-1]
+            total_cost = total_cost + float (data[row_index][-1])
 
     return {
-        "total_cost":total_cost, 
-        "total_spills":total_spills
+        "total_spills": total_spills,
+        "total_cost": total_cost
     }
 
-def lookup_by_state(state):
+def lookup_by_city(city, county, state):
+    """
+    Given a city, a county and a state this methods returns the number of spills in that city and their total monetary cost
+    if the city entered is located in the state or the county specified.  
+    """
+    total_spills = 0
+    total_cost = 0
+    for row_index in range (1, len(data)):
+        curr_row = data[row_index]
+        if city == curr_row[12] and (county == curr_row[13] or state == curr_row[14]):
+            total_cost = total_cost + float(curr_row[-1])
+            total_spills = total_spills+1
 
-    """
-    Author: Paul Claudel Izabayo
-    Given a state, return the total number of spills that have happened in that state, 
-    as well as their total monetary cost. 
-    """
-    return iterate_through_dataset(state, 14)
+    return {
+        "total_spills": total_spills,
+        "total_cost": total_cost
+    }
 
-    
-def lookup_by_county(county):
-
-    """
-    Author: Paul Claudel Izabayo
-    Given a state, return the total  number of spills that have happened in that county, 
-    as well as ther total monetary cost. 
-    """
-    return iterate_through_dataset(county, 13)
-
-def lookup_by_city(city):
-    
-    """
-    Author: Paul Claudel Izabayo
-    Given a city, return the total number of spills that have occured in that city, 
-    as well as their monetary cost. 
-    
-    """
-    return iterate_through_dataset(city, 12)
+  
 
 def print_help_statement():
     """ Print the help and usage statement to the command line. """
