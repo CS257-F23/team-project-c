@@ -125,9 +125,11 @@ def lookup_by_city(city, county, state):
     }
 
   
-
 def print_help_statement():
-    """ Print the help and usage statement to the command line. """
+    """ 
+    Print the help and usage statement to the command line. 
+    Author: James Commons
+    """
 
     print('Usage: python3 pyspill.py <command> [options]\n\n'\
           'Commands:\n\n'\
@@ -144,12 +146,18 @@ def print_help_statement():
           'help                            Print this message.\n')
     
 def print_lookup_data(data):
-    """ Print the data. For now just simply prints the data object. """
+    """ 
+    Print the data. For now just simply prints the data object. 
+    Author: James Commons
+    """
 
     print(data)
 
 def parse_lookup_command(options):
-    """ Given options, determine which lookup function to call and pass it require arguments. """
+    """ 
+    Given options, determine which lookup function to call and pass it require arguments. 
+    Author: James Commons
+    """
     
     parameters = options[0::2]
     arguments = options[1::2]
@@ -193,7 +201,10 @@ def parse_lookup_command(options):
         )
         
 def parse_argv(argv):
-    """ Takes in the argv list as an argument and calls appropriate function based on command. """
+    """ 
+    Takes in the argv list as an argument and calls appropriate function based on command. 
+    Author: James Commons
+    """
 
     if len(argv) == 1:
         print_help_statement()
