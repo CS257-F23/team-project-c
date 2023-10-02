@@ -73,12 +73,19 @@ def lookup_by_location(city, county, state):
     of spills in the county as well as their monetary value. 
     
     """
-    if city: 
-        return lookup_by_city(city.upper(), county.upper(), state.upper())
+    if city:
+        city = city.lower()
     if county:
-        return lookup_state_or_county(county.upper(), 13)
+        county = county.lower()
     if state:
-        return lookup_state_or_county(state.upper(), 14)
+        state = state.lower()
+
+    if city: 
+        return lookup_by_city(city, county, state)
+    if county:
+        return lookup_state_or_county(county, 13)
+    if state:
+        return lookup_state_or_county(state, 14)
 
 
 def lookup_state_or_county (locat_typ, col_ind):
@@ -132,7 +139,8 @@ def print_help_statement():
           '    --city, --county, --state   Specify the location.\n'
           '                                If the city is specified, a county or state must also be specified.\n'
           '                                If no city is specified, all spills in the county are shown.\n'
-          '                                If no county or city is specified, all spills in the state are shown.\n\n'
+          '                                If no county or city is specified, all spills in the state are shown.\n'
+          '                                If state is specified, it must be the two letter abbreviation (i.e. CO).\n\n'
           'help                            Print this message.\n')
     
 def print_lookup_data(data):
