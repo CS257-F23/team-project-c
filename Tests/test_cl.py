@@ -249,6 +249,8 @@ class Test_lookup_by_location(unittest.TestCase):
                          )
         
 class TestCL(unittest.TestCase):
+    """ Author: James Commons """
+
     def setUp(self):
         load_data()
 
