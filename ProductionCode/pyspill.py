@@ -74,11 +74,11 @@ def lookup_by_location(city, county, state):
     
     """
     if city:
-        city = city.lower()
+        city = city.upper()
     if county:
-        county = county.lower()
+        county = county.upper()
     if state:
-        state = state.lower()
+        state = state.upper()
 
     if city: 
         return lookup_by_city(city, county, state)
