@@ -148,7 +148,7 @@ def print_lookup_data(data):
 
     print(data)
 
-def parse_lookup_command(options: list):
+def parse_lookup_command(options):
     """ Given options, determine which lookup function to call and pass it require arguments. """
     
     parameters = options[0::2]
@@ -203,8 +203,9 @@ def parse_argv(argv):
         try:
             parse_lookup_command(argv[2:])
         except IndexError as e:
-            print('Remember arguments after options must be in quotes if it contains whitespace.')
-            print(e)
+            print('Arguments after options must be in quotes if it contains whitespace.')
+            print(e) # Print error in case the issue had nothing to do with quotes
+            return
     else:
         print_help_statement()
 

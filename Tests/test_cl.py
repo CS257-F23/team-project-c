@@ -1,4 +1,5 @@
 import unittest
+import subprocess
 from ProductionCode.pyspill import *
 
 sample_data = [ 
@@ -246,6 +247,94 @@ class Test_lookup_by_location(unittest.TestCase):
             "total_cost": 0
                          }
                          )
+        
+class TestCL(unittest.TestCase):
+    def setUp(self):
+        load_data()
+
+    def test_no_args(self):
+        """ Tests that help/usage is printed if no arguments are given. """
+
+        code = subprocess.Popen(['python3', '-u', 'ProductionCode/pyspill.py'], 
+                                stdin=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf8')
+        out, err = code.communicate()
+        code.terminate()
+
+        self.assertEqual(out[:6], "Usage:")
+
+    def test_help(self):
+        """ Tests that help/usage statement is printed with the help command. """
+
+        code = subprocess.Popen(['python3', '-u', 'ProductionCode/pyspill.py', 'help'], 
+                                stdin=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf8')
+        out, err = code.communicate()
+        code.terminate()
+
+        self.assertEqual(out[:6], "Usage:")
+
+    def test_bad_command(self):
+        """ Tests that help/usage printed if nonexistant command was given. """
+
+        code = subprocess.Popen(['python3', '-u', 'ProductionCode/pyspill.py', 'dne'], 
+                                stdin=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf8')
+        out, err = code.communicate()
+        code.terminate()
+
+        self.assertEqual(out[:6], "Usage:")
+
+    def test_lookup_opt_c_upper(self):
+        """ Test that lookup company works given option -c in command line. Upper case. """
+
+        code = subprocess.Popen(['python3', '-u', 'ProductionCode/pyspill.py', 'lookup', '-c', 'CONOCOPHILLIPS'], 
+                                stdin=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf8')
+        out, err = code.communicate()
+        code.terminate()
+
+        self.assertEqual(out, "{'accidentCount': 34, 'totalUnintentionalRelease': 4873.769999999997, " \
+                              "'totalNetLoss': 4776.61, 'totalCosts': 8697383.0}\n")
+        
+    def test_lookup_opt_company_lower(self):
+        """ Test that lookup company works given option --company in command line. Lower case. """
+
+        code = subprocess.Popen(['python3', '-u', 'ProductionCode/pyspill.py', 'lookup', '-c', 'exxonmobil pipeline co'], 
+                                stdin=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf8')
+        out, err = code.communicate()
+        code.terminate()
+
+        self.assertEqual(out, "{'accidentCount': 49, 'totalUnintentionalRelease': 5926.939999999999, " \
+                              "'totalNetLoss': 3094.3799999999997, 'totalCosts': 149166535.0}\n")
+        
+    def test_lookup_company_and_location(self):
+        """ Test that trying to lookup both company and location prints an error. """
+
+        code = subprocess.Popen(['python3', '-u', 'ProductionCode/pyspill.py', 'lookup', '-c', 
+                                 'exxonmobil pipeline co', '--state', 'tx'], 
+                                stdin=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf8')
+        out, err = code.communicate()
+        code.terminate()
+
+        self.assertEqual(out, 'You can only lookup by location or company, not both at the same time.\n')
+        
+    def test_lookup_location(self):
+        """ Test that lookup location works when all three parameters specified. """
+
+        code = subprocess.Popen(['python3', '-u', 'ProductionCode/pyspill.py', 'lookup', '--city', 
+                                 'COVE', '--county', 'chambers', '--state', 'Tx'], 
+                                stdin=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf8')
+        out, err = code.communicate()
+        code.terminate()
+
+        self.assertEqual(out, "{'total_spills': 1, 'total_cost': 501600.0}\n")
+    
+    def test_lookup_location_by_state(self):
+        """ Test lookup location by state prints all spills in a state. """
+
+        code = subprocess.Popen(['python3', '-u', 'ProductionCode/pyspill.py', 'lookup', '--state', 'MA'], 
+                                stdin=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf8')
+        out, err = code.communicate()
+        code.terminate()
+
+        self.assertEqual(out, "{'total_spills': 2, 'total_cost': 543943.0}\n")
 
 if __name__ == "__main__":
     unittest.main() 
