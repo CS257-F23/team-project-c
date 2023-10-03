@@ -52,8 +52,7 @@ def get_summary_stats(rows):
                 'totalNetLoss': totalNetLoss, 
                 'totalCosts' : totalCosts
                 } 
-    else:
-        return None
+    return None
 
 def get_numeric_value(headers, row, column_name):
     """
