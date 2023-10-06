@@ -1,9 +1,9 @@
-import json
 import csv
 import sys
 
 data = []
 headers = []
+
 
 def load_data():
     """Read data from the CSV file and load it into global variables data and headers."""        
@@ -18,7 +18,7 @@ def load_data():
 
     global headers
     headers = data[0]
-load_data()
+
 
 def get_index_of(column_name):
     return headers.index(column_name)
@@ -63,20 +63,6 @@ def select_matching_rows(rules):
     return selected_rows
 
 
-def lookup_company(company):
-    """Return a dictionary with summary statistics about all accidents involving the given company.
-    Author: Henry Burkhardt
-
-    Args:
-        company (str): name of company (must be in dataset)
-
-    Returns:
-        dict: dictionary of summary data on company, from get_summary_stats()
-    """    
-     
-    relevant_rows = select_matching_rows([("Operator Name", company)])
-    return get_totals(relevant_rows)
-
 def get_totals(rows):
     """Calculate summary statistics for a list of oil spill accidents by summing columns.
     Author: Henry Burkhardt
@@ -94,10 +80,10 @@ def get_totals(rows):
         totalNetLoss = 0
         totalCosts = 0
 
-        for accident in rows:
-            totalUnintentionalRelease += get_numeric_value(accident, "Unintentional Release (Barrels)")
-            totalNetLoss += get_numeric_value(accident, "Net Loss (Barrels)")
-            totalCosts += get_numeric_value(accident, "All Costs")
+        for row in rows:
+            totalUnintentionalRelease += get_numeric_value(row, "Unintentional Release (Barrels)")
+            totalNetLoss += get_numeric_value(row, "Net Loss (Barrels)")
+            totalCosts += get_numeric_value(row, "All Costs")
         
         return {'accidentCount': accidentCount, 
                 'totalUnintentionalRelease':totalUnintentionalRelease, 
@@ -105,6 +91,21 @@ def get_totals(rows):
                 'totalCosts' : totalCosts
                 } 
     return None
+
+
+def lookup_company(company):
+    """Return a dictionary with summary statistics about all accidents involving the given company.
+    Author: Henry Burkhardt
+
+    Args:
+        company (str): name of company (must be in dataset)
+
+    Returns:
+        dict: dictionary of summary data on company, from get_summary_stats()
+    """    
+     
+    relevant_rows = select_matching_rows([("Operator Name", company)])
+    return get_totals(relevant_rows)
 
       
 def lookup_by_location(city, county, state): 
@@ -160,6 +161,7 @@ def lookup_by_county(county, state):
     
     selected_rows = select_matching_rows([("Accident County", county), ("Accident State", state)])
     return get_totals(selected_rows)
+
 
 def lookup_by_state(state):
     """Returns total spill stats for a state
