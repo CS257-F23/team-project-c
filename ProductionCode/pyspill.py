@@ -6,7 +6,7 @@ data = []
 headers = []
 
 def load_data():
-    """ Read data from the CSV file and load it into global variables data and headers. """
+    """Read data from the CSV file and load it into global variables data and headers."""        
     rows = []
     with open('Data/OilPipelineAccidents.csv', 'r') as file:
         reader = csv.reader(file)
@@ -20,20 +20,30 @@ def load_data():
     headers = data[0]
 
 def lookup_company(company):
-    """
-    Return a dictionary with summary statistics about all accidents involving the given company.
-    Author: Henry
-    """
+    """Return a dictionary with summary statistics about all accidents involving the given company.
+    Author: Henry Burkhardt
+
+    Args:
+        company (str): name of company (must be in dataset)
+
+    Returns:
+        dict: dictionary of summary data on company, from get_summary_stats()
+    """    
      
     indexOfOperatorName = headers.index("Operator Name")
     relevant_rows = [accident for accident in data if accident[indexOfOperatorName].lower() == company.lower()]
     return get_summary_stats(relevant_rows)
 
 def get_summary_stats(rows):
-    """
-    Calculate summary statistics for a list of oil spill accidents.
-    Author: Henry
-    """
+    """Calculate summary statistics for a list of oil spill accidents.
+    Author: Henry Burkhardt
+
+    Args:
+        rows (list): list of selected rows from the table
+
+    Returns:
+        dict: dictionary with, accidentCount, totalUnintentionalRelease, totalNetLoss and totalCosts
+    """   
 
     accidentCount = len(rows)
     if accidentCount > 0:
@@ -54,10 +64,17 @@ def get_summary_stats(rows):
     return None
 
 def get_numeric_value(headers, row, column_name):
-    """
-    Given a list of headers, a row of data, and a column name, returns the value in the specified column as a float.
-    Author: Henry
-    """
+    """Given a list of headers, a row of data, and a column name, returns the value in the specified column as a float.
+    Author: Henry Burkhardt
+
+    Args:
+        headers (list): list of strings indicating column names 
+        row (list): a single row from the dataset
+        column_name (str): name of column to extract data from
+
+    Returns:
+        float: numeric value to extract
+    """    
     
     index = headers.index(column_name)
     return float(row[index])
