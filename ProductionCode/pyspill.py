@@ -6,6 +6,7 @@ data = []
 headers = []
 
 def load_data():
+    """ Read data from the CSV file and load it into global variables data and headers. """
     rows = []
     with open('Data/OilPipelineAccidents.csv', 'r') as file:
         reader = csv.reader(file)
@@ -17,8 +18,6 @@ def load_data():
 
     global headers
     headers = data[0]
-
-    return
 
 def lookup_company(company):
     """

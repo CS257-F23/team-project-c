@@ -1,3 +1,18 @@
-# CS257-F23-TeamTemplate
-Template for long-term team projects
-Team C: Feraidon, James, Paul, Henry 
+# PySpill
+
+### Getting Started: ###
+To get started using PySpill, run this command: 
+
+`python3 ProductionCode/pyspill.py lookup --state TX`
+
+This will tell you how many pipline accidents have occured in the state
+of Texas and the total cost of these accidents.
+
+You can also run 
+
+`python3 ProductionCode/pyspill.py lookup --c "exxonmobil pipeline co"`
+
+Which displays some summary statistics about a particular company.
+
+Alternatively, run `python3 ProductionCode/pyspill.py help` to get a full 
+list of options.
