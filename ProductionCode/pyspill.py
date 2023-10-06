@@ -23,6 +23,7 @@ load_data()
 def get_index_of(column_name):
     return headers.index(column_name)
 
+
 def get_numeric_value(row, column_name):
     """Given a list of headers, a row of data, and a column name, returns the value in the specified column as a float.
     Author: Henry Burkhardt
@@ -40,7 +41,7 @@ def get_numeric_value(row, column_name):
     return float(row[index])
 
 
-def select_matching_rows(criteria):
+def select_matching_rows(rules):
     """Subset rows from database based with string matching
     Author: Henry Burkhardt
 
@@ -52,10 +53,11 @@ def select_matching_rows(criteria):
     """
     selected_rows = []
     for row in data:
-        for rule in criteria:
-            matches = []
+        matches = []
+        for rule in rules:
             columnIndex = get_index_of(rule[0])
             matches.append(row[columnIndex].upper().strip() == rule[1].upper().strip())
+
         if all(matches):
             selected_rows.append(row)
     return selected_rows
@@ -106,69 +108,71 @@ def get_totals(rows):
 
       
 def lookup_by_location(city, county, state): 
-    """
+    """Get info about spills in a give city, county or state. 
     Author: Paul Claudel Izabayo
-    Given a city, county and/or state return the number of spills that happened in that city (county/state)
-    as well as their monetary value. If there is not city, we return the number of spills in the state, 
-    as well as their monetary value and if there neither the city nor a state, we return the number 
-    of spills in the county as well as their monetary value. 
+
+    Args:
+        city (str): name of city
+        county (str): name of county
+        state (str): name of state
+    """
+
+    # ensure state argument was passed
+    if state is None: 
+        raise ValueError("State argument is required for all location queries.") 
+
+    if city is not None:
+        return lookup_by_city(city, state)
     
-    """
-    if city:
-        city = city.upper()
-    if county:
-        county = county.upper()
-    if state:
-        state = state.upper()
+    if county is not None: 
+        return lookup_by_county(county, state)
+    
+    if state is not None:
+        return lookup_by_state(state)
+    
+    return ValueError("Not enough enough information was provided to complete your query.")
+    
 
-    if city: 
-        return lookup_by_city(city, county, state)
-    if county:
-        return lookup_state_or_county(county, 13)
-    if state:
-        return lookup_state_or_county(state, 14)
+def lookup_by_city(city, state):
+    """Returns total spill stats for a city
 
+    Args:
+        city (str): name of city
+        state (str): name of state
 
-def lookup_state_or_county (locat_typ, col_ind):
-    """
-    Given a location type i.e state or county or state as well as it column inde in the dataset, 
-    this helper method returns a dictionary containing the number of spills in that state/state/county as well as their monetary value. 
-    """
-    total_spills = 0
-    total_cost = 0
-
-    for row_index in range (1,len(data)):
-        if locat_typ == data[row_index][col_ind]:
-            total_spills = total_spills + 1
-            total_cost = total_cost + float (data[row_index][-1])
-
-    return {
-        "total_spills": total_spills,
-        "total_cost": total_cost
-    }
-
-def lookup_by_city(city, county, state):
-    """
-    Given a city, a county and a state this methods returns the number of spills in that city and their total monetary cost
-    if the city entered is located in the state or the county specified.  
+    Returns:
+        dict: contains summary info from get_totals()
     """
     selected_rows = select_matching_rows([("Accident City", city), ("Accident State", state)])
-    return get_totals(select_matching_rows)
+    return get_totals(selected_rows)
 
-    total_spills = 0
-    total_cost = 0
-    for row_index in range (1, len(data)):
-        curr_row = data[row_index]
-        if city == curr_row[12] and (county == curr_row[13] or state == curr_row[14]):
-            total_cost = total_cost + float(curr_row[-1])
-            total_spills = total_spills+1
 
-    return {
-        "total_spills": total_spills,
-        "total_cost": total_cost
-    }
+def lookup_by_county(county, state):
+    """Returns total spill stats for a county
 
-  
+    Args:
+        county (str): name of county
+        state (str): name of state
+
+    Returns:
+        dict: contains summary info from get_totals()
+    """
+    selected_rows = select_matching_rows([("Accident County", county), ("Accident State", state)])
+    return get_totals(selected_rows)
+
+def lookup_by_state(state):
+    """Returns total spill stats for a state
+
+    Args:
+        state (str): name of state
+
+    Returns:
+        dict: contains summary info from get_totals()
+    """
+    selected_rows = select_matching_rows([("Accident State", state)])
+    return get_totals(selected_rows)
+
+
 def print_help_statement():
     """ 
     Print the help and usage statement to the command line. 
