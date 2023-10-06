@@ -44,24 +44,22 @@ class TestGetSummaryStats(unittest.TestCase):
         self.assertRaises(IndexError, get_totals, [[1,2,3,4]])
 
 class TestGetNumericValue(unittest.TestCase):
-    headers = ['Column 1', 'Column 2', 'Column 3']
-    row = ['1', '2.5', '3']
+    row = sample_data[1]
 
     def test_get_values(self):
         """ Make sure correct row value gets returned from this helper function. """
-        self.assertEqual(get_numeric_value(self.headers, self.row, 'Column 1'), 1.0) 
-        self.assertEqual(get_numeric_value(self.headers, self.row, 'Column 2'), 2.5) 
-        self.assertEqual(get_numeric_value(self.headers, self.row, 'Column 3'), 3.0) 
+        self.assertEqual(get_numeric_value(self.row, 'Report Number'), 20100016) 
+        self.assertEqual(get_numeric_value(self.row, 'Accident Year'), 2010) 
+        self.assertEqual(get_numeric_value(self.row, 'Operator ID'), 32109) 
     
     def test_out_of_bounds(self):
         """Edge case: testing out of bounds indexing"""
-        self.assertRaises(ValueError, get_numeric_value, self.headers, self.row, "fake column")
+        self.assertRaises(ValueError, get_numeric_value, self.row, "fake column")
 
     def test_empty_arrays(self):
-        """ Edge case: testing empty row, header and column name values. """
-        self.assertRaises(ValueError, get_numeric_value, [], self.row, "fake column")
-        self.assertRaises(ValueError, get_numeric_value, self.headers, [], "fake column")
-        self.assertRaises(ValueError, get_numeric_value, [], [], "fake column")
+        """ Edge case: testing empty row and column name values. """
+        self.assertRaises(ValueError, get_numeric_value, [], "fake column")
+        self.assertRaises(ValueError, get_numeric_value, [], "")
 
 class TestLookupByCity(unittest.TestCase):
     def test_output(self):

@@ -23,6 +23,23 @@ load_data()
 def get_index_of(column_name):
     return headers.index(column_name)
 
+def get_numeric_value(row, column_name):
+    """Given a list of headers, a row of data, and a column name, returns the value in the specified column as a float.
+    Author: Henry Burkhardt
+
+    Args:
+        headers (list): list of strings indicating column names 
+        row (list): a single row from the dataset
+        column_name (str): name of column to extract data from
+
+    Returns:
+        float: numeric value to extract
+    """    
+    
+    index = get_index_of(column_name)
+    return float(row[index])
+
+
 def select_matching_rows(criteria):
     """Subset rows from database based with string matching
     Author: Henry Burkhardt
@@ -42,6 +59,7 @@ def select_matching_rows(criteria):
         if all(matches):
             selected_rows.append(row)
     return selected_rows
+
 
 def lookup_company(company):
     """Return a dictionary with summary statistics about all accidents involving the given company.
@@ -75,9 +93,9 @@ def get_totals(rows):
         totalCosts = 0
 
         for accident in rows:
-            totalUnintentionalRelease += get_numeric_value(headers, accident, "Unintentional Release (Barrels)")
-            totalNetLoss += get_numeric_value(headers, accident, "Net Loss (Barrels)")
-            totalCosts += get_numeric_value(headers, accident, "All Costs")
+            totalUnintentionalRelease += get_numeric_value(accident, "Unintentional Release (Barrels)")
+            totalNetLoss += get_numeric_value(accident, "Net Loss (Barrels)")
+            totalCosts += get_numeric_value(accident, "All Costs")
         
         return {'accidentCount': accidentCount, 
                 'totalUnintentionalRelease':totalUnintentionalRelease, 
@@ -86,21 +104,6 @@ def get_totals(rows):
                 } 
     return None
 
-def get_numeric_value(headers, row, column_name):
-    """Given a list of headers, a row of data, and a column name, returns the value in the specified column as a float.
-    Author: Henry Burkhardt
-
-    Args:
-        headers (list): list of strings indicating column names 
-        row (list): a single row from the dataset
-        column_name (str): name of column to extract data from
-
-    Returns:
-        float: numeric value to extract
-    """    
-    
-    index = headers.index(column_name)
-    return float(row[index])
       
 def lookup_by_location(city, county, state): 
     """
