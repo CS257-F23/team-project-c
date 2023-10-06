@@ -152,6 +152,9 @@ def lookup_by_city(city, county, state):
     Given a city, a county and a state this methods returns the number of spills in that city and their total monetary cost
     if the city entered is located in the state or the county specified.  
     """
+    selected_rows = select_matching_rows([("Accident City", city), ("Accident State", state)])
+    return get_totals(select_matching_rows)
+
     total_spills = 0
     total_cost = 0
     for row_index in range (1, len(data)):
