@@ -157,6 +157,7 @@ def lookup_by_county(county, state):
     Returns:
         dict: contains summary info from get_totals()
     """
+    
     selected_rows = select_matching_rows([("Accident County", county), ("Accident State", state)])
     return get_totals(selected_rows)
 
