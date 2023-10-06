@@ -62,149 +62,83 @@ class TestGetNumericValue(unittest.TestCase):
         self.assertRaises(ValueError, get_numeric_value, [], "")
 
 class TestLookupByCity(unittest.TestCase):
+    """Author: Paul & Henry"""
     def test_output(self):
-        """ Test whether lookup_by_city returns the right output. """
-        self.assertEqual(lookup_by_city("FLOODWOOD", "ST. LOUIS", "MN"), {
-            "total_spills": 1,
-            "total_cost": 31000.0
-        })
+        """lookup_by_city(): Test whether lookup_by_city returns the right output."""
+        self.assertEqual(lookup_by_city("FLOODWOOD", "MN"), {
+            'accidentCount': 1, 
+            'totalUnintentionalRelease': 0.36, 
+            'totalNetLoss': 0.0, 
+            'totalCosts': 31000.0
+            })
 
-    def test_invalid_county(self):
-        """ Test for when we enter the invalid county in test_by_city. """
-        self.assertEqual(lookup_by_city ("FLOODWOOD", "Random", "MN"), {
-            "total_spills": 1,
-            "total_cost": 31000.0
-        })
+    def test_invalid_city(self):
+        """lookup_by_city(): Test for when we enter invalid city in test_by_city."""
+        self.assertEqual(lookup_by_city ("random", "MN"), None)
 
     def test_invalid_state(self):
-        """ Test for when we enter the invalid state. """
-        self.assertEqual(lookup_by_city ("FLOODWOOD", "ST. LOUIS", "Random"), {
-            "total_spills": 1,
-            "total_cost": 31000.0
-        })
-    
-    def test_invalid_state_and_county(self):
-        """ Tests for invalid county and state arguments. """
-        self.assertEqual(lookup_by_city ("FLOODWOOD", "RAndom", "random"), {
-            "total_spills": 0,
-            "total_cost": 0
-        })
-    
-    def test_invalid_city(self):
-        """ Test for a invalid city argument. """
-
-        self.assertEqual(lookup_by_city ("FLOODSSS", "ST. LOUIS", "MN"), {
-            "total_spills": 0,
-            "total_cost": 0
-        })
-
-    def test_invalid_city_and_county(self):
-        """ Test for invalid city and invalidd county arguments. """
-        self.assertEqual(lookup_by_city ("FLOODSS", "Randoom", "MN"), {
-            "total_spills": 0,
-            "total_cost": 0
-        })
+        """lookup_by_city(): Test for when we enter the invalid state."""
+        self.assertEqual(lookup_by_city ("FLOODWOOD", "Random"), None)
 
     def test_invalid_city_and_state(self):
-        """ Tests for invalid city and state arguments. """
-        self.assertEqual(lookup_by_city ("Random", "ST. LOUIS", "RANDOMMM"), {
-            "total_spills": 0,
-            "total_cost": 0
-        })
-
-    def test_invalid_arguments(self):
-        """ Test when all the arguement inputs are invalid. """
-        self.assertEqual(lookup_by_city ("FRandomD", "ST. random LOUIS", " random MN"), {
-            "total_spills": 0,
-            "total_cost": 0
-        })
+        """lookup_by_city(): Tests for invalid city and state arguments."""
+        self.assertEqual(lookup_by_city ("fake city", "fake state"), None)
 
 
-class TestLookupByStateOrCounty(unittest.TestCase):
+class TestLookupByCounty(unittest.TestCase):
+    """Author: Paul & Henry"""
     def test_output(self):
-        """ Test whether lookup_by_state_or_county return the right output. """
-        self.assertEqual(lookup_state_or_county("WV", 14), {
-            'total_spills': 2, 
-            'total_cost': 11827941.0
-        })
-        
-        self.assertEqual(lookup_state_or_county("ST. LOUIS", 13), {
-            'total_spills': 3, 
-            'total_cost': 31275.0
-        })
+        """lookup_by_county(): Test that it returns the right output for Rice county."""
+        self.assertEqual(lookup_by_county("Rice", "MN"), {
+            'accidentCount': 1, 
+            'totalUnintentionalRelease': 0.12, 
+            'totalNetLoss': 0.0, 
+            'totalCosts': 5025.0
+                })
 
-    def test_invalid_county_or_state(self):
-        """ Test for invalid state input. """
-        self.assertEqual(lookup_state_or_county("Randommm", 13), {
-            'total_spills': 0, 
-            'total_cost': 0
-        })
-        
-        self.assertEqual(lookup_state_or_county("Randommm", 14), {
-            'total_spills': 0, 
-            'total_cost': 0
-        })
+    def test_invalid_county(self):
+        """lookup_by_county(): Test for when we enter invalid county"""
+        self.assertEqual(lookup_by_city ("not a county", "MN"), None)
 
-    def test_index_out_of_range(self):
-        """ Test for index out of range. """
-        self.assertRaises(IndexError, lookup_state_or_county, "WV", 48)
+    def test_invalid_state(self):
+        """lookup_by_county(): Test for when we enter the invalid state."""
+        self.assertEqual(lookup_by_city ("Rice", "not a state"), None)
 
-    def test_wrong_column_index(self):
-        """ Test when there is a wrong column index input. """
-        self.assertEqual(lookup_state_or_county("WV", 8), {
-                'total_spills': 0, 
-                'total_cost': 0
-        })
+    def test_invalid_county_and_state(self):
+        """lookup_by_county(): Tests for invalid county and state arguments."""
+        self.assertEqual(lookup_by_city ("fake county", "fake state"), None)
+
         
 class TestLookupByLocation(unittest.TestCase):
+    """Author: Paul & Henry"""
     def test_output(self):
-        """ Test if lookup_by_location return the right output. """
+        """lookup_by_location(): Test that it returns the right output. """
         self.assertEqual(lookup_by_location ("FLOODWOOD", "ST. LOUIS", "MN"), {
-            "total_spills": 1,
-            "total_cost": 31000.0
+            'accidentCount': 1, 
+            'totalUnintentionalRelease': 0.36, 
+            'totalNetLoss': 0.0, 
+            'totalCosts': 31000.0
         })
 
     def test_invalid_state(self):
-        """ Tests for invalid state argument. """        
-        self.assertEqual(lookup_by_location ("FLOODWOOD", "ST. LOUIS", "Random"), {
-            "total_spills": 1,
-            "total_cost": 31000.0
-        })
+        """lookup_by_location(): Tests for invalid state argument. """        
+        self.assertEqual(lookup_by_location ("FLOODWOOD", "ST. LOUIS", "Random"), None)
 
     def test_invalid_county(self):
-        """ Tests for invalid county argument. """
-        self.assertEqual(lookup_by_location ("FLOODWOOD", "Randomman", "MN"), {
-            "total_spills": 1,
-            "total_cost": 31000.0
-        })
-
-    def test_invalid_state_and_county(self):
-        """ Tests for invalid state and county argument. """
-        self.assertEqual(lookup_by_city ("FLOODWOOD", "Randomman", "Random"), {
-            "total_spills": 0,
-            "total_cost": 0
-        })
+        """lookup_by_location(): Tests for invalid county argument. """        
+        self.assertEqual(lookup_by_location (None, "fake county", "MN"), None)
 
     def test_invalid_city(self):
-        """ Tests for invalid city argument. """
-        self.assertEqual(lookup_by_city ("Random", "ST. LOUIS", "MN"), {
-            "total_spills": 0,
-            "total_cost": 0
-        })
+        """lookup_by_location(): Tests for invalid city argument. """        
+        self.assertEqual(lookup_by_location ("fake city", "ST. LOUIS", "MN"), None)
 
-    def test_invalid_city_and_county(self):
-        """ Tests for invalid city and county argument. """
-        self.assertEqual(lookup_by_city ("FLOdsfs", "Random", "MN"), {
-            "total_spills": 0,
-            "total_cost": 0
-        })
+    def test_no_state(self):
+        """lookup_by_location(): Test error is thrown when no state is passed. """
+        self.assertRaises(ValueError, lookup_by_location, "Floodwood", "St. Louis", None)
 
-    def test_invalid_city_county_and_state(self):
-        """ Tests for invalid city, county and state argument. """
-        self.assertEqual(lookup_by_location("Random", "RANDOOM", "RANDOMMM"), {  
-            "total_spills": 0,
-            "total_cost": 0
-        })
+    def test_not_enough_info(self):
+        self.assertRaises(ValueError, lookup_by_location, None, None, None)
+
         
 class TestCL(unittest.TestCase):
     """ Author: James Commons """
