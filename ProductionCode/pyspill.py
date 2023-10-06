@@ -18,6 +18,30 @@ def load_data():
 
     global headers
     headers = data[0]
+load_data()
+
+def get_index_of(column_name):
+    return headers.index(column_name)
+
+def select_matching_rows(criteria):
+    """Subset rows from database based with string matching
+    Author: Henry Burkhardt
+
+    Pass an array of doubles (in the format below) to extract data from dataset by string matching columns.
+
+    Args: 
+        criteria (list of double): [(<column_name>, <string_to_match>), ...]
+       
+    """
+    selected_rows = []
+    for row in data:
+        for rule in criteria:
+            matches = []
+            columnIndex = get_index_of(rule[0])
+            matches.append(row[columnIndex].upper().strip() == rule[1].upper().strip())
+        if all(matches):
+            selected_rows.append(row)
+    return selected_rows
 
 def lookup_company(company):
     """Return a dictionary with summary statistics about all accidents involving the given company.
@@ -30,12 +54,11 @@ def lookup_company(company):
         dict: dictionary of summary data on company, from get_summary_stats()
     """    
      
-    indexOfOperatorName = headers.index("Operator Name")
-    relevant_rows = [accident for accident in data if accident[indexOfOperatorName].lower() == company.lower()]
-    return get_summary_stats(relevant_rows)
+    relevant_rows = select_matching_rows([("Operator Name", company)])
+    return get_totals(relevant_rows)
 
-def get_summary_stats(rows):
-    """Calculate summary statistics for a list of oil spill accidents.
+def get_totals(rows):
+    """Calculate summary statistics for a list of oil spill accidents by summing columns.
     Author: Henry Burkhardt
 
     Args:

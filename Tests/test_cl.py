@@ -33,7 +33,7 @@ class TestGetSummaryStats(unittest.TestCase):
 
     def test_summary_stat_computation(self):
         """ Test that summary stats are computed as expected. """
-        result = get_summary_stats(sample_data[1:])
+        result = get_totals(sample_data[1:])
         self.assertEqual(result['accidentCount'], 2)
         self.assertEqual(result['totalUnintentionalRelease'], 21.12)
         self.assertEqual(result['totalNetLoss'], 21.0)
@@ -41,7 +41,7 @@ class TestGetSummaryStats(unittest.TestCase):
 
     def test_mismatched_lengths(self):
         """ Edge Case: test that arrays that aren't the right size throws IndexError. """
-        self.assertRaises(IndexError, get_summary_stats, [[1,2,3,4]])
+        self.assertRaises(IndexError, get_totals, [[1,2,3,4]])
 
 class TestGetNumericValue(unittest.TestCase):
     headers = ['Column 1', 'Column 2', 'Column 3']
