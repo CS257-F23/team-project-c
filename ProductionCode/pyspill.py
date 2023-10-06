@@ -104,6 +104,8 @@ def lookup_state_or_county (locat_typ, col_ind):
         "total_cost": total_cost
     }
 
+# TODO: when all three parameters are specified, should not look up by county OR state.
+# instead, look up by county AND state
 def lookup_by_city(city, county, state):
     """
     Given a city, a county and a state this methods returns the number of spills in that city and their total monetary cost
