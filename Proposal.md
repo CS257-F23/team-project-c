@@ -16,8 +16,9 @@ We are using a dataset of oil pipeline spills across the US. The dataset include
 ### Possible Features: 
 
 - Look up statistics by company, sort by whatever column specified (state, cost, amount spilled)
-- Look up whether there has been a spill in a particular county/state,
+- Look up whether there has been a spill in a particular county/state
 - Grade company on how bad they are
+- List all companies in the data set for ease of use
 
 ### Team Contract:
 
@@ -52,10 +53,10 @@ What are the rules that will guide your team?
 - _What technologies will you use to support team meetings and work?_ (Google Drive, Hangouts, Zoom, Facetime, etc) We will use Google Drive, Zoom, FaceTime, and maybe Hangouts for communication.
 - _How will you make decisions? (Unanimous, consensus, majority rule, by assigned roles, rock-paper-scissors, etc.)_ We will make group decisions by majority vote. However, when we are making decisions about specific work that one person has more experience in, that person’s opinion should be heavily considered.
 - _How will you divide the work?_ We will divide the work up by features.
-  - Henry: will work on the lookup_by_company() feature, designed to get summary stats about a company's oil spills
-  - Feradion: will work on loading the data into the command line app, and building the command line interface
-  - James: will also work on building the command line interface, calling the correct functions based on the user input
-  - Paul: will work on the lookup_by_location() feature, designed to retrieve all pipeline spill accidents for a given State, County or City.
+  - Henry: will work on the `lookup_by_company()` feature, designed to get summary stats about a company's oil spills.
+  - Feradion: will work on loading and interacting with the data into the app, and helping out with the `lookup_by_location()` feature.
+  - James: will work on listing options available to the user, and displaying data in a user friendly way.
+  - Paul: will work on the `lookup_by_location()` feature, designed to retrieve all pipeline spill accidents for a given State, County or City.
 - _How will you ensure that everybody participates meaningfully? How will you make sure that everyone’s contribution is valued?_ To ensure that everybody participates meaningfully, we all will contractually agree to do the work we have set out to do. We also will strive to get members on features or parts of the project that they are passionate about, so everyone feels engaged.
 - _What expectations do you have for satisfactory participation? (How much time will each group member spend per week on project activities?)_ Our group expectation is that all members complete the objectives assigned to them on time. If a member feels that their workload is too high, we expect them to communicate this to the rest of the group with ample time to re-divide.
 - _What process will you follow if someone does not live up to their responsibilities and/or meet the standards for work set by the team?_ If a teammate is not living up to their responsibilities, we will be able to point to the objectives this member has not completed, to show that there has been a pattern of neglect. At this point, we could remind the member to look at this contract, and if needed, we could bring this problem to the attention of our professor if we feel it is something that is going to be exceedingly challenging to resolve.
