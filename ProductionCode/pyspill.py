@@ -148,7 +148,8 @@ def lookup_by_location(city, county, state):
     
 
 def lookup_by_city(city, state):
-    """Returns total spill stats for a city
+    """
+    Returns total spill stats for a city.
 
     Args:
         city (str): name of city
@@ -162,7 +163,8 @@ def lookup_by_city(city, state):
 
 
 def lookup_by_county(county, state):
-    """Returns total spill stats for a county
+    """
+    Returns total spill stats for a county.
 
     Args:
         county (str): name of county
@@ -292,6 +294,10 @@ def print_location_by_state_list(locations: list):
     Args:
         locations (list): the list of locations.
     """
+    if len(locations) == 0:
+        print('This state has not had any oil spills.')
+        return
+
     print(f'List of all the oil spill locations in {locations[0][2]}:\n')
     for location in locations:
         city = None
