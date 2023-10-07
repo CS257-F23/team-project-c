@@ -1,12 +1,12 @@
-import json
-import csv
 import sys
+import csv
+from argparse import ArgumentParser
 
 data = []
 headers = []
 
 def load_data():
-    """ Read data from the CSV file and load it into global variables data and headers. """
+    """ Read data from the CSV file and load it into the data and headers global variables. """
     rows = []
     with open('Data/OilPipelineAccidents.csv', 'r') as file:
         reader = csv.reader(file)
@@ -24,7 +24,6 @@ def lookup_company(company):
     Return a dictionary with summary statistics about all accidents involving the given company.
     Author: Henry
     """
-     
     indexOfOperatorName = headers.index("Operator Name")
     relevant_rows = [accident for accident in data if accident[indexOfOperatorName].lower() == company.lower()]
     return get_summary_stats(relevant_rows)
@@ -34,7 +33,6 @@ def get_summary_stats(rows):
     Calculate summary statistics for a list of oil spill accidents.
     Author: Henry
     """
-
     accidentCount = len(rows)
     if accidentCount > 0:
         totalUnintentionalRelease = 0 
@@ -57,8 +55,7 @@ def get_numeric_value(headers, row, column_name):
     """
     Given a list of headers, a row of data, and a column name, returns the value in the specified column as a float.
     Author: Henry
-    """
-    
+    """   
     index = headers.index(column_name)
     return float(row[index])
       
@@ -68,8 +65,7 @@ def lookup_by_location(city, county, state):
     Given a city, county and/or state return the number of spills that happened in that city (county/state)
     as well as their monetary value. If there is not city, we return the number of spills in the state, 
     as well as their monetary value and if there neither the city nor a state, we return the number 
-    of spills in the county as well as their monetary value. 
-    
+    of spills in the county as well as their monetary value.     
     """
     if city:
         city = city.upper()
@@ -150,15 +146,13 @@ def print_lookup_data(data):
     Print the data. For now just simply prints the data object. 
     Author: James Commons
     """
-
     print(data)
 
 def parse_lookup_command(options):
     """ 
     Given options, determine which lookup function to call and pass it require arguments. 
     Author: James Commons
-    """
-    
+    """ 
     parameters = options[0::2]
     arguments = options[1::2]
     location_options = {
@@ -205,7 +199,6 @@ def parse_argv(argv):
     Takes in the argv list as an argument and calls appropriate function based on command. 
     Author: James Commons
     """
-
     if len(argv) == 1:
         print_help_statement()
     elif argv[1] == 'help':
@@ -220,9 +213,131 @@ def parse_argv(argv):
     else:
         print_help_statement()
 
+def get_main_parser() -> ArgumentParser:
+    """ 
+    Setup and return the main parser object, which is responsible for parsing the entire command. 
+
+    Returns: 
+        ArgumentParser: the parser object.
+    """
+    return ArgumentParser( 
+                description='PySpill is an application to look up statistics about ' 
+                            'oil pipeline accidents in the United States. Use this '
+                            'program to lookup information by company or location, '
+                            'and checkout our leaderboard feature, where we call out '
+                            'the worst offenders.',
+                epilog='Authors: Henry Burkhardt, Paul Claudel Izabayo, '
+                        'Feraidon Abdul Rahimzai, James Commons'
+            )
+
+def get_leaders_subparser(subparsers: ArgumentParser) -> ArgumentParser:
+    """ 
+    Add the leaders subparser to the subparsers object.
+
+    Args:
+        subparsers (ArgumentParser): the subparser object attatched to the main parser.
+
+    Returns:
+        ArgumentParser: the modified subparser object.
+    """
+    parser_leaders = subparsers.add_parser('leaders', 
+            help='list the top 10 worst polluters by state OR company')
+    
+    # Allow user to list top ten in a certain category
+    mutex_group_leaders_by = parser_leaders.add_mutually_exclusive_group(required=True)
+    mutex_group_leaders_by.add_argument('-n', '--number', action='store_true',
+            help='list the top 10 polluters by total number of spills')
+    mutex_group_leaders_by.add_argument('-a', '--amount', action='store_true',
+            help='list the top 10 polluters by total volume of oil released')
+    mutex_group_leaders_by.add_argument('-p', '--price', action='store_true',
+            help='list the top 10 polluters by total cost of pipeline accidents')
+    
+    # Do not allow user to list both locations and companies
+    mutex_group_leaders_type = parser_leaders.add_mutually_exclusive_group(required=True)
+    mutex_group_leaders_type.add_argument('-c', '--company', action='store_true',
+            help='list the top 10 companies')
+    mutex_group_leaders_type.add_argument('-s', '--state', action='store_true',
+            help='list the top 10 states')
+    
+    return subparsers
+
+def get_list_subparser(subparsers: ArgumentParser) -> ArgumentParser:
+    """
+    Add the list subparser to the subparsers object.
+
+    Args:
+        subparsers (ArgumentParser): the subparser object attatched to the main parser.
+
+    Returns:
+        ArgumentParser: the modified subparser object.
+    """
+    parser_list = subparsers.add_parser('list',
+            help='list information about the data set')
+    
+    # Do not allow user to list both a location and company
+    mutex_group = parser_list.add_mutually_exclusive_group(required=True)
+    mutex_group.add_argument('-c', '--company', action='store_true', 
+            help='list all companies in the dataset')
+    mutex_group.add_argument('-l', '--location', action='store_true',
+            help='list all locations in the dataset')
+    mutex_group.add_argument('-s', '--state', 
+            help='list all cities, counties, and companies in a given state. ' 
+                 'Must be a two letter abbreviation (i.e. CO)')
+    
+    return subparsers
+
+def get_lookup_subparser(subparsers: ArgumentParser) -> ArgumentParser:
+    """ 
+    Add the lookup subparser to the subparsers object.
+
+    Args:
+        subparsers (ArgumentParser): the subparser object attatched to the main parser.
+
+    Returns:
+        ArgumentParser: the modified subparser object.
+    """
+    parser_lookup = subparsers.add_parser('lookup', 
+            help='look up information about pipeline accidents by location OR company')
+    
+    # Do not allow user to lookup by both location and company
+    mutex_group = parser_lookup.add_mutually_exclusive_group(required=True)
+    mutex_group.add_argument('-c', '--company', help='specifies the company to lookup by')
+    mutex_group.add_argument('-l', '--location', action='store_true', 
+            help='flag indicating you want to look up by location')
+    location_args_group = parser_lookup.add_argument_group(title='available location options')
+    location_args_group.add_argument('--city')
+    location_args_group.add_argument('--county')
+    location_args_group.add_argument('--state', help='must be a two letter abbreviation (i.e. CO)')
+
+    return subparsers
+
+def setup_subparsers(main_parser: ArgumentParser) -> ArgumentParser:
+    """ 
+    Add subparsers for each subcommand in PySpill (i.e. lookup, help, list, etc.).
+
+    Args:
+        main_parser (ArgumentParser): the object responsible for handling the entire command.
+
+    Returns: 
+        ArgumentParser: the modified parser with subcommands added.
+    """
+    subparsers = main_parser.add_subparsers(title='available subcommands')
+    subparsers.add_parser('help', help='print the help message and exit')
+    subparsers = get_lookup_subparser(subparsers)
+    subparsers = get_list_subparser(subparsers)
+    subparsers = get_leaders_subparser(subparsers)
+    
+    return main_parser
+
 def main():
     load_data()
-    parse_argv(sys.argv)
+    parser = setup_subparsers(get_main_parser())
+
+    if len(sys.argv) == 1: # User did not provide any command line arguments
+        parser.print_usage()
+        return
+    
+    args = parser.parse_args()
 
 if __name__ == '__main__':
     main()

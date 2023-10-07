@@ -3,7 +3,7 @@
 ### Getting Started: ###
 To get started using PySpill, run this command: 
 
-`python3 ProductionCode/pyspill.py lookup --state TX`
+`python3 ProductionCode/pyspill.py lookup -l --state TX`
 
 This will tell you how many pipline accidents have occured in the state
 of Texas and the total cost of these accidents.
