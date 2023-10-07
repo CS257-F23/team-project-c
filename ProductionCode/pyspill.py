@@ -23,9 +23,9 @@ def load_data():
 def get_index_of(column_name):
     return headers.index(column_name)
 
-
 def get_numeric_value(row, column_name):
-    """Given a list of headers, a row of data, and a column name, returns the value in the specified column as a float.
+    """
+    Given a list of headers, a row of data, and a column name, returns the value in the specified column as a float.
     Author: Henry Burkhardt
 
     Args:
@@ -42,7 +42,8 @@ def get_numeric_value(row, column_name):
 
 
 def select_matching_rows(rules):
-    """Subset rows from database based with string matching
+    """
+    Subset rows from database based with string matching
     Author: Henry Burkhardt
 
     Pass an array of doubles (in the format below) to extract data from dataset by string matching columns.
@@ -94,17 +95,17 @@ def get_totals(rows):
 
 def print_totals(totals: any):
     """ 
-    Prints the totals object from get_totals() in a user friendly way. 
+    Prints the totals dictionary from get_totals() in a user friendly way. 
     
     Args:
-        totals (any): the totals object to print to the terminal.
+        totals (any): the totals dictionary to print to the terminal.
     """
     if not totals:
         print('No spills associated with lookup query')
         return
     
     print(f'Total accidents: {totals["accidentCount"]:,}')
-    print(f'Total volume of oil released in barrels: {totals["totalNetLoss"]:,.2f}')
+    print(f'Total volume of oil released (barrels): {totals["totalNetLoss"]:,.2f}')
     print(f'Total cost: ${int(totals["totalCosts"]):,}')
 
 def lookup_company(company):
@@ -118,7 +119,6 @@ def lookup_company(company):
     Returns:
         dict: dictionary of summary data on company, from get_summary_stats()
     """    
-     
     relevant_rows = select_matching_rows([("Operator Name", company)])
     return get_totals(relevant_rows)
 
@@ -228,7 +228,7 @@ def get_main_parser() -> ArgumentParser:
                         'Feraidon Abdul Rahimzai, James Commons'
             )
 
-def get_leaders_subparser(subparsers: ArgumentParser) -> ArgumentParser:
+def add_leaders_subparser(subparsers: ArgumentParser) -> ArgumentParser:
     """ 
     Add the leaders subparser to the subparsers object.
 
@@ -259,7 +259,7 @@ def get_leaders_subparser(subparsers: ArgumentParser) -> ArgumentParser:
     
     return subparsers
 
-def get_list_subparser(subparsers: ArgumentParser) -> ArgumentParser:
+def add_list_subparser(subparsers: ArgumentParser) -> ArgumentParser:
     """
     Add the list subparser to the subparsers object.
 
@@ -284,7 +284,7 @@ def get_list_subparser(subparsers: ArgumentParser) -> ArgumentParser:
     
     return subparsers
 
-def get_lookup_subparser(subparsers: ArgumentParser) -> ArgumentParser:
+def add_lookup_subparser(subparsers: ArgumentParser) -> ArgumentParser:
     """ 
     Add the lookup subparser to the subparsers object.
 
@@ -322,9 +322,9 @@ def setup_subparsers(main_parser: ArgumentParser) -> ArgumentParser:
     """
     subparsers = main_parser.add_subparsers(title='available subcommands', dest='command')
     subparsers.add_parser('help', help='print the help message and exit')
-    subparsers = get_lookup_subparser(subparsers)
-    subparsers = get_list_subparser(subparsers)
-    subparsers = get_leaders_subparser(subparsers)
+    subparsers = add_lookup_subparser(subparsers)
+    subparsers = add_list_subparser(subparsers)
+    subparsers = add_leaders_subparser(subparsers)
     
     return main_parser
 
