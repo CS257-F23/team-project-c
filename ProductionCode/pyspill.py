@@ -92,6 +92,21 @@ def get_totals(rows):
                 } 
     return None
 
+def print_totals(totals: any):
+    """ 
+    Prints the totals object from get_totals() in a user friendly way. 
+    
+    Args:
+        totals (any): the totals object to print to the terminal.
+    """
+    if not totals:
+        print('No spills associated with lookup query')
+        return
+    
+    print(f'Total accidents: {totals["accidentCount"]:,}')
+    print(f'Total volume of oil released in barrels: {totals["totalNetLoss"]:,.2f}')
+    print(f'Total cost: ${int(totals["totalCosts"]):,}')
+
 def lookup_company(company):
     """
     Return a dictionary with summary statistics about all accidents involving the given company.
@@ -119,7 +134,7 @@ def lookup_by_location(city, county, state):
         state (str): name of state
     """
 
-    # ensure state argument was passed
+    # Ensure state argument was passed
     if state is None: 
         raise ValueError("State argument is required for all location queries.") 
 
@@ -165,7 +180,8 @@ def lookup_by_county(county, state):
 
 
 def lookup_by_state(state):
-    """Returns total spill stats for a state
+    """
+    Returns total spill stats for a state
 
     Args:
         state (str): name of state
@@ -176,98 +192,24 @@ def lookup_by_state(state):
     selected_rows = select_matching_rows([("Accident State", state)])
     return get_totals(selected_rows)
 
-
-def print_help_statement():
-    """ 
-    Print the help and usage statement to the command line. 
-    Author: James Commons
+def lookup(args: any) -> any:
     """
+    Determine which lookup function should be called and call it.
 
-    print('Usage: python3 pyspill.py <command> [options]\n\n'\
-          'Commands:\n\n'\
-          'lookup                          Look up information about pipeline accidents by location or company.\n'\
-          '  Options:\n'
-          '    To look up by company:\n'
-          '    -c --company                Specify the company.\n\n'
-          '    To look up by location:\n'
-          '    --city, --county, --state   Specify the location.\n'
-          '                                If the city is specified, a county or state must also be specified.\n'
-          '                                If no city is specified, all spills in the county are shown.\n'
-          '                                If no county or city is specified, all spills in the state are shown.\n'
-          '                                If state is specified, it must be the two letter abbreviation (i.e. CO).\n\n'
-          'help                            Print this message.\n')
-    
-def print_lookup_data(data):
-    """ 
-    Print the data. For now just simply prints the data object. 
-    Author: James Commons
+    Args:
+        args (any): arguments retrieved from parse_args().
+
+    Returns:
+        any: the totals object returned by lookup_by_location() or lookup_company().
     """
-    print(data)
-
-def parse_lookup_command(options):
-    """ 
-    Given options, determine which lookup function to call and pass it require arguments. 
-    Author: James Commons
-    """ 
-    parameters = options[0::2]
-    arguments = options[1::2]
-    location_options = {
-        'city': None,
-        'county': None,
-        'state': None
-    }
-    company = None
-    
-    for i, param in enumerate(parameters):
-        if param == '--city':
-            location_options['city'] = arguments[i]
-        elif param == '--county':
-            location_options['county'] = arguments[i]
-        elif param == '--state':
-            location_options['state'] = arguments[i]
-        elif param == '--company' or '-c':
-            company = arguments[i]
-        else:
-            print_help_statement()
-            return
-
-    location_args = list(location_options.values())
-    location_options_is_empty = location_args.count(None) == len(location_args)
-
-    if company != None and not location_options_is_empty:
-        print('You can only lookup by location or company, not both at the same time.')
-        return
-    
-    if company != None:
-        print_lookup_data(lookup_company(company))
-    
-    if not location_options_is_empty:
-        print_lookup_data(
-            lookup_by_location(
-                location_options['city'], 
-                location_options['county'], 
-                location_options['state']
-            )
-        )
-        
-def parse_argv(argv):
-    """ 
-    Takes in the argv list as an argument and calls appropriate function based on command. 
-    Author: James Commons
-    """
-    if len(argv) == 1:
-        print_help_statement()
-    elif argv[1] == 'help':
-        print_help_statement()
-    elif argv[1] == 'lookup':
+    if args.location == True:
         try:
-            parse_lookup_command(argv[2:])
-        except IndexError as e:
-            print('Arguments after options must be in quotes if it contains whitespace.')
-            print(e) # Print error in case the issue had nothing to do with quotes
-            return
+            return lookup_by_location(args.city, args.county, args.state)
+        except ValueError as e:
+            print(e, file=sys.stderr)
+            sys.exit(1)
     else:
-        print_help_statement()
+        return lookup_company(args.company)
 
 def get_main_parser() -> ArgumentParser:
     """ 
@@ -360,6 +302,7 @@ def get_lookup_subparser(subparsers: ArgumentParser) -> ArgumentParser:
     mutex_group.add_argument('-c', '--company', help='specifies the company to lookup by')
     mutex_group.add_argument('-l', '--location', action='store_true', 
             help='flag indicating you want to look up by location')
+    
     location_args_group = parser_lookup.add_argument_group(title='available location options')
     location_args_group.add_argument('--city')
     location_args_group.add_argument('--county')
@@ -377,13 +320,32 @@ def setup_subparsers(main_parser: ArgumentParser) -> ArgumentParser:
     Returns: 
         ArgumentParser: the modified parser with subcommands added.
     """
-    subparsers = main_parser.add_subparsers(title='available subcommands')
+    subparsers = main_parser.add_subparsers(title='available subcommands', dest='command')
     subparsers.add_parser('help', help='print the help message and exit')
     subparsers = get_lookup_subparser(subparsers)
     subparsers = get_list_subparser(subparsers)
     subparsers = get_leaders_subparser(subparsers)
     
     return main_parser
+
+def execute_command(parser: ArgumentParser):
+    """ 
+    Executes the given command, i.e. {help, list, lookup, etc.}.
+
+    Args:
+        parser (ArguentParser): the main parser object.
+    """
+    args = parser.parse_args()
+    if args.command == 'help':
+        parser.print_help()
+    elif args.command == 'lookup':
+        print_totals(lookup(args))
+    elif args.command == 'list':
+        print('Feature currently under development.')
+    elif args.command == 'leaders':
+        print('Feature currently under development.')
+    else:
+        pass # We should never reach this point thanks to argparse
 
 def main():
     load_data()
@@ -393,7 +355,7 @@ def main():
         parser.print_usage()
         return
     
-    args = parser.parse_args()
+    execute_command(parser)
 
 if __name__ == '__main__':
     main()
