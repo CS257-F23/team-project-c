@@ -153,7 +153,7 @@ class TestCL(unittest.TestCase):
         out, err = code.communicate()
         code.terminate()
 
-        self.assertEqual(out[:6], "Usage:")
+        self.assertEqual(out[:6], "usage:")
 
     def test_help(self):
         """ Tests that help/usage statement is printed with the help command. """
@@ -162,7 +162,7 @@ class TestCL(unittest.TestCase):
         out, err = code.communicate()
         code.terminate()
 
-        self.assertEqual(out[:6], "Usage:")
+        self.assertEqual(out[:6], "usage:")
 
     def test_bad_command(self):
         """ Tests that help/usage printed if nonexistant command was given. """
@@ -171,7 +171,7 @@ class TestCL(unittest.TestCase):
         out, err = code.communicate()
         code.terminate()
 
-        self.assertEqual(out[:6], "Usage:")
+        self.assertEqual(out[:6], "usage:")
 
     def test_lookup_opt_c_upper(self):
         """ Test that lookup company works given option -c in command line. Upper case. """
@@ -195,7 +195,7 @@ class TestCL(unittest.TestCase):
         
     def test_lookup_company_and_location(self):
         """ Test that trying to lookup both company and location prints an error. """
-        code = subprocess.Popen(['python3', '-u', 'ProductionCode/pyspill.py', 'lookup', '-c', 
+        code = subprocess.Popen(['python3', '-u', 'ProductionCode/pyspill.py', 'lookup', '-l', '-c', 
                                  'exxonmobil pipeline co', '--state', 'tx'], 
                                 stdin=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf8')
         out, err = code.communicate()
@@ -205,7 +205,7 @@ class TestCL(unittest.TestCase):
         
     def test_lookup_location(self):
         """ Test that lookup location works when all three parameters specified. """
-        code = subprocess.Popen(['python3', '-u', 'ProductionCode/pyspill.py', 'lookup', '--city', 
+        code = subprocess.Popen(['python3', '-u', 'ProductionCode/pyspill.py', 'lookup', '-l', '--city', 
                                  'COVE', '--county', 'chambers', '--state', 'Tx'], 
                                 stdin=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf8')
         out, err = code.communicate()
@@ -215,7 +215,7 @@ class TestCL(unittest.TestCase):
     
     def test_lookup_location_by_state(self):
         """ Test lookup location by state prints all spills in a state. """
-        code = subprocess.Popen(['python3', '-u', 'ProductionCode/pyspill.py', 'lookup', '--state', 'MA'], 
+        code = subprocess.Popen(['python3', '-u', 'ProductionCode/pyspill.py', 'lookup', '-l', '--state', 'MA'], 
                                 stdin=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf8')
         out, err = code.communicate()
         code.terminate()
