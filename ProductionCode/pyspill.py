@@ -5,7 +5,6 @@ from argparse import ArgumentParser
 data = []
 headers = []
 
-
 def load_data():
     """ Read data from the CSV file and load it into the data and headers global variables. """
     rows = []
@@ -40,7 +39,6 @@ def get_numeric_value(row, column_name):
     index = get_index_of(column_name)
     return float(row[index])
 
-
 def select_matching_rows(rules):
     """
     Subset rows from database based with string matching
@@ -61,7 +59,6 @@ def select_matching_rows(rules):
         if all(matches):
             selected_rows.append(row)
     return selected_rows
-
 
 def get_totals(rows):
     """
@@ -211,6 +208,136 @@ def lookup(args: any) -> any:
     else:
         return lookup_company(args.company)
 
+def get_list_of_locations() -> list:
+    """
+    Returns a list of all locations in the dataset sorted by state.
+
+    Returns
+        list: list of locations.
+    """
+    start_index_row = get_index_of('Accident City')
+    locations_with_duplicates = [row[start_index_row: start_index_row + 3] for row in data[1:]]
+    locations = []
+    [locations.append(location) for location in locations_with_duplicates if location not in locations]
+    locations.sort(key=lambda location: location[2])
+
+    return locations
+
+def get_list_of_locations_by_state(state: str) -> list:
+    """
+    Returns a list of all locations in a state sorted by county.
+
+    Args:
+        state (str): the two letter abbreviation for the state.
+
+    Returns:
+        list: list of locations in the state.
+    """
+    all_locations = get_list_of_locations()
+    state = state.strip().upper()
+    locations_in_state = [location for location in all_locations if location[2].strip().upper() == state]
+    locations_in_state.sort(key=lambda location: location[1])
+
+    return locations_in_state
+
+
+def get_list_of_companies() -> list:
+    """ 
+    Returns a sorted list of all companies in the dataset. 
+    
+    Returns:
+        list: list of companies. 
+    """
+    companies_with_duplicates = [row[get_index_of('Operator Name')] for row in data[1:]]
+    companies = []
+    [companies.append(company) for company in companies_with_duplicates if company not in companies]
+    companies.sort()
+    return companies
+
+def print_company_list(companies: list):
+    """
+    Prints the list of companies to the terminal.
+
+    Args:
+        companies (list): the list of companies.
+    """
+    print('List of all the companies in the data set:\n')
+    for company in companies:
+        print(company)
+
+def print_location_list(locations: list):
+    """
+    Prints the list of locations to the terminal.
+
+    Args:
+        locations (list): the list of locations.
+    """
+    print('List of all the locations in the data set:\n')
+    for location in locations:
+        city = None
+        county = None
+        state = None
+        if location[0] != '':
+            city = location[0]
+        if location[1] != '':
+            county = location[1]
+        if location[2] != '':
+            state = location[2]
+        print(f'City: {city}, County: {county}, State: {state}')
+
+def print_location_by_state_list(locations: list):
+    """
+    Prints the list of locations in a state to the terminal.
+
+    Args:
+        locations (list): the list of locations.
+    """
+    print(f'List of all the oil spill locations in {locations[0][2]}:\n')
+    for location in locations:
+        city = None
+        county = None
+        if location[0] != '':
+            city = location[0]
+        if location[1] != '':
+            county = location[1]
+        print(f'City: {city}, County: {county}')
+
+def print_list(some_list: list, format: str):
+    """
+    Prints the given list based on the command the user inputted.
+    Format is the list option the user specified (i.e. company, location, state).
+
+    Args:
+        some_list (list): the list to be printed.
+        format (str): 'company', 'location', or 'state'
+    """
+    if format == 'company':
+        print_company_list(some_list)
+    elif format == 'location':
+        print_location_list(some_list)
+    elif format == 'state':
+        print_location_by_state_list(some_list)
+    else:
+        raise ValueError('format must be "company", "location", or "state"')
+
+def get_list(args: any) -> (list, str):
+    """ 
+    Determine which list function should be called and pass along its return value.
+
+    Args:
+        args (any): arguments retrieved from parse_args().
+
+    Returns:
+        (list, str): a list of companies or locations, type of list 
+                    (i.e. company, location, state)
+    """
+    if args.company:
+        return get_list_of_companies(), 'company'
+    elif args.location:
+        return get_list_of_locations(), 'location'
+    else:
+        return get_list_of_locations_by_state(args.state), 'state'
+
 def get_main_parser() -> ArgumentParser:
     """ 
     Setup and return the main parser object, which is responsible for parsing the entire command. 
@@ -279,7 +406,7 @@ def add_list_subparser(subparsers: ArgumentParser) -> ArgumentParser:
     mutex_group.add_argument('-l', '--location', action='store_true',
             help='list all locations in the dataset')
     mutex_group.add_argument('-s', '--state', 
-            help='list all cities, counties, and companies in a given state. ' 
+            help='list all locations in a given state. ' 
                  'Must be a two letter abbreviation (i.e. CO)')
     
     return subparsers
@@ -341,7 +468,8 @@ def execute_command(parser: ArgumentParser):
     elif args.command == 'lookup':
         print_totals(lookup(args))
     elif args.command == 'list':
-        print('Feature currently under development.')
+        list_and_type = get_list(args)
+        print_list(list_and_type[0], list_and_type[1])
     elif args.command == 'leaders':
         print('Feature currently under development.')
     else:
