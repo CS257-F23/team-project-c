@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Company results for {{ company_name }}</title>
+  </head>
+  <body>
+    <h1>Company results for {{ company_name }}</h1>
+    <ul>
+      <li>
+        Number of Accidents:
+        <strong>{{ data['accidentCount']}}</strong>
+      </li>
+      <li>
+        Unintentional Release of Oil (barrels):
+        <strong>{{ data['totalUnintentionalRelease'] }}</strong>
+      </li>
+      <li>
+        Total Net Loss of Oil (barrels):
+        <strong>{{ data['totalNetLoss'] }}</strong>
+      </li>
+      <li>
+        Total Cost from Spills: <strong>${{ data['totalCosts'] }}</strong>
+      </li>
+    </ul>
+  </body>
+</html>
