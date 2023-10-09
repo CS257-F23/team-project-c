@@ -16,7 +16,7 @@ def homepage():
 
 #FEATURE 1: [/lookup/company], lookup spill data about companies
 @app.route('/lookup/company/<input_name>', strict_slashes=False)
-def company(input_name):
+def company_page(input_name):
     """Show summary stats on a companies pipeline accidents
 
     Args:
@@ -33,7 +33,7 @@ def company(input_name):
 @app.route('/lookup/location/<state>/', strict_slashes=False)
 @app.route('/lookup/location/<state>/<county>', strict_slashes=False)
 @app.route('/lookup/location/<state>/<county>/<city>', strict_slashes=False)
-def location(state, county=None, city=None):
+def location_page(state, county=None, city=None):
     """Show summary stats on a pipeline accidents in a location. Lookup can be by state/county, state/city or state/city/county.
     Author: Henry
 
