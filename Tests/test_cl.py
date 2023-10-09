@@ -139,7 +139,7 @@ class TestLookupByLocation(unittest.TestCase):
     def test_not_enough_info(self):
         self.assertRaises(ValueError, lookup_by_location, None, None, None)
 
-        
+# TODO: write tests for list command and unit tests for associated functions
 class TestCL(unittest.TestCase):
     """ Author: James Commons """
 
@@ -167,11 +167,12 @@ class TestCL(unittest.TestCase):
     def test_bad_command(self):
         """ Tests that help/usage printed if nonexistant command was given. """
         code = subprocess.Popen(['python3', '-u', 'ProductionCode/pyspill.py', 'dne'], 
-                                stdin=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf8')
+                                stdin=subprocess.PIPE, stdout=subprocess.PIPE, 
+                                stderr=subprocess.PIPE, encoding='utf8')
         out, err = code.communicate()
         code.terminate()
 
-        self.assertEqual(out[:6], "usage:")
+        self.assertEqual(err[:6], "usage:")
 
     def test_lookup_opt_c_upper(self):
         """ Test that lookup company works given option -c in command line. Upper case. """
@@ -180,8 +181,9 @@ class TestCL(unittest.TestCase):
         out, err = code.communicate()
         code.terminate()
 
-        self.assertEqual(out, "{'accidentCount': 34, 'totalUnintentionalRelease': 4873.769999999997, " \
-                              "'totalNetLoss': 4776.61, 'totalCosts': 8697383.0}\n")
+        self.assertEqual(out, 'Total accidents: 34\n'
+                              'Total volume of oil released (barrels): 4,776.61\n'
+                              'Total cost: $8,697,383\n')
         
     def test_lookup_opt_company_lower(self):
         """ Test that lookup company works given option --company in command line. Lower case. """
@@ -189,19 +191,21 @@ class TestCL(unittest.TestCase):
                                 stdin=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf8')
         out, err = code.communicate()
         code.terminate()
-
-        self.assertEqual(out, "{'accidentCount': 49, 'totalUnintentionalRelease': 5926.939999999999, " \
-                              "'totalNetLoss': 3094.3799999999997, 'totalCosts': 149166535.0}\n")
+        
+        self.assertEqual(out, 'Total accidents: 49\n'
+                              'Total volume of oil released (barrels): 3,094.38\n'
+                              'Total cost: $149,166,535\n')
         
     def test_lookup_company_and_location(self):
         """ Test that trying to lookup both company and location prints an error. """
         code = subprocess.Popen(['python3', '-u', 'ProductionCode/pyspill.py', 'lookup', '-l', '-c', 
                                  'exxonmobil pipeline co', '--state', 'tx'], 
-                                stdin=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf8')
+                                stdin=subprocess.PIPE, stdout=subprocess.PIPE, 
+                                stderr=subprocess.PIPE, encoding='utf8')
         out, err = code.communicate()
         code.terminate()
 
-        self.assertEqual(out, 'You can only lookup by location or company, not both at the same time.\n')
+        self.assertEqual(err[:6], 'usage:')
         
     def test_lookup_location(self):
         """ Test that lookup location works when all three parameters specified. """
@@ -211,7 +215,9 @@ class TestCL(unittest.TestCase):
         out, err = code.communicate()
         code.terminate()
 
-        self.assertEqual(out, "{'total_spills': 1, 'total_cost': 501600.0}\n")
+        self.assertEqual(out, 'Total accidents: 1\n'
+                              'Total volume of oil released (barrels): 9.10\n'
+                              'Total cost: $501,600\n')
     
     def test_lookup_location_by_state(self):
         """ Test lookup location by state prints all spills in a state. """
@@ -220,7 +226,9 @@ class TestCL(unittest.TestCase):
         out, err = code.communicate()
         code.terminate()
 
-        self.assertEqual(out, "{'total_spills': 2, 'total_cost': 543943.0}\n")
+        self.assertEqual(out, 'Total accidents: 2\n'
+                              'Total volume of oil released (barrels): 0.00\n'
+                              'Total cost: $543,943\n')
 
 if __name__ == "__main__":
     unittest.main() 

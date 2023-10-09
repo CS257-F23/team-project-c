@@ -1,7 +1,5 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from ProductionCode.pyspill import * 
-
-
 
 app = Flask(__name__)
 
@@ -57,7 +55,15 @@ def location_page(state, county=None, city=None):
     _data = lookup_by_location(city, county, state)
     return render_template('lookupByLocation.html', location_name=_location_name, data=_data)
 
+@app.errorhandler(404)
+def page_not_found(error):
+    """
+    Display the 404 error page with user submitted URL.
 
+    Returns:
+        str: the html page for 404 error.
+    """
+    return render_template('pageNotFound.html', url=request.url)
 
 def empty_string_to_none(string):
     """Convert empty strings to None
@@ -95,8 +101,6 @@ def get_location_name(state, county, city):
         return city.title() + ", " + state.upper()
     return str(city.title() + ", " + county.title() + " County, " + state.upper())
 
-
-#TODO: put in 404 handling -James
 
 if __name__ == "__main__":
     app.run()
