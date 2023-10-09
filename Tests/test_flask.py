@@ -40,8 +40,46 @@ class Test_empty_string_to_none(unittest.TestCase):
     Author: Henry
     """
 
-class Test_get_location_name(unittest):
+    def test_return(self):
+        """empty_string_to_none(): test correct return for None, empty string, and non-empty string inputs"""
+        result = empty_string_to_none(" ")
+        self.assertTrue(result is None)
+
+        result = empty_string_to_none(None)
+        self.assertTrue(result is None)
+
+        result = empty_string_to_none("non empty")
+        self.assertEqual(result, "non empty")
+        
+        
+
+class Test_get_location_name(unittest.TestCase):
     """
     Tests for get_location_name()
     Author: Henry
     """
+    state, county, city = "MN", "Rice", "Faribault"
+
+    def test_return_full(self):
+        """get_location_name(): test correct return for full input"""
+        result = get_location_name(self.state, self.county, self.city)
+        self.assertEqual(result, "Faribault, Rice County, MN")
+
+
+    def test_return_state_city(self):
+        """get_location_name(): test correct return for state/city input"""
+        result = get_location_name(self.state, None, self.city)
+        self.assertEqual(result, "Faribault, MN")
+
+
+    def test_return_state_county(self):
+        """get_location_name(): test correct return for state/county input"""
+        result = get_location_name(self.state, self.county, None)
+        self.assertEqual(result, "Rice County, MN")
+
+
+    def test_return_state(self):
+        """get_location_name(): test correct return for state input"""
+        result = get_location_name(self.state, None, None)
+        self.assertEqual(result, "MN")
+        
