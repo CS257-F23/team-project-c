@@ -7,6 +7,7 @@ headers = []
 
 def load_data():
     """ Read data from the CSV file and load it into the data and headers global variables. """
+    
     rows = []
     with open('Data/OilPipelineAccidents.csv', 'r') as file:
         reader = csv.reader(file)

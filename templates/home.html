@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Obligatory meta tags -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Other neccessary tags -->
+    <!-- <meta name="description" content=""> TODO: add description -->
+    <meta name="robots" content="index,follow" />
+    <meta name="googlebot" content="index,follow" />
+    <meta name="google" content="notranslate" />
+    <title>Company results for {{ company_name }}</title>
+    <style>
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      .topnav {
+        background-color: #979797;
+        overflow: hidden;
+        /* text-align: center; */
+        /* padding-top: 10px;
+            padding-bottom: 10px; */
+      }
+      .topnav p {
+        font-size: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="topnav">
+      <p>PySpill</p>
+      <br />
+    </div>
+    <h3>
+      Welcome to PySpill, a web tool made for viewing pipeline spills across the
+      U.S.
+    </h3>
+    <p>We have two features:</p>
+    <ul>
+      <li>
+        <strong>Lookup by company:</strong> lookup data on pipeline spills from a company. Use the following url <code>/lookup/company/&lt;company_name&gt;</code> <br>
+       
+        (example 1): To look at the company CONOCOPHILLIPS, try <a href="/lookup/company/CONOCOPHILLIPS"><code>/lookup/company/CONOCOPHILLIPS</code></a> <br>
+       
+        (example 2): To look at the company LOOP INC, try <a href="/lookup/company/loop inc"><code>/lookup/company/loop%20inc</code></a> <br>
+      </li>
+      <br>
+
+      <li>
+        <strong>Lookup by locatio:</strong> lookup data on pipeline spill in a location. Use the following url <code>/lookup/location/&lt;state&gt;/&lt;county&gt;/&lt;city&gt;</code>. County and city are both optional inputs, just use a blank space in the URL to leave them blank<br>
+       
+        (example 1): To look at spills in the state of Texas, try <a href="/lookup/location/TX"><code>/lookup/company/TX</code></a> <br>
+        
+        (example 2): To look up spill in Orange County, CA try <a href="/lookup/location/CA/orange"><code>/lookup/location/MN/rice</code></a> <br>
+
+        (example 3): To look up spill in Faribault, MN try <a href="/lookup/location/MN/rice/Faribault"><code>/lookup/location/MN/rice/Faribault</code></a> or <a href="/lookup/location/MN/ /Faribault"><code>/lookup/location/MN/%20/Faribault</code></a> <br>
+      </li>
+    
+      </code>
+    </ul>
+  </body>
+</html>
