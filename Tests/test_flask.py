@@ -21,6 +21,11 @@ class Test_homepage(unittest.TestCase):
     Tests for homepage()
     Author:
     """
+    def test_returns_correct_html(self):
+        """homepage(): test that the route loads the expected page"""
+        appTest = app.test_client() # get the client side of the app
+        response = appTest.get("/").data # returns homepage
+        self.assertTrue(b"Welcome to PySpill" in bytes(response)) # check that an expected part of the page is in the page
 
 class Test_company_page(unittest.TestCase):
     """
