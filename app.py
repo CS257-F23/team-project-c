@@ -12,7 +12,7 @@ def homepage():
     Returns:
         str: Homepage text 
     """
-    return "welcome to PySpill"
+    return render_template("home.html")
 
 #FEATURE 1: [/lookup/company], lookup spill data about companies
 @app.route('/lookup/company/<input_name>', strict_slashes=False)

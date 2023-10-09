@@ -12,8 +12,28 @@
     <meta name="google" content="notranslate" />
 
     <title>Location results for</title>
+    <style>
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      .topnav {
+        background-color: #979797;
+        overflow: hidden;
+        /* text-align: center; */
+        /* padding-top: 10px;
+            padding-bottom: 10px; */
+      }
+      .topnav p {
+        font-size: 20px;
+      }
+    </style>
   </head>
   <body>
+    <div class="topnav">
+      <p>PySpill</p>
+      <a href="/">(go home)</a>
+    </div>
+
     <h1>Location results for {{ location_name }}</h1>
 
     {% if data is none %}
