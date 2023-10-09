@@ -96,6 +96,7 @@ def get_location_name(state, county, city):
     return str(city.title() + ", " + county.title() + " County, " + state.upper())
 
 
+#TODO: put in 404 handling -James
 
 if __name__ == "__main__":
     app.run()
