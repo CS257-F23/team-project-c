@@ -1,5 +1,5 @@
-import sys
 import csv
+import sys
 from argparse import ArgumentParser
 
 data = []
