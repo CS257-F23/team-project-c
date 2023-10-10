@@ -20,8 +20,10 @@ def load_data():
     global headers
     headers = data[0]
 
+
 def get_index_of(column_name):
     return headers.index(column_name)
+
 
 def get_numeric_value(row, column_name):
     """
@@ -39,6 +41,7 @@ def get_numeric_value(row, column_name):
     
     index = get_index_of(column_name)
     return float(row[index])
+
 
 def select_matching_rows(rules):
     """
@@ -60,6 +63,7 @@ def select_matching_rows(rules):
         if all(matches):
             selected_rows.append(row)
     return selected_rows
+
 
 def get_totals(rows):
     """
@@ -91,6 +95,7 @@ def get_totals(rows):
                 } 
     return None
 
+
 def print_totals(totals: any):
     """ 
     Prints the totals dictionary from get_totals() in a user friendly way. 
@@ -105,6 +110,7 @@ def print_totals(totals: any):
     print(f'Total accidents: {totals["accidentCount"]:,}')
     print(f'Total volume of oil released (barrels): {totals["totalNetLoss"]:,.2f}')
     print(f'Total cost: ${int(totals["totalCosts"]):,}')
+
 
 def lookup_company(company):
     """
@@ -192,6 +198,7 @@ def lookup_by_state(state):
     selected_rows = select_matching_rows([("Accident State", state)])
     return get_totals(selected_rows)
 
+
 def lookup(args: any) -> any:
     """
     Determine which lookup function should be called and call it.
@@ -211,6 +218,7 @@ def lookup(args: any) -> any:
     else:
         return lookup_company(args.company)
 
+
 def get_list_of_locations() -> list:
     """
     Returns a list of all locations in the dataset sorted by state.
@@ -225,6 +233,7 @@ def get_list_of_locations() -> list:
     locations.sort(key=lambda location: location[2])
 
     return locations
+
 
 def get_list_of_locations_by_state(state: str) -> list:
     """
@@ -257,6 +266,7 @@ def get_list_of_companies() -> list:
     companies.sort()
     return companies
 
+
 def print_company_list(companies: list):
     """
     Prints the list of companies to the terminal.
@@ -267,6 +277,7 @@ def print_company_list(companies: list):
     print('List of all the companies in the data set:\n')
     for company in companies:
         print(company)
+
 
 def print_location_list(locations: list):
     """
@@ -287,6 +298,7 @@ def print_location_list(locations: list):
         if location[2] != '':
             state = location[2]
         print(f'City: {city}, County: {county}, State: {state}')
+
 
 def print_location_by_state_list(locations: list):
     """
@@ -309,6 +321,7 @@ def print_location_by_state_list(locations: list):
             county = location[1]
         print(f'City: {city}, County: {county}')
 
+
 def print_list(some_list: list, format: str):
     """
     Prints the given list based on the command the user inputted.
@@ -326,6 +339,7 @@ def print_list(some_list: list, format: str):
         print_location_by_state_list(some_list)
     else:
         raise ValueError('format must be "company", "location", or "state"')
+
 
 def get_list(args: any) -> (list, str):
     """ 
@@ -345,6 +359,7 @@ def get_list(args: any) -> (list, str):
     else:
         return get_list_of_locations_by_state(args.state), 'state'
 
+
 def get_main_parser() -> ArgumentParser:
     """ 
     Setup and return the main parser object, which is responsible for parsing the entire command. 
@@ -361,6 +376,7 @@ def get_main_parser() -> ArgumentParser:
                 epilog='Authors: Henry Burkhardt, Paul Claudel Izabayo, '
                         'Feraidon Abdul Rahimzai, James Commons'
             )
+
 
 def add_leaders_subparser(subparsers: ArgumentParser) -> ArgumentParser:
     """ 
@@ -393,6 +409,7 @@ def add_leaders_subparser(subparsers: ArgumentParser) -> ArgumentParser:
     
     return subparsers
 
+
 def add_list_subparser(subparsers: ArgumentParser) -> ArgumentParser:
     """
     Add the list subparser to the subparsers object.
@@ -417,6 +434,7 @@ def add_list_subparser(subparsers: ArgumentParser) -> ArgumentParser:
                  'Must be a two letter abbreviation (i.e. CO)')
     
     return subparsers
+
 
 def add_lookup_subparser(subparsers: ArgumentParser) -> ArgumentParser:
     """ 
@@ -444,6 +462,7 @@ def add_lookup_subparser(subparsers: ArgumentParser) -> ArgumentParser:
 
     return subparsers
 
+
 def setup_subparsers(main_parser: ArgumentParser) -> ArgumentParser:
     """ 
     Add subparsers for each subcommand in PySpill (i.e. lookup, help, list, etc.).
@@ -461,6 +480,7 @@ def setup_subparsers(main_parser: ArgumentParser) -> ArgumentParser:
     subparsers = add_leaders_subparser(subparsers)
     
     return main_parser
+
 
 def execute_command(parser: ArgumentParser):
     """ 
@@ -481,6 +501,7 @@ def execute_command(parser: ArgumentParser):
         print('Feature currently under development.')
     else:
         pass # We should never reach this point thanks to argparse
+
 
 def main():
     load_data()
