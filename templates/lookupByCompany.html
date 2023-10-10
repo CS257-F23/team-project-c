@@ -1,3 +1,9 @@
+<!-- 
+  lookupByCompany.html
+  HTML template for the /lookup/company page 
+  Author: Henry Burkhardt, 10/9/2023
+ -->
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -35,9 +41,7 @@
     <h1>Company results for {{ company_name }}</h1>
     {% if data is none %}
     <p>No results were found for your query</p>
-    <p>
-      Make sure that your spelling is correct.
-    </p>
+    <p>Make sure that your spelling is correct.</p>
     {% else %}
     <ul>
       <li>

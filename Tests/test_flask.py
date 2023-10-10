@@ -1,25 +1,10 @@
 import unittest
 from app import *
 
-
-"""
-Functions to test: 
-
-homepage()
-
-company()
-
-location()
-
-empty_string_to_none() - Henry
-
-get_location_name() - Henry
-
-"""
 class Test_homepage(unittest.TestCase):
     """
     Tests for homepage()
-    Author:
+    Author: Henry
     """
     def test_returns_correct_html(self):
         """homepage(): test that the route loads the expected page"""
@@ -32,13 +17,13 @@ class Test_company_page(unittest.TestCase):
     Tests for company_page()
     """
     def test_invalid_company(self):
-        """ Askes the server to lookup a company not in the database. """
+        """company_page(): Test correct response returned for non-existent company"""
         self.app = app.test_client()
         response = self.app.get('/lookup/company/dne', follow_redirects=True).get_data()
         self.assertIn(b'No results were found for your query', response)
 
     def test_company_page_gives_correct_data(self):
-        """ Requests data for conocophillips and checks that provides stats are correct. """
+        """company_page(): Requests data for conocophillips and checks that provides stats are correct. """
         self.app = app.test_client()
         response = self.app.get('/lookup/company/conocophillips', follow_redirects=True).get_data()
         self.assertIn(b'4776.61', response)
@@ -48,25 +33,25 @@ class Test_location_page(unittest.TestCase):
     Tests for location_page()
     """
     def test_invalid_state(self):
-        """ Askes the server to lookup a state not in the database. """
+        """location_page(): Askes the server to lookup a state not in the database. """
         self.app = app.test_client()
         response = self.app.get('/lookup/location/dne', follow_redirects=True).get_data()
         self.assertIn(b'No results were found for your query', response)
 
     def test_state_stats_correct(self):
-        """ Request state statistics and make sure correct stats displayed. """
+        """location_page(): Request state statistics and make sure correct stats displayed. """
         self.app = app.test_client()
         response = self.app.get('/lookup/location/tx', follow_redirects=True).get_data()
         self.assertIn(b'135579.99', response)
 
     def test_county_stats_correct(self):
-        """ Request county statistics and make sure correct stats displayed. """
+        """location_page(): Request county statistics and make sure correct stats displayed. """
         self.app = app.test_client()
         response = self.app.get('/lookup/location/co/weld', follow_redirects=True).get_data()
         self.assertIn(b'1302.54', response)
 
     def test_city_stats_correct(self):
-        """ Request city statistics and make sure correct stats displayed. """
+        """location_page(): Request city statistics and make sure correct stats displayed. """
         self.app = app.test_client()
         response = self.app.get('/lookup/location/al/%20/mobile', follow_redirects=True).get_data()
         self.assertIn(b'3.0', response)
@@ -91,7 +76,7 @@ class Test_empty_string_to_none(unittest.TestCase):
 class TestPageNotFound(unittest.TestCase):
     """ Tests for error 404 page. """
     def test_404_page_returned_on_bad_url(self):
-        """ Attempts to GET an unknown URL and expects a 404 error page to be returned. """
+        """page_not_found(): Attempts to GET an unknown URL and expects a 404 error page to be returned. """
         self.app = app.test_client()
         response = self.app.get('/dne', follow_redirects=True).get_data()
         self.assertIn(b'Sorry, the URL http://localhost/dne was not found on the server.', response)

@@ -3,14 +3,16 @@ from ProductionCode.pyspill import *
 
 app = Flask(__name__)
 
+# HOMEPAGE: [/] Tells user how to use the app, includes hyperlinked examples
 @app.route("/")
 def homepage():
-    """Homepage ("/")
+    """Renders homepage from home.html
 
     Returns:
-        str: Homepage text 
+        str: Homepage HTML from /templates/home.html 
     """
     return render_template("home.html")
+
 
 #FEATURE 1: [/lookup/company], lookup spill data about companies
 @app.route('/lookup/company/<input_name>', strict_slashes=False)
@@ -26,6 +28,7 @@ def company_page(input_name):
     load_data()
     _data = lookup_company(input_name)
     return render_template('lookupByCompany.html', company_name=input_name, data=_data)
+
 
 #FEATURE 2: [/lookup/location], lookup spill data about locations
 @app.route('/lookup/location/<state>/', strict_slashes=False)
@@ -43,8 +46,6 @@ def location_page(state, county=None, city=None):
         Returns:
             str: the HTML page ./template/lookupByLocation.html
     """ 
-    
-
     state = empty_string_to_none(state)
     county = empty_string_to_none(county)
     city = empty_string_to_none(city)   
@@ -55,6 +56,7 @@ def location_page(state, county=None, city=None):
     _data = lookup_by_location(city, county, state)
     return render_template('lookupByLocation.html', location_name=_location_name, data=_data)
 
+
 @app.errorhandler(404)
 def page_not_found(error):
     """
@@ -64,6 +66,7 @@ def page_not_found(error):
         str: the html page for 404 error.
     """
     return render_template('pageNotFound.html', url=request.url)
+
 
 def empty_string_to_none(string):
     """Convert empty strings to None
@@ -92,7 +95,6 @@ def get_location_name(state, county, city):
     Returns:
         str: properly upper-cased string combining all inputs
     """
-
     if city is None and county is None: 
         return state.upper()
     if city is None:
