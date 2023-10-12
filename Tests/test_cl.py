@@ -230,5 +230,18 @@ class TestCL(unittest.TestCase):
                               'Total volume of oil released (barrels): 0.00\n'
                               'Total cost: $543,943\n')
 
+class TestGetListOfCompanies(unittest.TestCase):
+    """Author: Feraidon AbdulRahimzai"""
+    def test_get_list_of_companies(self):
+        # Call the function and get the result
+        result = get_list_of_companies()
+
+        # Check if the result is a non-empty list
+        self.assertTrue(result)
+
+        # Check if the result is sorted
+        self.assertEqual(result, sorted(result))
+
+    
 if __name__ == "__main__":
-    unittest.main() 
+    unittest.main()
