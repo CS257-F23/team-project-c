@@ -10,7 +10,7 @@ of Texas and the total cost of these accidents.
 
 You can also run 
 
-`python3 pyspill.py lookup --c "exxonmobil pipeline co"`
+`python3 pyspill.py lookup -c "exxonmobil pipeline co"`
 
 Which displays some summary statistics about a particular company.
 
