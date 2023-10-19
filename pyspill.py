@@ -1,100 +1,7 @@
-import csv
 import sys
 from argparse import ArgumentParser
-
-data = []
-headers = []
-
-def load_data():
-    """ Read data from the CSV file and load it into the data and headers global variables. """
+from ProductionCode.data_accessor import DataAccessor
     
-    rows = []
-    with open('Data/OilPipelineAccidents.csv', 'r') as file:
-        reader = csv.reader(file)
-        for row in reader:
-            rows.append(row)
-
-    global data
-    data = rows
-
-    global headers
-    headers = data[0]
-
-
-def get_index_of(column_name):
-    return headers.index(column_name)
-
-
-def get_numeric_value(row, column_name):
-    """
-    Given a list of headers, a row of data, and a column name, returns the value in the specified column as a float.
-    Author: Henry Burkhardt
-
-    Args:
-        headers (list): list of strings indicating column names 
-        row (list): a single row from the dataset
-        column_name (str): name of column to extract data from
-
-    Returns:
-        float: numeric value to extract
-    """    
-    
-    index = get_index_of(column_name)
-    return float(row[index])
-
-
-def select_matching_rows(rules):
-    """
-    Subset rows from database based with string matching
-    Author: Henry Burkhardt
-
-    Pass an array of doubles (in the format below) to extract data from dataset by string matching columns.
-
-    Args: 
-        criteria (list of double): [(<column_name>, <string_to_match>), ...]
-    """
-    selected_rows = []
-    for row in data:
-        matches = []
-        for rule in rules:
-            columnIndex = get_index_of(rule[0])
-            matches.append(row[columnIndex].upper().strip() == rule[1].upper().strip())
-
-        if all(matches):
-            selected_rows.append(row)
-    return selected_rows
-
-
-def get_totals(rows):
-    """
-    Calculate summary statistics for a list of oil spill accidents by summing columns.
-    Author: Henry Burkhardt
-
-    Args:
-        rows (list): list of selected rows from the table
-
-    Returns:
-        dict: dictionary with, accidentCount, totalUnintentionalRelease, totalNetLoss and totalCosts
-    """   
-
-    accidentCount = len(rows)
-    if accidentCount > 0:
-        totalUnintentionalRelease = 0 
-        totalNetLoss = 0
-        totalCosts = 0
-
-        for row in rows:
-            totalUnintentionalRelease += get_numeric_value(row, "Unintentional Release (Barrels)")
-            totalNetLoss += get_numeric_value(row, "Net Loss (Barrels)")
-            totalCosts += get_numeric_value(row, "All Costs")
-        
-        return {'accidentCount': accidentCount, 
-                'totalUnintentionalRelease':totalUnintentionalRelease, 
-                'totalNetLoss': totalNetLoss, 
-                'totalCosts' : totalCosts
-                } 
-    return None
-
 
 def print_totals(totals: any):
     """ 
@@ -110,161 +17,6 @@ def print_totals(totals: any):
     print(f'Total accidents: {totals["accidentCount"]:,}')
     print(f'Total volume of oil released (barrels): {totals["totalNetLoss"]:,.2f}')
     print(f'Total cost: ${int(totals["totalCosts"]):,}')
-
-
-def lookup_company(company):
-    """
-    Return a dictionary with summary statistics about all accidents involving the given company.
-    Author: Henry Burkhardt
-
-    Args:
-        company (str): name of company (must be in dataset)
-
-    Returns:
-        dict: dictionary of summary data on company, from get_summary_stats()
-    """    
-    relevant_rows = select_matching_rows([("Operator Name", company)])
-    return get_totals(relevant_rows)
-
-      
-def lookup_by_location(city, county, state): 
-    """
-    Get info about spills in a give city, county or state. 
-    Author: Paul Claudel Izabayo
-
-    Args:
-        city (str): name of city
-        county (str): name of county
-        state (str): name of state
-    """
-
-    # Ensure state argument was passed
-    if state is None: 
-        raise ValueError("State argument is required for all location queries.") 
-
-    if city is not None:
-        return lookup_by_city(city, state)
-    
-    if county is not None: 
-        return lookup_by_county(county, state)
-    
-    if state is not None:
-        return lookup_by_state(state)
-    
-    return ValueError("Not enough enough information was provided to complete your query.")
-    
-
-def lookup_by_city(city, state):
-    """
-    Returns total spill stats for a city.
-
-    Args:
-        city (str): name of city
-        state (str): name of state
-
-    Returns:
-        dict: contains summary info from get_totals()
-    """
-    selected_rows = select_matching_rows([("Accident City", city), ("Accident State", state)])
-    return get_totals(selected_rows)
-
-
-def lookup_by_county(county, state):
-    """
-    Returns total spill stats for a county.
-
-    Args:
-        county (str): name of county
-        state (str): name of state
-
-    Returns:
-        dict: contains summary info from get_totals()
-    """
-    
-    selected_rows = select_matching_rows([("Accident County", county), ("Accident State", state)])
-    return get_totals(selected_rows)
-
-
-def lookup_by_state(state):
-    """
-    Returns total spill stats for a state
-
-    Args:
-        state (str): name of state
-
-    Returns:
-        dict: contains summary info from get_totals()
-    """
-    selected_rows = select_matching_rows([("Accident State", state)])
-    return get_totals(selected_rows)
-
-
-def lookup(args: any) -> any:
-    """
-    Determine which lookup function should be called and call it.
-
-    Args:
-        args (any): arguments retrieved from parse_args().
-
-    Returns:
-        any: the totals object returned by lookup_by_location() or lookup_company().
-    """
-    if args.location == True:
-        try:
-            return lookup_by_location(args.city, args.county, args.state)
-        except ValueError as e:
-            print(e, file=sys.stderr)
-            sys.exit(1)
-    else:
-        return lookup_company(args.company)
-
-
-def get_list_of_locations() -> list:
-    """
-    Returns a list of all locations in the dataset sorted by state.
-
-    Returns
-        list: list of locations.
-    """
-    start_index_row = get_index_of('Accident City')
-    locations_with_duplicates = [row[start_index_row: start_index_row + 3] for row in data[1:]]
-    locations = []
-    [locations.append(location) for location in locations_with_duplicates if location not in locations]
-    locations.sort(key=lambda location: location[2])
-
-    return locations
-
-
-def get_list_of_locations_by_state(state: str) -> list:
-    """
-    Returns a list of all locations in a state sorted by county.
-
-    Args:
-        state (str): the two letter abbreviation for the state.
-
-    Returns:
-        list: list of locations in the state.
-    """
-    all_locations = get_list_of_locations()
-    state = state.strip().upper()
-    locations_in_state = [location for location in all_locations if location[2].strip().upper() == state]
-    locations_in_state.sort(key=lambda location: location[1])
-
-    return locations_in_state
-
-
-def get_list_of_companies() -> list:
-    """ 
-    Returns a sorted list of all companies in the dataset. 
-    
-    Returns:
-        list: list of companies. 
-    """
-    companies_with_duplicates = [row[get_index_of('Operator Name')] for row in data[1:]]
-    companies = []
-    [companies.append(company) for company in companies_with_duplicates if company not in companies]
-    companies.sort()
-    return companies
 
 
 def print_company_list(companies: list):
@@ -341,23 +93,45 @@ def print_list(some_list: list, format: str):
         raise ValueError('format must be "company", "location", or "state"')
 
 
-def get_list(args: any) -> (list, str):
+def get_list(args: any, data: DataAccessor) -> (list, str):
     """ 
     Determine which list function should be called and pass along its return value.
 
     Args:
         args (any): arguments retrieved from parse_args().
+        data (DataAccessor): the dataset object.
 
     Returns:
         (list, str): a list of companies or locations, type of list 
                     (i.e. company, location, state)
     """
     if args.company:
-        return get_list_of_companies(), 'company'
+        return data.get_list_of_companies(), 'company'
     elif args.location:
-        return get_list_of_locations(), 'location'
+        return data.get_list_of_locations(), 'location'
     else:
-        return get_list_of_locations_by_state(args.state), 'state'
+        return data.get_list_of_locations_by_state(args.state), 'state'
+    
+
+def lookup(args: any, data: DataAccessor) -> any:
+    """
+    Determine which lookup function should be called and call it.
+
+    Args:
+        args (any): arguments retrieved from parse_args().
+        data (DataAccessor): the dataset object.
+
+    Returns:
+        any: the totals object returned by lookup_by_location() or lookup_company().
+    """
+    if args.location == True:
+        try:
+            return data.lookup_by_location(args.city, args.county, args.state)
+        except ValueError as e:
+            print(e, file=sys.stderr)
+            sys.exit(1)
+    else:
+        return data.lookup_company(args.company)
 
 
 def get_main_parser() -> ArgumentParser:
@@ -482,20 +256,21 @@ def setup_subparsers(main_parser: ArgumentParser) -> ArgumentParser:
     return main_parser
 
 
-def execute_command(parser: ArgumentParser):
+def execute_command(parser: ArgumentParser, data: DataAccessor):
     """ 
     Executes the given command, i.e. {help, list, lookup, etc.}.
 
     Args:
         parser (ArguentParser): the main parser object.
+        data (DataAccessor): the dataset object.
     """
     args = parser.parse_args()
     if args.command == 'help':
         parser.print_help()
     elif args.command == 'lookup':
-        print_totals(lookup(args))
+        print_totals(lookup(args, data))
     elif args.command == 'list':
-        list_and_type = get_list(args)
+        list_and_type = get_list(args, data)
         print_list(list_and_type[0], list_and_type[1])
     elif args.command == 'leaders':
         print('Feature currently under development.')
@@ -504,14 +279,14 @@ def execute_command(parser: ArgumentParser):
 
 
 def main():
-    load_data()
+    data = DataAccessor('Data/OilPipelineAccidents.csv')
     parser = setup_subparsers(get_main_parser())
 
     if len(sys.argv) == 1: # User did not provide any command line arguments
         parser.print_usage()
         return
     
-    execute_command(parser)
+    execute_command(parser, data)
 
 if __name__ == '__main__':
     main()

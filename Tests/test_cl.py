@@ -1,6 +1,6 @@
 import unittest
 import subprocess
-from ProductionCode.pyspill import *
+from pyspill import *
 
 sample_data = [ 
     # header row
