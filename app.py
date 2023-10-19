@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request
-from pyspill import * 
+from ProductionCode.data_accessor import DataAccessor 
 
 app = Flask(__name__)
+data = DataAccessor('Data/OilPipelineAccidents.csv')
 
 # HOMEPAGE: [/] Tells user how to use the app, includes hyperlinked examples
 @app.route("/")
@@ -25,9 +26,8 @@ def company_page(input_name):
     Returns:
         str: the HTML page ./template/lookupByCompany.html
     """    
-    load_data()
-    _data = lookup_company(input_name)
-    return render_template('lookupByCompany.html', company_name=input_name, data=_data)
+    company_data = data.lookup_company(input_name)
+    return render_template('lookupByCompany.html', company_name=input_name, data=company_data)
 
 
 #FEATURE 2: [/lookup/location], lookup spill data about locations
@@ -50,11 +50,10 @@ def location_page(state, county=None, city=None):
     county = empty_string_to_none(county)
     city = empty_string_to_none(city)   
 
-    _location_name = get_location_name(state, county, city)
+    location_name = get_location_name(state, county, city)
 
-    load_data()
-    _data = lookup_by_location(city, county, state)
-    return render_template('lookupByLocation.html', location_name=_location_name, data=_data)
+    location_data = data.lookup_by_location(city, county, state)
+    return render_template('lookupByLocation.html', location_name=location_name, data=location_data)
 
 
 @app.errorhandler(404)
@@ -106,5 +105,4 @@ def get_location_name(state, county, city):
 
 if __name__ == "__main__":
     app.run()
-    main()
 
