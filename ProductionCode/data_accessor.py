@@ -7,21 +7,35 @@ class DataAccessor:
     construction of a DataAccessor object. The class provides several methods for
     getting specific statistics, as well as many helper smaller helper functions.
     """
-    def __init__(self, csv_path: str):
+
+
+    def __init__(self, csv_path: str=None, data: list=None):
         """ 
         Constructs a new DataAccessor object for the OilPipelineAccidents dataset. 
+        Also provides a way to manually enter data through the data kwarg. If csv_path
+        is provided, data is ignored.
         
-        Args:
-            csv_path (str): the pathname for the csv file.
+        Args (kwargs):
+            csv_path (str): the pathname for the csv file, defaults to None.
+            data (list): a 2D list of user entered data resembling csv format.
         """
-        self.data = []
-
-        with open(csv_path, 'r') as file:
-            reader = csv.reader(file)
-            for row in reader:
-                self.data.append(row)
+        if not csv_path and not data:
+            raise ValueError('You must specify either a csv pathname or manually enter data.')
         
-        self.headers = self.data[0]
+        if csv_path:
+            self.data = []
+
+            with open(csv_path, 'r') as file:
+                reader = csv.reader(file)
+                for row in reader:
+                    self.data.append(row)
+            
+            self.headers = self.data[0]
+        else:
+            self.data = data
+            self.headers = []
+            if self.data:
+                self.headers = data[0]
 
 
     def get_index_of(self, column_name):

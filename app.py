@@ -2,7 +2,7 @@ from flask import Flask, render_template, request
 from ProductionCode.data_accessor import DataAccessor 
 
 app = Flask(__name__)
-data = DataAccessor('Data/OilPipelineAccidents.csv')
+data = DataAccessor(csv_path='Data/OilPipelineAccidents.csv')
 
 # HOMEPAGE: [/] Tells user how to use the app, includes hyperlinked examples
 @app.route("/")

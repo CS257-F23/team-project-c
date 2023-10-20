@@ -279,7 +279,7 @@ def execute_command(parser: ArgumentParser, data: DataAccessor):
 
 
 def main():
-    data = DataAccessor('Data/OilPipelineAccidents.csv')
+    data = DataAccessor(csv_path='Data/OilPipelineAccidents.csv')
     parser = setup_subparsers(get_main_parser())
 
     if len(sys.argv) == 1: # User did not provide any command line arguments
