@@ -8,7 +8,6 @@ class DataAccessor:
     getting specific statistics, as well as many helper smaller helper functions.
     """
 
-
     def __init__(self, csv_path: str=None, data: list=None):
         """ 
         Constructs a new DataAccessor object for the OilPipelineAccidents dataset. 

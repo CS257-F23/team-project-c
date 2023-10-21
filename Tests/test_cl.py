@@ -3,9 +3,41 @@ import subprocess
 from pyspill import *
 
 
-# TODO: write tests for list command and unit tests for associated functions
-class TestCL(unittest.TestCase):
+class TestArgumentParser(unittest.TestCase):
+    # Some tests can only be done through integration testing below since
+    # argparse will automatically exit when options like -h are given, or
+    # if arguments are not correct.
+
+    def setUp(self):
+        self.main_parser = setup_subparsers(get_main_parser())
+
+    
+    def test_lookup_parser_company(self):
+        """ Test that the lookup company parser returns expected args. """
+        args = self.main_parser.parse_args(['lookup', '-c', 'company_name'])
+        self.assertEqual(args.company, 'company_name')
+
+
+    def test_lookup_parser_location(self):
+        """ Test that the lookup location parser returns expected args. """
+        args = self.main_parser.parse_args(['lookup', '-l', 
+                                            '--city', 'city', 
+                                            '--county', 'county', 
+                                            '--state', 'state'])
+        self.assertEqual(args.city, 'city')
+        self.assertEqual(args.county, 'county')
+        self.assertEqual(args.state, 'state')
+
+
+    def test_list_parser_location_by_state(self):
+        """ Test that the list location by state parser returns expected args. """
+        args = self.main_parser.parse_args(['list', '-s', 'state'])
+        self.assertEqual(args.state, 'state')
+
+
+class TestCLIntegration(unittest.TestCase):
     """ Author: James Commons """
+
     def test_no_args(self):
         """ Tests that help/usage is printed if no arguments are given. """
         code = subprocess.Popen(['python3', '-u', 'pyspill.py'], 
@@ -85,7 +117,7 @@ class TestCL(unittest.TestCase):
                               'Total volume of oil released (barrels): 9.10\n'
                               'Total cost: $501,600\n')
     
-    
+
     def test_lookup_location_by_state(self):
         """ Test lookup location by state prints all spills in a state. """
         code = subprocess.Popen(['python3', '-u', 'pyspill.py', 'lookup', '-l', '--state', 'MA'], 
