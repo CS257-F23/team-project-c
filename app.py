@@ -27,7 +27,7 @@ def search_by_company():
     Returns:
         str: HTML from /templates/search_by_company/form.html
     """
-    return render_template("/search_by_company/form.html", rows=data.get_list_of_companies())
+    return render_template("/search-by-company/form.html", rows=data.get_list_of_companies())
 
 @app.route("/search-by-company/results", methods=['GET'])
 def search_by_company_results():
@@ -38,7 +38,7 @@ def search_by_company_results():
         company-name (str): name of company to get results for
 
     Returns:
-        str: HTML from /template/search_by_company/results.html
+        str: HTML from /template/search-by-company/results.html
     """
 
     company_name = ""
@@ -55,7 +55,7 @@ def search_by_company_results():
     company_data = data.lookup_company(company_name)
     company_spill_coordinates = data.get_spill_coordinates(company_name)
     map_html = generate_map(company_spill_coordinates)
-    return render_template("/search_by_company/results.html", data=company_data, company_name=company_name, mapHTML=map_html)
+    return render_template("/search-by-company/results.html", data=company_data, company_name=company_name, mapHTML=map_html)
 
 @app.errorhandler(404)
 def page_not_found(error):
@@ -65,7 +65,7 @@ def page_not_found(error):
     Returns:
         str: the html page for 404 error.
     """
-    return render_template('page_not_found.html')
+    return render_template('page-not-found.html')
 
 @app.route("/search-by-location")
 def search_by_location():

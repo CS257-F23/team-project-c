@@ -249,8 +249,7 @@ class DataAccessor:
 
     def get_spill_coordinates(self, company) -> list:
         """
-        Hard coded coordinates for all of a companies spills
-        Author: Henry
+        Gets a list of coordinates for all the spills caused by specified company.
         
         Args:
             company (str): name of company
