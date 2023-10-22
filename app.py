@@ -23,7 +23,6 @@ def search_by_company():
     Author: Henry
 
     Includes drop down list and search box with autocomplete. 
-    #TODO: write logic to decide what to do if both are empty or both are filles
 
     Returns:
         str: HTML from /templates/search_by_company/form.html
@@ -209,3 +208,4 @@ def get_location_name(state, county, city):
 
 if __name__ == '__main__':
     app.run()
+
