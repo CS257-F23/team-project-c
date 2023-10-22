@@ -1,69 +1,70 @@
-<!-- 
-  home.html
-  Homepage template for PySpill flask app.
-  Author: Henry Burkhardt, 10/9/2023
- -->
- 
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- Obligatory meta tags -->
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <!-- Other neccessary tags -->
-    <!-- <meta name="description" content=""> TODO: add description -->
-    <meta name="robots" content="index,follow" />
-    <meta name="googlebot" content="index,follow" />
-    <meta name="google" content="notranslate" />
-    <title>Company results for {{ company_name }}</title>
-    <style>
-      body {
-        font-family: Arial, Helvetica, sans-serif;
-      }
-      .topnav {
-        background-color: #979797;
-        overflow: hidden;
-        /* text-align: center; */
-        /* padding-top: 10px;
-            padding-bottom: 10px; */
-      }
-      .topnav p {
-        font-size: 20px;
-      }
-    </style>
+    <title>PySpill</title>
+    <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
+    <link
+      rel="shortcut icon"
+      href="{{ url_for('static', filename='favicon.png') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
   </head>
   <body>
-    <div class="topnav">
-      <p>PySpill</p>
-      <br />
+    <div class="navbar">
+      <nav>
+        <ul>
+          <li>
+            <h3><a href="/">PySpill</a></h3>
+          </li>
+          <li><a href="/search-by-company"> 🏢 search by company</a></li>
+          <li><a href="/search-by-location">📍 search by location</a></li>
+          <li><a href="/leaderboard">📋 leaderboard</a></li>
+          <li><a href="/map">🗺️ map </a></li>
+          <li><a href="/about"> 🙋about</a></li>
+        </ul>
+      </nav>
     </div>
-    <h3>
-      Welcome to PySpill, a web tool made for viewing pipeline spills across the
-      U.S.
-    </h3>
-    <p>We have two features:</p>
-    <ul>
-      <li>
-        <strong>Lookup by company:</strong> lookup data on pipeline spills from a company. Use the following url <code>/lookup/company/&lt;company_name&gt;</code> <br>
-       
-        (example 1): To look at the company CONOCOPHILLIPS, try <a href="/lookup/company/CONOCOPHILLIPS"><code>/lookup/company/CONOCOPHILLIPS</code></a> <br>
-       
-        (example 2): To look at the company LOOP INC, try <a href="/lookup/company/loop inc"><code>/lookup/company/loop%20inc</code></a> <br>
-      </li>
-      <br>
 
-      <li>
-        <strong>Lookup by location:</strong> lookup data on pipeline spill in a location. Use the following url <code>/lookup/location/&lt;state&gt;/&lt;county&gt;/&lt;city&gt;</code>. County and city are both optional inputs, just use a blank space in the URL to leave them blank<br>
-       
-        (example 1): To look at spills in the state of Texas, try <a href="/lookup/location/TX"><code>/lookup/location/TX</code></a> <br>
-        
-        (example 2): To look up spill in Orange County, CA try <a href="/lookup/location/CA/orange"><code>/lookup/location/MN/rice</code></a> <br>
+    <div class="fullscreen-container home-container gradient-background">
+      <div class="nav-left">
+        <p><a href="/search-by-company">←Search by Company</a></p>
+      </div>
+      <div class="nav-center">
+        <div>
+          <h1>
+            <span id="pyspill-header">PySpill | Home</span>
+          </h1>
+          <p id="fadeInText">
+            Introducing PySpill, an app designed for tracking pipeline spills
+            across the nation. Users can access essential data like financial
+            implications, environmental impact, and human injuries resulting
+            from these incidents. By shedding light on the true costs and
+            consequences of spills, we want to encourage to a broader
+            understanding of the pipeline industry.
+          </p>
+        </div>
+      </div>
+      <div class="nav-right">
+        <p><a href="/search-by-location">Search by Location→</a></p>
+      </div>
+    </div>
 
-        (example 3): To look up spill in Faribault, MN try <a href="/lookup/location/MN/rice/Faribault"><code>/lookup/location/MN/rice/Faribault</code></a> or <a href="/lookup/location/MN/ /Faribault"><code>/lookup/location/MN/%20/Faribault</code></a> <br>
-      </li>
-    
-      </code>
-    </ul>
+    <script>
+      var typed = new Typed("#pyspill-header", {
+        strings: ["", "PySpill"],
+        typeSpeed: 10,
+        backSpeed: 0,
+        backDelay: 100,
+        startDelay: 0,
+        onComplete: async function (self) {
+          await new Promise((r) => setTimeout(r, 2200));
+          let c = document.getElementsByClassName("typed-cursor")[0];
+          c.style.opacity = "0";
+        },
+      });
+    </script>
   </body>
 </html>

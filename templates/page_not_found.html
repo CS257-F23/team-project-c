@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>PySpill</title>
+    <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
+    <link
+      rel="shortcut icon"
+      href="{{ url_for('static', filename='favicon.png') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+  </head>
+  <body>
+    <div class="navbar">
+      <nav>
+        <ul>
+          <li>
+            <h3><a href="/">PySpill</a></h3>
+          </li>
+          <li><a href="/search-by-company"> 🏢 search by company</a></li>
+          <li><a href="/search-by-location">📍 search by location</a></li>
+          <li><a href="/leaderboard">📋 leaderboard</a></li>
+          <li><a href="/map">🗺️ map </a></li>
+          <li><a href="/about"> 🙋about</a></li>
+        </ul>
+      </nav>
+    </div>
+    <h1>The page you were looking for was not found.</h1>
+
+    <div style="margin-top: 100px; text-align: center">
+      <h1>Uh oh, The page you were looking for was not found.</h1>
+      <br />
+      <h2>Try going back <a href="/" class="mintUnderline">home</a></h2>
+    </div>
+  </body>
+</html>

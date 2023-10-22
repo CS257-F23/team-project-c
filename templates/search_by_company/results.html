@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>PySpill: Company Search</title>
+    <link
+      rel="shortcut icon"
+      href="{{ url_for('static', filename='favicon.png') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+  </head>
+  <body>
+    <div class="navbar">
+      <nav>
+        <ul>
+          <li>
+            <h3><a href="/">PySpill</a></h3>
+          </li>
+          <li><a href="/search-by-company"> 🏢 search by company</a></li>
+          <li><a href="/search-by-location">📍 search by location</a></li>
+          <li><a href="/leaderboard">📋 leaderboard</a></li>
+          <li><a href="/map">🗺️ map </a></li>
+          <li><a href="/about"> 🙋about</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="resultsCont" style="margin-top: 60px">
+      <div class="resultsInfo">
+        <div class="horizontal-stack">
+          <h2>Data on <span class="mintUnderline">{{ company_name }}</span></h2>
+          <div class="grade-indicator"><p>{{data['grade']}}</p></div>
+        </div>
+
+        <table>
+          <tbody>
+            <tr>
+              <td>Total accidents</td>
+              <td>{{ data['totalAccidents'] }}</td>
+            </tr>
+            <tr>
+              <td>Total volume of oil released (barrels)</td>
+              <td>{{ data['totalVolume'] }}</td>
+            </tr>
+            <tr>
+              <td>Total cost</td>
+              <td>{{ data['totalCost']}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="resultsMap">{{ mapHTML | safe}}</div>
+    </div>
+  </body>
+</html>
