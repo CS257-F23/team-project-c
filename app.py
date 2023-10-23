@@ -87,6 +87,7 @@ def page_not_found(error):
     """
     return render_template('page-not-found.html')
 
+
 @app.route("/leaderboard")
 def leaderboard():
     """Render ranked list of companies @ [/leaderboard]
@@ -94,7 +95,8 @@ def leaderboard():
 
     -- NOT YET BUILT -- 
     """
-    return 
+    return "Not yet implemented"
+
 
 @app.route("/map")
 def map():
@@ -103,7 +105,8 @@ def map():
 
     -- NOT YET BUILT -- 
     """
-    return ""
+    return "Not yet implemented"
+
 
 @app.route("/about")
 def about():
@@ -112,7 +115,7 @@ def about():
 
     -- NOT YET BUILT -- 
     """
-    return ""
+    return "Not yet implemented"
 
 # HELPER FUNCTIONS --> all of these can probably be moved to another "middleware" file for clarity later -Henry 
 
