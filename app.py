@@ -25,7 +25,7 @@ def search_by_company():
     Includes drop down list and search box with autocomplete. 
 
     Returns:
-        str: HTML from /templates/search_by_company/form.html
+        str: HTML from /templates/search-by-company/form.html
     """
     return render_template("/search-by-company/form.html", rows=data.get_list_of_companies())
 
