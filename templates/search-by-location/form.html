@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>PySpill: Company Search</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
+    <link
+      href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      rel="shortcut icon"
+      href="{{ url_for('static', filename='favicon.png') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+  </head>
+  <body>
+    <div class="navbar">
+      <nav>
+        <ul>
+          <li>
+            <h3><a href="/">PySpill</a></h3>
+          </li>
+          <li><a href="/search-by-company"> 🏢 search by company</a></li>
+          <li><a href="/search-by-location">📍 search by location</a></li>
+          <li><a href="/leaderboard">📋 leaderboard</a></li>
+          <li><a href="/map">🗺️ map </a></li>
+          <li><a href="/about"> 🙋about</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="fullscreen-container gradient-background">
+      <form action="search-by-location/results">
+        <div class="formCont">
+          <h1>Select a Location</h1>
+
+          <input
+            name="state-search"
+            type="text"
+            id="state-search"
+            placeholder="State"
+          />
+          <label for="state-search" class="visually-hidden">
+            Search for a state
+          </label>
+
+          <input
+            name="county-search"
+            type="text"
+            id="county-search"
+            placeholder="County"
+          />
+          <label for="county-search" class="visually-hidden">
+            Search for a county
+          </label>
+
+          <input
+            name="city-search"
+            type="text"
+            id="city-search"
+            placeholder="City"
+          />
+          <label for="city-search" class="visually-hidden">
+            Search for a city
+          </label>
+
+          <button type="submit">See Results→</button>
+          <script>
+            // TODO: get autocomplete in here - Henry 10/23
+            // $( function() {
+            //   var availableStates = [
+            //       {% for location in locations: %}
+            //           "{{location}}",
+            //       {% endfor %}
+            //   ];
+            //   console.log(availableStates);
+            //   $( "#state-search").autocomplete({
+            //     source: availableStates
+            //   });
+            // });
+          </script>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

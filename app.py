@@ -25,7 +25,7 @@ def search_by_company():
     Includes drop down list and search box with autocomplete. 
 
     Returns:
-        str: HTML from /templates/search_by_company/form.html
+        str: HTML from /templates/search-by-company/form.html
     """
     return render_template("/search-by-company/form.html", rows=data.get_list_of_companies())
 
@@ -57,6 +57,22 @@ def search_by_company_results():
     map_html = generate_map(company_spill_coordinates)
     return render_template("/search-by-company/results.html", data=company_data, company_name=company_name, mapHTML=map_html)
 
+@app.route("/search-by-location")
+def search_by_location():
+    """Render search by location from @ [/search-by-location]
+    """
+    return render_template("/search-by-location/form.html")
+
+@app.route("/search-by-location/results", methods=['GET'])
+def search_by_location_results():
+    state_name = request.args["state-search"]
+    county_name = request.args["county-search"]
+    city_name = request.args["city-search"]
+    location_data = data.lookup_by_location(city_name, county_name, state_name)
+    return render_template("/search-by-location/results.html", data=location_data, location_name=get_location_name(state_name, county_name, city_name))
+    # return(str(location_data) + str([state_name, county_name, city_name]))
+
+
 @app.errorhandler(404)
 def page_not_found(error):
     """
@@ -66,15 +82,6 @@ def page_not_found(error):
         str: the html page for 404 error.
     """
     return render_template('page-not-found.html')
-
-@app.route("/search-by-location")
-def search_by_location():
-    """Render search by location form @ [/search-by-location]
-    Author: Henry
-
-    -- NOT YET BUILT -- 
-    """
-    return ""
 
 @app.route("/leaderboard")
 def leaderboard():
@@ -198,11 +205,11 @@ def get_location_name(state, county, city):
     Returns:
         str: properly upper-cased string combining all inputs
     """
-    if city is None and county is None: 
+    if city == "" and county == "": 
         return state.upper()
-    if city is None:
+    if city == "":
         return county.title() + " County, " + state.upper()
-    if county is None:
+    if county == "":
         return city.title() + ", " + state.upper()
     return str(city.title() + ", " + county.title() + " County, " + state.upper())
 
