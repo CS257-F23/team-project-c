@@ -270,3 +270,23 @@ class TestSpillCoordinates(unittest.TestCase):
             ['42.116313', '-72.580633'], 
             ['42.115822', '-72.580744']
         ])
+
+
+class TestEmptyStringToNone(unittest.TestCase):
+    """
+    Tests for empty_string_to_none()
+    Author: Henry
+    """
+    def setUp(self):
+        self.data_accessor = DataAccessor(csv_path='OilPipelineAccidents.csv')
+
+    def test_return(self):
+        """empty_string_to_none(): test correct return for None, empty string, and non-empty string inputs"""
+        result = self.data_accessor.empty_string_to_none(" ")
+        self.assertTrue(result is None)
+
+        result = self.data_accessor.empty_string_to_none(None)
+        self.assertTrue(result is None)
+
+        result = self.data_accessor.empty_string_to_none("non empty")
+        self.assertEqual(result, "non empty")

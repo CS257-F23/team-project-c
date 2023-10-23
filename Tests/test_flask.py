@@ -62,25 +62,6 @@ class TestLocationPage(unittest.TestCase):
         self.app = app.test_client()
         response = self.app.get('/lookup/location/al/%20/mobile', follow_redirects=True).get_data()
         self.assertIn(b'3.0', response)
-
-
-class TestEmptyStringToNone(unittest.TestCase):
-    """
-    Tests for empty_string_to_none()
-    Author: Henry
-    """
-
-
-    def test_return(self):
-        """empty_string_to_none(): test correct return for None, empty string, and non-empty string inputs"""
-        result = empty_string_to_none(" ")
-        self.assertTrue(result is None)
-
-        result = empty_string_to_none(None)
-        self.assertTrue(result is None)
-
-        result = empty_string_to_none("non empty")
-        self.assertEqual(result, "non empty")
         
 
 class TestPageNotFound(unittest.TestCase):

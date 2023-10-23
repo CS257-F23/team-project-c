@@ -158,8 +158,10 @@ class DataAccessor:
         
         return ValueError("Not enough enough information was provided to complete your query.")
     
+
     def empty_string_to_none(self, string) -> str:
-        """Convert empty strings to None
+        """
+        Convert empty strings to None
         Author: Henry
 
         Args:
@@ -171,8 +173,6 @@ class DataAccessor:
         if string == " " or string == "":
             return None
         return string
-
-    
     
 
     def lookup_by_city(self, city, state):
@@ -381,3 +381,4 @@ class DataAccessor:
                      ]
 
         return [[latitudes[i], longitudes[i]] for i, _ in enumerate(latitudes)]
+
