@@ -247,7 +247,7 @@ class DataAccessor:
         return companies
     
 
-    def get_spill_coordinates(self, company) -> list:
+    def get_company_spill_coordinates(self, company) -> list:
         """
         Gets a list of coordinates for all the spills caused by specified company.
         
@@ -263,4 +263,100 @@ class DataAccessor:
                       for row in self.select_matching_rows([('Operator Name', company.upper())])]
 
         return [[latitudes[i], longitudes[i]] for i, _ in enumerate(latitudes)]
+        
+
+    def get_location_spill_coordinates(self, city: str, county: str, state: str) -> list:
+        """ 
+        Gets a list of coordinates of all spills in a specific area. 
+        
+        Args:
+            city (str): specify the city, can be None.
+            county (str): specify the county, can be None.
+            state (str): specify the state, CANNOT be None (required).
+
+        Returns:
+            list: a list of coordinates in the format [<latitude>, <longitude>].
+        """
+        if not state:
+            raise ValueError("State argument is required for all location queries.")
+        
+        if city:
+            return self.get_coordinates_by_city(city, state)
+        elif county:
+            return self.get_coordinates_by_county(county, state)
+        else:
+            return self.get_coordinates_by_state(state)
+        
     
+    def get_coordinates_by_city(self, city: str, state: str) -> list:
+        """ 
+        Gets a list of coordinates of all spills in city. 
+
+        Args:
+            city (str): the city.
+            state (str): the state.
+
+        Returns: 
+            list: a list of coordinates in the format [<latitude>, <longitude>].
+        """
+        latitudes = [row[self.get_index_of('Accident Latitude')] 
+                        for row in self.select_matching_rows(
+                            [('Accident City', city.upper()), ('Accident State', state.upper())]
+                        )
+                    ]
+        longitudes = [row[self.get_index_of('Accident Longitude')] 
+                        for row in self.select_matching_rows(
+                            [('Accident City', city.upper()), ('Accident State', state.upper())]
+                        )
+                     ]
+
+        return [[latitudes[i], longitudes[i]] for i, _ in enumerate(latitudes)]
+    
+
+    def get_coordinates_by_county(self, county: str, state: str) -> list:
+        """ 
+        Gets a list of coordinates of all spills in county. 
+
+        Args:
+            county (str): the county.
+            state (str): the state.
+
+        Returns: 
+            list: a list of coordinates in the format [<latitude>, <longitude>].
+        """
+        latitudes = [row[self.get_index_of('Accident Latitude')] 
+                        for row in self.select_matching_rows(
+                            [('Accident County', county.upper()), ('Accident State', state.upper())]
+                        )
+                    ]
+        longitudes = [row[self.get_index_of('Accident Longitude')] 
+                        for row in self.select_matching_rows(
+                            [('Accident County', county.upper()), ('Accident State', state.upper())]
+                        )
+                     ]
+
+        return [[latitudes[i], longitudes[i]] for i, _ in enumerate(latitudes)]
+    
+
+    def get_coordinates_by_city(self, state: str) -> list:
+        """ 
+        Gets a list of coordinates of all spills in state. 
+
+        Args:
+            state (str): the state.
+
+        Returns: 
+            list: a list of coordinates in the format [<latitude>, <longitude>].
+        """
+        latitudes = [row[self.get_index_of('Accident Latitude')] 
+                        for row in self.select_matching_rows(
+                            [('Accident State', state.upper())]
+                        )
+                    ]
+        longitudes = [row[self.get_index_of('Accident Longitude')] 
+                        for row in self.select_matching_rows(
+                            [('Accident State', state.upper())]
+                        )
+                     ]
+
+        return [[latitudes[i], longitudes[i]] for i, _ in enumerate(latitudes)]

@@ -1,7 +1,8 @@
 import unittest
 from app import *
 
-class Test_homepage(unittest.TestCase):
+
+class TestHomepage(unittest.TestCase):
     """
     Tests for homepage()
     Author: Henry
@@ -12,7 +13,8 @@ class Test_homepage(unittest.TestCase):
         response = appTest.get("/").data # returns homepage
         self.assertTrue(b"Welcome to PySpill" in bytes(response)) # check that an expected part of the page is in the page
 
-class Test_company_page(unittest.TestCase):
+
+class TestCompanyPage(unittest.TestCase):
     """
     Tests for company_page()
     """
@@ -22,13 +24,15 @@ class Test_company_page(unittest.TestCase):
         response = self.app.get('/lookup/company/dne', follow_redirects=True).get_data()
         self.assertIn(b'No results were found for your query', response)
 
+
     def test_company_page_gives_correct_data(self):
         """company_page(): Requests data for conocophillips and checks that provides stats are correct. """
         self.app = app.test_client()
         response = self.app.get('/lookup/company/conocophillips', follow_redirects=True).get_data()
         self.assertIn(b'4776.61', response)
     
-class Test_location_page(unittest.TestCase):
+
+class TestLocationPage(unittest.TestCase):
     """
     Tests for location_page()
     """
@@ -38,11 +42,13 @@ class Test_location_page(unittest.TestCase):
         response = self.app.get('/lookup/location/dne', follow_redirects=True).get_data()
         self.assertIn(b'No results were found for your query', response)
 
+
     def test_state_stats_correct(self):
         """location_page(): Request state statistics and make sure correct stats displayed. """
         self.app = app.test_client()
         response = self.app.get('/lookup/location/tx', follow_redirects=True).get_data()
         self.assertIn(b'135579.99', response)
+
 
     def test_county_stats_correct(self):
         """location_page(): Request county statistics and make sure correct stats displayed. """
@@ -50,17 +56,20 @@ class Test_location_page(unittest.TestCase):
         response = self.app.get('/lookup/location/co/weld', follow_redirects=True).get_data()
         self.assertIn(b'1302.54', response)
 
+
     def test_city_stats_correct(self):
         """location_page(): Request city statistics and make sure correct stats displayed. """
         self.app = app.test_client()
         response = self.app.get('/lookup/location/al/%20/mobile', follow_redirects=True).get_data()
         self.assertIn(b'3.0', response)
 
-class Test_empty_string_to_none(unittest.TestCase):
+
+class TestEmptyStringToNone(unittest.TestCase):
     """
     Tests for empty_string_to_none()
     Author: Henry
     """
+
 
     def test_return(self):
         """empty_string_to_none(): test correct return for None, empty string, and non-empty string inputs"""
@@ -73,6 +82,7 @@ class Test_empty_string_to_none(unittest.TestCase):
         result = empty_string_to_none("non empty")
         self.assertEqual(result, "non empty")
         
+
 class TestPageNotFound(unittest.TestCase):
     """ Tests for error 404 page. """
     def test_404_page_returned_on_bad_url(self):
@@ -81,12 +91,14 @@ class TestPageNotFound(unittest.TestCase):
         response = self.app.get('/dne', follow_redirects=True).get_data()
         self.assertIn(b'Sorry, the URL http://localhost/dne was not found on the server.', response)
 
-class Test_get_location_name(unittest.TestCase):
+
+class TestGetLocationName(unittest.TestCase):
     """
     Tests for get_location_name()
     Author: Henry
     """
     state, county, city = "MN", "Rice", "Faribault"
+
 
     def test_return_full(self):
         """get_location_name(): test correct return for full input"""

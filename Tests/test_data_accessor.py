@@ -244,3 +244,15 @@ class TestList(unittest.TestCase):
         """ Test that empty list is returned when invalid state is given. """
         self.assertEqual(self.real_data_accessor.get_list_of_locations_by_state('AA'), [])
 
+
+class TestSpillCoordinates(unittest.TestCase):
+    def setUp(self):
+        self.data_accessor = DataAccessor(data=sample_data)
+
+    
+    def test_get_company_spill_coordinates(self):
+        """ Test that expected coordinates are returned when looking up a company. """
+        self.assertEqual(self.data_accessor.get_company_spill_coordinates('OnEOK Ngl PIPeLINE lP'), [
+            ['38.6707', '-97.78123'],
+            ['35.203837', '-98.06593']
+        ])
