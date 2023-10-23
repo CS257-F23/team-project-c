@@ -53,7 +53,7 @@ def search_by_company_results():
         company_name = request.args['company-name-search']
 
     company_data = data.lookup_company(company_name)
-    company_spill_coordinates = data.get_spill_coordinates(company_name)
+    company_spill_coordinates = data.get_company_spill_coordinates(company_name)
     map_html = generate_map(company_spill_coordinates)
     return render_template("/search-by-company/results.html", data=company_data, company_name=company_name, mapHTML=map_html)
 
