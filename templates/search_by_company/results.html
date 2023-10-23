@@ -37,19 +37,24 @@
         <table>
           <tbody>
             <tr>
-              <td>Total accidents</td>
-              <td>{{ data['totalAccidents'] }}</td>
+              <td>Number of accidents</td>
+              <td>{{ data['accidentCount'] }}</td>
             </tr>
             <tr>
               <td>Total volume of oil released (barrels)</td>
-              <td>{{ data['totalVolume'] }}</td>
+              <td>{{ data['totalUnintentionalRelease'] }}</td>
+            </tr>
+            <tr>
+              <td>Net loss oil released (barrels)</td>
+              <td>{{ data['totalNetLoss'] }}</td>
             </tr>
             <tr>
               <td>Total cost</td>
-              <td>{{ data['totalCost']}}</td>
+              <td>{{ "${:,}".format(data['totalCosts']) }}</td>
             </tr>
           </tbody>
         </table>
+        <div class="incident-list"></div>
       </div>
       <div class="resultsMap">{{ mapHTML | safe}}</div>
     </div>

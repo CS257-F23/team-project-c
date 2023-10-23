@@ -126,7 +126,7 @@ def generate_map(coordinates):
             mode='markers',
             marker=go.scattermapbox.Marker(
                 size=10,
-                opacity=0.7,
+                # opacity=0.7,
                 color='#FEBF00',
 
             ),
