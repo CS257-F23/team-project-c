@@ -247,12 +247,26 @@ class TestList(unittest.TestCase):
 
 class TestSpillCoordinates(unittest.TestCase):
     def setUp(self):
-        self.data_accessor = DataAccessor(data=sample_data)
+        self.sample_data_accessor = DataAccessor(data=sample_data)
+        self.real_data_accessor = DataAccessor(csv_path='Data/OilPipelineAccidents.csv')
 
     
     def test_get_company_spill_coordinates(self):
         """ Test that expected coordinates are returned when looking up a company. """
-        self.assertEqual(self.data_accessor.get_company_spill_coordinates('OnEOK Ngl PIPeLINE lP'), [
+        self.assertEqual(self.sample_data_accessor.get_company_spill_coordinates('OnEOK Ngl PIPeLINE lP'), [
             ['38.6707', '-97.78123'],
             ['35.203837', '-98.06593']
+        ])
+
+
+    def test_get_company_spill_coordinates_invalid(self):
+        """ Test that an empty list is returned if company does not exists. """
+        self.assertEqual(self.sample_data_accessor.get_company_spill_coordinates('dne'), [])
+
+
+    def test_get_coordinates_by_state(self):
+        """ Test that expected coordinates are returned for the state. """
+        self.assertEqual(self.real_data_accessor.get_coordinates_by_state('Ma'), [
+            ['42.116313', '-72.580633'], 
+            ['42.115822', '-72.580744']
         ])

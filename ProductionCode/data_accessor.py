@@ -5,7 +5,7 @@ class DataAccessor:
     """ 
     The DataAccessor class provides a wrapper around our dataset, which is loaded on
     construction of a DataAccessor object. The class provides several methods for
-    getting specific statistics, as well as many helper smaller helper functions.
+    getting specific statistics, as well as many smaller helper functions.
     """
 
     def __init__(self, csv_path: str=None, data: list=None):
@@ -338,7 +338,7 @@ class DataAccessor:
         return [[latitudes[i], longitudes[i]] for i, _ in enumerate(latitudes)]
     
 
-    def get_coordinates_by_city(self, state: str) -> list:
+    def get_coordinates_by_state(self, state: str) -> list:
         """ 
         Gets a list of coordinates of all spills in state. 
 
