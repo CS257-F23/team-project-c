@@ -294,6 +294,7 @@ form h1 {
 .resultsCont {
   display: flex;
   flex-direction: row;
+  align-items: stretch;
 }
 
 .resultsInfo {
@@ -349,4 +350,9 @@ div.plot-container {
 .grade-indicator p {
   font-size: 20px;
   font-weight: 600;
+}
+
+.incident-list {
+  margin-top: 50px;
+  background-color: #26408b;
 }
