@@ -69,7 +69,10 @@ def search_by_location_results():
     county_name = request.args["county-search"]
     city_name = request.args["city-search"]
     location_data = data.lookup_by_location(city_name, county_name, state_name)
-    return render_template("/search-by-location/results.html", data=location_data, location_name=get_location_name(state_name, county_name, city_name))
+
+    location_spill_coordinates = data.get_location_spill_coordinates(city_name, county_name, state_name)
+    map_html = generate_map(location_spill_coordinates)
+    return render_template("/search-by-location/results.html", data=location_data, location_name=get_location_name(state_name, county_name, city_name), mapHTML=map_html)
     # return(str(location_data) + str([state_name, county_name, city_name]))
 
 
@@ -178,19 +181,6 @@ def plotly_object_to_html(plotly_object):
         """, 
         div_placeholder=outHTML)
 
-def empty_string_to_none(string):
-    """Convert empty strings to None
-    Author: Henry
-
-    Args:
-        string (str): string to convert
-
-    Returns:
-        (None OR str): returns original input if string is not empty, and None if input was was None or string is empty.
-    """
-    if string == " ":
-        return None
-    return string
 
 
 def get_location_name(state, county, city):

@@ -139,7 +139,12 @@ class DataAccessor:
         """
 
         # Ensure state argument was passed
-        if state is None: 
+        state = self.empty_string_to_none(state)
+        county = self.empty_string_to_none(county)
+        city = self.empty_string_to_none(city)
+
+
+        if state == None: 
             raise ValueError("State argument is required for all location queries.") 
 
         if city is not None:
@@ -152,6 +157,22 @@ class DataAccessor:
             return self.lookup_by_state(state)
         
         return ValueError("Not enough enough information was provided to complete your query.")
+    
+    def empty_string_to_none(self, string) -> str:
+        """Convert empty strings to None
+        Author: Henry
+
+        Args:
+            string (str): string to convert
+
+        Returns:
+            (None OR str): returns original input if string is not empty, and None if input was was None or string is empty.
+        """
+        if string == " " or string == "":
+            return None
+        return string
+
+    
     
 
     def lookup_by_city(self, city, state):
