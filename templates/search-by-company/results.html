@@ -38,21 +38,38 @@
           <tbody>
             <tr>
               <td>Number of accidents</td>
+              {% if data['accidentCount'] %}
               <td>{{ data['accidentCount'] }}</td>
+              {% else %}
+              <td>NO DATA</td>
+              {% endif %}
             </tr>
             <tr>
               <td>Total volume of oil released (barrels)</td>
+              {% if data['totalUnintentionalRelease'] %}
               <td>{{ data['totalUnintentionalRelease'] }}</td>
+              {% else %}
+              <td>NO DATA</td>
+              {% endif %}
             </tr>
             <tr>
-              <td>Net loss oil released (barrels)</td>
+              <td>Net loss of oil released (barrels)</td>
+              {% if data['totalNetLoss'] %}
               <td>{{ data['totalNetLoss'] }}</td>
+              {% else %}
+              <td>NO DATA</td>
+              {% endif %}
             </tr>
             <tr>
               <td>Total cost</td>
-              <td>{{ "${:,}".format(data['totalCosts']) }}</td>
+              {% if data['totalCosts'] %}
+              <td>{{ "${:,}".format(data['totalCosts']|int) }}</td>
+              {% else %}
+              <td>NO DATA</td>
+              {% endif %}
             </tr>
           </tbody>
+        </table>
         </table>
         <div class="incident-list"></div>
       </div>

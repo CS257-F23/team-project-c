@@ -278,7 +278,7 @@ class TestEmptyStringToNone(unittest.TestCase):
     Author: Henry
     """
     def setUp(self):
-        self.data_accessor = DataAccessor(csv_path='OilPipelineAccidents.csv')
+        self.data_accessor = DataAccessor(csv_path='Data/OilPipelineAccidents.csv')
 
     def test_return(self):
         """empty_string_to_none(): test correct return for None, empty string, and non-empty string inputs"""

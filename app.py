@@ -72,8 +72,9 @@ def search_by_location_results():
 
     location_spill_coordinates = data.get_location_spill_coordinates(city_name, county_name, state_name)
     map_html = generate_map(location_spill_coordinates)
-    return render_template("/search-by-location/results.html", data=location_data, location_name=get_location_name(state_name, county_name, city_name), mapHTML=map_html)
-    # return(str(location_data) + str([state_name, county_name, city_name]))
+    return render_template("/search-by-location/results.html", data=location_data, 
+                           location_name=get_location_name(state_name, county_name, city_name), 
+                           mapHTML=map_html)
 
 
 @app.errorhandler(404)
@@ -142,7 +143,7 @@ def generate_map(coordinates):
             ),
             name="Pipeline Spill"
         ), 
-       )
+    )
 
     map.update_layout(
         mapbox_style="satellite",
@@ -182,9 +183,9 @@ def plotly_object_to_html(plotly_object):
         div_placeholder=outHTML)
 
 
-
 def get_location_name(state, county, city):
-    """Format a string to display a full locations' name
+    """
+    Format a string to display a full locations' name
     Author: Henry
 
     Args:
@@ -202,6 +203,7 @@ def get_location_name(state, county, city):
     if county == "":
         return city.title() + ", " + state.upper()
     return str(city.title() + ", " + county.title() + " County, " + state.upper())
+
 
 if __name__ == '__main__':
     app.run()

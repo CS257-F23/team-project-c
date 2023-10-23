@@ -11,7 +11,7 @@ class TestHomepage(unittest.TestCase):
         """homepage(): test that the route loads the expected page"""
         appTest = app.test_client() # get the client side of the app
         response = appTest.get("/").data # returns homepage
-        self.assertTrue(b"Welcome to PySpill" in bytes(response)) # check that an expected part of the page is in the page
+        self.assertIn(b"Introducing PySpill, an app designed for tracking pipeline spills", response)
 
 
 class TestCompanyPage(unittest.TestCase):
@@ -21,14 +21,16 @@ class TestCompanyPage(unittest.TestCase):
     def test_invalid_company(self):
         """company_page(): Test correct response returned for non-existent company"""
         self.app = app.test_client()
-        response = self.app.get('/lookup/company/dne', follow_redirects=True).get_data()
-        self.assertIn(b'No results were found for your query', response)
+        response = self.app.get('/search-by-company/results?company-name-search=dne', 
+                                follow_redirects=True).get_data()
+        self.assertIn(b'NO DATA', response)
 
 
     def test_company_page_gives_correct_data(self):
         """company_page(): Requests data for conocophillips and checks that provides stats are correct. """
         self.app = app.test_client()
-        response = self.app.get('/lookup/company/conocophillips', follow_redirects=True).get_data()
+        response = self.app.get('/search-by-company/results?company-name-search=CONOCOPHILLIPS', 
+                                follow_redirects=True).get_data()
         self.assertIn(b'4776.61', response)
     
 
@@ -39,28 +41,32 @@ class TestLocationPage(unittest.TestCase):
     def test_invalid_state(self):
         """location_page(): Askes the server to lookup a state not in the database. """
         self.app = app.test_client()
-        response = self.app.get('/lookup/location/dne', follow_redirects=True).get_data()
-        self.assertIn(b'No results were found for your query', response)
+        response = self.app.get('/search-by-location/results?state-search=dne&county-search=&city-search=', 
+                                follow_redirects=True).get_data()
+        self.assertIn(b'NO DATA', response)
 
 
     def test_state_stats_correct(self):
         """location_page(): Request state statistics and make sure correct stats displayed. """
         self.app = app.test_client()
-        response = self.app.get('/lookup/location/tx', follow_redirects=True).get_data()
+        response = self.app.get('/search-by-location/results?state-search=tx&county-search=&city-search=', 
+                                follow_redirects=True).get_data()
         self.assertIn(b'135579.99', response)
 
 
     def test_county_stats_correct(self):
         """location_page(): Request county statistics and make sure correct stats displayed. """
         self.app = app.test_client()
-        response = self.app.get('/lookup/location/co/weld', follow_redirects=True).get_data()
+        response = self.app.get('/search-by-location/results?state-search=co&county-search=weld&city-search=', 
+                                follow_redirects=True).get_data()
         self.assertIn(b'1302.54', response)
 
 
     def test_city_stats_correct(self):
         """location_page(): Request city statistics and make sure correct stats displayed. """
         self.app = app.test_client()
-        response = self.app.get('/lookup/location/al/%20/mobile', follow_redirects=True).get_data()
+        response = self.app.get('/search-by-location/results?state-search=al&county-search=mobile&city-search=', 
+                                follow_redirects=True).get_data()
         self.assertIn(b'3.0', response)
         
 
@@ -70,7 +76,7 @@ class TestPageNotFound(unittest.TestCase):
         """page_not_found(): Attempts to GET an unknown URL and expects a 404 error page to be returned. """
         self.app = app.test_client()
         response = self.app.get('/dne', follow_redirects=True).get_data()
-        self.assertIn(b'Sorry, the URL http://localhost/dne was not found on the server.', response)
+        self.assertIn(b'Uh oh, the page you were looking for was not found.', response)
 
 
 class TestGetLocationName(unittest.TestCase):
@@ -89,18 +95,18 @@ class TestGetLocationName(unittest.TestCase):
 
     def test_return_state_city(self):
         """get_location_name(): test correct return for state/city input"""
-        result = get_location_name(self.state, None, self.city)
+        result = get_location_name(self.state, "", self.city)
         self.assertEqual(result, "Faribault, MN")
 
 
     def test_return_state_county(self):
         """get_location_name(): test correct return for state/county input"""
-        result = get_location_name(self.state, self.county, None)
+        result = get_location_name(self.state, self.county, "")
         self.assertEqual(result, "Rice County, MN")
 
 
     def test_return_state(self):
         """get_location_name(): test correct return for state input"""
-        result = get_location_name(self.state, None, None)
+        result = get_location_name(self.state, "", "")
         self.assertEqual(result, "MN")
         
