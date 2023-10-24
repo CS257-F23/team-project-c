@@ -173,7 +173,6 @@ class DataAccessor:
         if string == " " or string == "":
             return None
         return string
-    
 
     def lookup_by_city(self, city, state):
         """
