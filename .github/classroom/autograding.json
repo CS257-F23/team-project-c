@@ -1,0 +1,14 @@
+{
+  "tests": [
+    {
+      "name": "Check Tests Pass",
+      "setup": "",
+      "run": "python3 -m unittest discover Tests",
+      "input": "",
+      "output": "",
+      "comparison": "exact",
+      "timeout": 10,
+      "points": null
+    }
+  ]
+}
