@@ -59,12 +59,22 @@ def search_by_company_results():
 
 @app.route("/search-by-location")
 def search_by_location():
-    """Render search by location from @ [/search-by-location]
+    """Render search by location search page  @ [/search-by-location/]
+    Author: Henry
+
+    Returns: 
+        str: HTML page @ /templates/search-by-location/form.html
     """
     return render_template("/search-by-location/form.html")
 
 @app.route("/search-by-location/results", methods=['GET'])
 def search_by_location_results():
+    """Render search by location results page from @ [/search-by-location/results]
+    Author: Henry
+
+        Returns: 
+            str: HTML page @ /templates/search-by-location/results.html
+    """
     state_name = request.args["state-search"]
     county_name = request.args["county-search"]
     city_name = request.args["city-search"]
@@ -86,6 +96,16 @@ def page_not_found(error):
         str: the html page for 404 error.
     """
     return render_template('page-not-found.html')
+
+@app.errorhandler(500)
+def internal_error(error):
+    """
+    Display the 500 error page with user caused an error. Yes it's the user's fault. 
+
+    Returns:
+        str: the html page for 505 error.
+    """
+    return render_template('internal-error.html', error=error)
 
 
 @app.route("/leaderboard")
