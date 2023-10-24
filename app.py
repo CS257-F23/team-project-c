@@ -145,7 +145,7 @@ def generate_map(coordinates):
        )
 
     map.update_layout(
-        mapbox_style="satellite",
+        mapbox_style="satellite-streets",
         hovermode='closest',
         margin={"r": 0, "t": 0, "l": 0, "b": 0},
         geo_scope='usa',
@@ -180,7 +180,6 @@ def plotly_object_to_html(plotly_object):
         {{ div_placeholder|safe }}
         """, 
         div_placeholder=outHTML)
-
 
 
 def get_location_name(state, county, city):
