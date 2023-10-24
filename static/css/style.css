@@ -380,3 +380,11 @@ div.plot-container {
   margin-top: 50px;
   background-color: #26408b;
 }
+
+/* About page styles */
+#about-text {
+    margin-top: 10%;
+    margin-left: 20%;
+    margin-right: 20%;
+    text-align: left;
+}

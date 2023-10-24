@@ -110,12 +110,8 @@ def map():
 
 @app.route("/about")
 def about():
-    """Render about page @ [/about]
-    Author: Henry
-
-    -- NOT YET BUILT -- 
-    """
-    return "Not yet implemented"
+    """ Render about page @ [/about] """
+    return render_template('about.html')
 
 # HELPER FUNCTIONS --> all of these can probably be moved to another "middleware" file for clarity later -Henry 
 
