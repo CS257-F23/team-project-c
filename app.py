@@ -145,7 +145,7 @@ def generate_map(coordinates):
     )
 
     map.update_layout(
-        mapbox_style="satellite",
+        mapbox_style="satellite-streets",
         hovermode='closest',
         margin={"r": 0, "t": 0, "l": 0, "b": 0},
         geo_scope='usa',
