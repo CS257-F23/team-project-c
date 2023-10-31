@@ -1,4 +1,5 @@
 import csv
+import psycopg2
 
 
 class DataAccessor:
@@ -35,6 +36,17 @@ class DataAccessor:
             self.headers = []
             if self.data:
                 self.headers = data[0]
+
+        self.connection = self.connect()
+
+    # TODO: verify this works
+    def connect():
+        try:
+            connection = psycopg2.connect(database=config.database, user=config.user, password=config.password, host="localhost")
+        except Exception as e:
+            print("Connection error: ", e)
+            exit()
+        return connection
 
 
     def get_index_of(self, column_name):
@@ -125,6 +137,8 @@ class DataAccessor:
         """    
         relevant_rows = self.select_matching_rows([("Operator Name", company)])
         return self.get_totals(relevant_rows)
+    
+    # TODO: add method that returns all of the rows we are interested in
     
 
     def lookup_by_location(self, city, county, state): 
