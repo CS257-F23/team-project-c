@@ -10,18 +10,29 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='css/style.css') }}"
     />
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100;0,400;0,700;1,100;1,400;1,700&display=swap">
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100;0,400;0,700;1,100;1,400;1,700&display=swap"
+    />
   </head>
   <body>
     <div class="navbar">
       <nav>
         <ul>
           <li>
-            <h3><a href="/">PySpill</a></h3>
+            <a class="home-link" href="/">PySpill</a>
           </li>
-          <li><a href="/search-by-company" class="nav-item"> 🏢 search by company</a></li>
-          <li><a href="/search-by-location" class="nav-item">📍 search by location</a></li>
+          <li>
+            <a href="/search-by-company" class="nav-item">
+              🏢 search by company</a
+            >
+          </li>
+          <li>
+            <a href="/search-by-location" class="nav-item"
+              >📍 search by location</a
+            >
+          </li>
           <li><a href="/leaderboard" class="nav-item">📋 leaderboard</a></li>
           <li><a href="/map" class="nav-item">🗺️ map </a></li>
           <li><a href="/about" class="nav-item"> 🙋about</a></li>
@@ -29,7 +40,7 @@
       </nav>
     </div>
 
-    <div class="resultsCont" style="margin-top: 60px">
+    <div class="resultsCont">
       <div class="resultsInfo">
         <div class="horizontal-stack">
           <h2>
