@@ -49,3 +49,9 @@ CREATE TABLE oil_pipeline_accidents (
     other_costs int,
     all_costs int
 );
+
+DROP TABLE IF EXISTS states;
+CREATE TABLE states(
+    state_name text,
+    abbreviation text
+);
