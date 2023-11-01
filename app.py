@@ -1,6 +1,6 @@
 from ProductionCode.data_accessor import DataAccessor 
 from ProductionCode.utils import *
-from flask import Flask, render_template, request, redirect, render_template_string
+from flask import Flask, render_template, request, redirect, render_template_string, flash
 import plotly.graph_objects as go
 
 
@@ -80,6 +80,11 @@ def search_by_location_results():
     county_name = request.args["county-search"]
     city_name = request.args["city-search"]
     location_data = data.lookup_by_location(city_name, county_name, state_name)
+    if location_data == None:
+        flash("The location you entered was not found in our database. Try searching the whole state.")
+        return redirect("/search-by-location")
+
+        
 
     location_spill_coordinates = data.get_location_spill_coordinates(city_name, county_name, state_name)
     map_html = generate_map(location_spill_coordinates)
@@ -139,5 +144,6 @@ def test ():
     return str(data.lookup_by_location("", "Rice", "MN"))
 
 if __name__ == '__main__':
+    app.secret_key = 'i promise we really need this or else the app doesnt work. trust me.'
     app.run(host='0.0.0.0', port=5015, debug=True)
 

@@ -311,6 +311,14 @@ form h1 {
   font-size: 50px;
 }
 
+.error-msg{
+  color:black;
+  text-decoration: underline;
+  text-decoration-color: red;
+  width: 300px;
+  
+}
+
 /*RESULTS PAGE: 
     - ./templates/search-by-company.html
   */

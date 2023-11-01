@@ -249,6 +249,8 @@ class DataAccessor:
         cursor.execute("SELECT unintentional_release_barrels, net_loss_barrels, all_costs FROM oil_pipeline_accidents WHERE accident_state = %s", (state,))
 
         selected_rows = cursor.fetchall()    
+        print(selected_rows)
+        
         return self.get_totals(selected_rows)
     
 

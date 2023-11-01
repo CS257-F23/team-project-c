@@ -52,6 +52,13 @@
       <form action="search-by-location/results">
         <div class="formCont">
           <h1>Select a Location</h1>
+          
+          <div class="error-msg">
+            {% for mesg in get_flashed_messages() %}
+            <p>{{ mesg }}<p>
+            {% endfor %}
+         </div>
+
 
           <input
             name="state-search"
@@ -85,20 +92,6 @@
           </label>
 
           <button type="submit">See Results→</button>
-          <script>
-            // TODO: get autocomplete in here - Henry 10/23
-            // $( function() {
-            //   var availableStates = [
-            //       {% for location in locations: %}
-            //           "{{location}}",
-            //       {% endfor %}
-            //   ];
-            //   console.log(availableStates);
-            //   $( "#state-search").autocomplete({
-            //     source: availableStates
-            //   });
-            // });
-          </script>
         </div>
       </form>
     </div>
