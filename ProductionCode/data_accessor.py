@@ -1,6 +1,6 @@
 import csv
 import psycopg2
-
+import ProductionCode.psqlConfig as config
 
 class DataAccessor:
     """ 
@@ -40,7 +40,7 @@ class DataAccessor:
         self.connection = self.connect()
 
     # TODO: verify this works
-    def connect():
+    def connect(self):
         try:
             connection = psycopg2.connect(database=config.database, user=config.user, password=config.password, host="localhost")
         except Exception as e:
