@@ -193,6 +193,7 @@ class DataAccessor:
             return None
         return string
 
+
     def lookup_by_city(self, city, state):
         """
         Returns total spill stats for a city.
