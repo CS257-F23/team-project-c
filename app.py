@@ -134,6 +134,10 @@ def about():
     """ Render about page @ [/about] """
     return render_template('about.html')
 
+@app.route("/test")
+def test ():
+    return str(data.lookup_by_location("", "Rice", "MN"))
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5015, debug=True)
 

@@ -167,13 +167,13 @@ class DataAccessor:
             raise ValueError("State argument is required for all location queries.") 
 
         if city is not None:
-            return self.lookup_by_city(city, state)
+            return self.lookup_by_city(city.upper(), state.upper())
         
         if county is not None: 
-            return self.lookup_by_county(county, state)
+            return self.lookup_by_county(county.upper(), state.upper())
         
         if state is not None:
-            return self.lookup_by_state(state)
+            return self.lookup_by_state(state.upper())
         
         return ValueError("Not enough enough information was provided to complete your query.")
     
@@ -229,7 +229,8 @@ class DataAccessor:
 
         cursor.execute("SELECT unintentional_release_barrels, net_loss_barrels, all_costs FROM oil_pipeline_accidents WHERE accident_county = %s AND accident_state = %s", (county, state))
 
-        selected_rows = cursor.fetchall()    
+        selected_rows = cursor.fetchall()
+        print(selected_rows)    
         return self.get_totals(selected_rows)
     
 
