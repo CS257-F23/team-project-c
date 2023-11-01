@@ -134,9 +134,14 @@ class DataAccessor:
 
         Returns:
             dict: dictionary of summary data on company, from get_summary_stats()
-        """    
-        relevant_rows = self.select_matching_rows([("Operator Name", company)])
-        return self.get_totals(relevant_rows)
+        """
+        cursor = self.connection.cursor()
+
+        cursor.execute("SELECT * FROM oil_spill_accidents WHERE OperatorName = '%s'", (company,))
+
+        records = cursor.fetchall()    
+        # relevant_rows = self.select_matching_rows([("Operator Name", company)])
+        return self.get_totals(records)
     
     # TODO: add method that returns all of the rows we are interested in
     
