@@ -104,7 +104,7 @@ class DataAccessor:
         Returns:
             dict: dictionary with, accidentCount, totalUnintentionalRelease, totalNetLoss and totalCosts
         """   
-
+        #TODO: this doesn't work when only 1 accident is passed in from SQL. Probably because it's not a list. Need to fix. -Henry
         accidentCount = len(rows)
         if accidentCount > 0:
             totalUnintentionalRelease = 0 
@@ -112,9 +112,9 @@ class DataAccessor:
             totalCosts = 0
 
             for row in rows:
-                totalUnintentionalRelease += self.get_numeric_value(row, "Unintentional Release (Barrels)")
-                totalNetLoss += self.get_numeric_value(row, "Net Loss (Barrels)")
-                totalCosts += self.get_numeric_value(row, "All Costs")
+                totalUnintentionalRelease += row[0]
+                totalNetLoss += row[1]
+                totalCosts += row[2]
             
             return {'accidentCount': accidentCount, 
                     'totalUnintentionalRelease':totalUnintentionalRelease, 
@@ -137,11 +137,11 @@ class DataAccessor:
         """
         cursor = self.connection.cursor()
 
-        cursor.execute("SELECT * FROM oil_spill_accidents WHERE OperatorName = '%s'", (company,))
+        cursor.execute("SELECT unintentional_release_barrels, net_loss_barrels, all_costs FROM oil_pipeline_accidents WHERE operator_name = %s", (company,))
 
-        records = cursor.fetchall()    
+        selected_rows = cursor.fetchall()    
         # relevant_rows = self.select_matching_rows([("Operator Name", company)])
-        return self.get_totals(records)
+        return self.get_totals(selected_rows)
     
     # TODO: add method that returns all of the rows we are interested in
     
@@ -205,7 +205,11 @@ class DataAccessor:
         Returns:
             dict: contains summary info from get_totals()
         """
-        selected_rows = self.select_matching_rows([("Accident City", city), ("Accident State", state)])
+        cursor = self.connection.cursor()
+
+        cursor.execute("SELECT unintentional_release_barrels, net_loss_barrels, all_costs FROM oil_pipeline_accidents WHERE accident_city = %s AND accident_state = %s", (city, state))
+
+        selected_rows = cursor.fetchall()    
         return self.get_totals(selected_rows)
     
 
@@ -221,7 +225,11 @@ class DataAccessor:
             dict: contains summary info from get_totals()
         """
         
-        selected_rows = self.select_matching_rows([("Accident County", county), ("Accident State", state)])
+        cursor = self.connection.cursor()
+
+        cursor.execute("SELECT unintentional_release_barrels, net_loss_barrels, all_costs FROM oil_pipeline_accidents WHERE accident_county = %s AND accident_state = %s", (county, state))
+
+        selected_rows = cursor.fetchall()    
         return self.get_totals(selected_rows)
     
 
@@ -235,7 +243,11 @@ class DataAccessor:
         Returns:
             dict: contains summary info from get_totals()
         """
-        selected_rows = self.select_matching_rows([("Accident State", state)])
+        cursor = self.connection.cursor()
+
+        cursor.execute("SELECT unintentional_release_barrels, net_loss_barrels, all_costs FROM oil_pipeline_accidents WHERE accident_state = %s", (state,))
+
+        selected_rows = cursor.fetchall()    
         return self.get_totals(selected_rows)
     
 
@@ -284,6 +296,11 @@ class DataAccessor:
         companies = []
         [companies.append(company) for company in companies_with_duplicates if company not in companies]
         companies.sort()
+        cursor = self.connection.cursor()
+
+        cursor.execute("SELECT DISTINCT operator_name FROM oil_pipeline_accidents ORDER BY operator_name ASC",)
+
+        companies = [item[0] for item in cursor.fetchall()]
         return companies
     
 
