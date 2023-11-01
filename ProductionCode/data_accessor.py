@@ -1,6 +1,6 @@
 import csv
 import psycopg2
-
+import Data.psqlConfig as config
 
 class DataAccessor:
     """ 
