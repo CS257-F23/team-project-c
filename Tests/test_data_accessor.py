@@ -65,17 +65,17 @@ class TestLookupByCity(unittest.TestCase):
 
     def test_invalid_city(self):
         """lookup_by_city(): Test for when we enter invalid city in test_by_city."""
-        self.assertEqual(self.data_accessor.lookup_by_city("random", "MN"), None)
+        self.assertRaises(ValueError, self.data_accessor.lookup_by_city, "random", "MN")
 
 
     def test_invalid_state(self):
         """lookup_by_city(): Test for when we enter the invalid state."""
-        self.assertEqual(self.data_accessor.lookup_by_city("FLOODWOOD", "Random"), None)
+        self.assertRaises(ValueError, self.data_accessor.lookup_by_city, "FLOODWOOD", "Random")
 
 
     def test_invalid_city_and_state(self):
         """lookup_by_city(): Tests for invalid city and state arguments."""
-        self.assertEqual(self.data_accessor.lookup_by_city("fake city", "fake state"), None)
+        self.assertRaises(ValueError, self.data_accessor.lookup_by_city, "fake city", "fake state")
 
 
 class TestLookupByCounty(unittest.TestCase):
@@ -96,17 +96,17 @@ class TestLookupByCounty(unittest.TestCase):
 
     def test_invalid_county(self):
         """lookup_by_county(): Test for when we enter invalid county"""
-        self.assertEqual(self.data_accessor.lookup_by_city ("not a county", "MN"), None)
+        self.assertRaises(ValueError, self.data_accessor.lookup_by_city, "not a county", "MN")
 
 
     def test_invalid_state(self):
         """lookup_by_county(): Test for when we enter the invalid state."""
-        self.assertEqual(self.data_accessor.lookup_by_city("Rice", "not a state"), None)
+        self.assertRaises(ValueError, self.data_accessor.lookup_by_city, "Rice", "not a state")
 
 
     def test_invalid_county_and_state(self):
         """lookup_by_county(): Tests for invalid county and state arguments."""
-        self.assertEqual(self.data_accessor.lookup_by_city ("fake county", "fake state"), None)
+        self.assertRaises(ValueError, self.data_accessor.lookup_by_city, "fake county", "fake state")
 
         
 class TestLookupByLocation(unittest.TestCase):
@@ -133,12 +133,12 @@ class TestLookupByLocation(unittest.TestCase):
 
     def test_invalid_county(self):
         """lookup_by_location(): Tests for invalid county argument. """        
-        self.assertEqual(self.data_accessor.lookup_by_location(None, "fake county", "MN"), None)
+        self.assertRaises(ValueError, self.data_accessor.lookup_by_location, None, "fake county", "MN")
 
 
     def test_invalid_city(self):
         """lookup_by_location(): Tests for invalid city argument. """        
-        self.assertEqual(self.data_accessor.lookup_by_location("fake city", "ST. LOUIS", "MN"), None)
+        self.assertRaises(ValueError, self.data_accessor.lookup_by_location, "fake city", "ST. LOUIS", "MN")
 
 
     def test_no_state(self):
