@@ -99,12 +99,11 @@ class DataAccessor:
         county = self.empty_string_to_none(county)
         city = self.empty_string_to_none(city)
 
-
-        if state == None: 
-            raise ValueError("State argument is required for all location queries.") 
-
         if len(state) != 2:
             state = self.get_state_abbreviation_from_name(state)
+
+        if state == None: 
+            raise ValueError("State argumnent was either not provided or could not be resolved to an abbreviation.") 
    
         if city is not None:
             return self.lookup_by_city(city.upper(), state.upper())
@@ -131,7 +130,11 @@ class DataAccessor:
 
         cursor.execute("SELECT abbreviation FROM states WHERE state_name = %s", (state_name,))
 
-        state = cursor.fetchall()[0][0] 
+        try:
+            state = cursor.fetchall()[0][0] 
+        except IndexError:
+            # Index error is throne when an invalid state name is passed.
+            return None
         return state
     
     
