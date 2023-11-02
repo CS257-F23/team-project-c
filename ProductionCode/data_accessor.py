@@ -13,32 +13,10 @@ class DataAccessor:
     def __init__(self, csv_path: str=None, data: list=None):
         """ 
         Constructs a new DataAccessor object for the OilPipelineAccidents dataset. 
-        Also provides a way to manually enter data through the data kwarg. If csv_path
-        is provided, data is ignored.
-        
-        Args (kwargs):
-            csv_path (str): the pathname for the csv file, defaults to None.
-            data (list): a 2D list of user entered data resembling csv format.
+        Immediately sets up a connection with the database.
         """
-        if not csv_path and not data:
-            raise ValueError('You must specify either a csv pathname or manually enter data.')
-        
-        if csv_path:
-            self.data = []
-
-            with open(csv_path, 'r') as file:
-                reader = csv.reader(file)
-                for row in reader:
-                    self.data.append(row)
-            
-            self.headers = self.data[0]
-        else:
-            self.data = data
-            self.headers = []
-            if self.data:
-                self.headers = data[0]
-
         self.connection = self._get_connection()
+
 
     def _get_connection(self):
         try:
@@ -122,10 +100,12 @@ class DataAccessor:
         company = company.upper()
         cursor = self.connection.cursor()
 
-        cursor.execute("SELECT unintentional_release_barrels, net_loss_barrels, all_costs FROM oil_pipeline_accidents WHERE operator_name = %s", (company,))
+        cursor.execute("SELECT unintentional_release_barrels, net_loss_barrels, all_costs "
+                       "FROM oil_pipeline_accidents "
+                       "WHERE operator_name = %s", 
+                       (company,))
 
         selected_rows = cursor.fetchall()    
-        # relevant_rows = self.select_matching_rows([("Operator Name", company)])
         return self.get_totals(selected_rows)
     
     # TODO: add method that returns all of the rows we are interested in
@@ -242,8 +222,7 @@ class DataAccessor:
                        "WHERE accident_state = %s", 
                        (state,))
 
-        selected_rows = cursor.fetchall()    
-        print(selected_rows)
+        selected_rows = cursor.fetchall()
         
         return self.get_totals(selected_rows)
     
@@ -255,13 +234,14 @@ class DataAccessor:
         Returns
             list: list of locations.
         """
-        start_index_row = self.get_index_of('Accident City')
-        locations_with_duplicates = [row[start_index_row: start_index_row + 3] for row in self.data[1:]]
-        locations = []
-        [locations.append(location) for location in locations_with_duplicates if location not in locations]
-        locations.sort(key=lambda location: location[2])
+        cursor = self.connection.cursor()
 
-        return locations
+        cursor.execute("SELECT DISTINCT accident_city, accident_county, accident_state "
+                       "FROM oil_pipeline_accidents "
+                       "ORDER BY accident_state ASC", 
+                       )
+
+        return cursor.fetchall()
     
 
     def get_list_of_locations_by_state(self, state: str) -> list:
@@ -274,12 +254,16 @@ class DataAccessor:
         Returns:
             list: list of locations in the state.
         """
-        all_locations = self.get_list_of_locations()
-        state = state.strip().upper()
-        locations_in_state = [location for location in all_locations if location[2].strip().upper() == state]
-        locations_in_state.sort(key=lambda location: location[1])
+        cursor = self.connection.cursor()
 
-        return locations_in_state
+        cursor.execute("SELECT DISTINCT accident_city, accident_county, accident_state "
+                       "FROM oil_pipeline_accidents "
+                       "WHERE accident_state = %s"
+                       "ORDER BY accident_state ASC",
+                       (state,)
+                       )
+
+        return cursor.fetchall()
 
 
     def get_list_of_companies(self) -> list:
@@ -307,12 +291,12 @@ class DataAccessor:
         Returns:
             list of list: A list of lists, in format [<latitude>, <longitude>]
         """
-        latitudes = [row[self.get_index_of('Accident Latitude')] 
-                     for row in self.select_matching_rows([('Operator Name', company.upper())])]
-        longitudes = [row[self.get_index_of('Accident Longitude')] 
-                      for row in self.select_matching_rows([('Operator Name', company.upper())])]
-
-        return [[latitudes[i], longitudes[i]] for i, _ in enumerate(latitudes)]
+        cursor = self.connection.cursor()
+        cursor.execute("SELECT accident_latitude, accident_longitude "
+                       "FROM oil_pipeline_accidents "
+                       "WHERE operator_name = %s", 
+                       (company, ))
+        return cursor.fetchall()
         
 
     def get_location_spill_coordinates(self, city: str, county: str, state: str) -> list:
@@ -349,18 +333,12 @@ class DataAccessor:
         Returns: 
             list: a list of coordinates in the format [<latitude>, <longitude>].
         """
-        latitudes = [row[self.get_index_of('Accident Latitude')] 
-                        for row in self.select_matching_rows(
-                            [('Accident City', city.upper()), ('Accident State', state.upper())]
-                        )
-                    ]
-        longitudes = [row[self.get_index_of('Accident Longitude')] 
-                        for row in self.select_matching_rows(
-                            [('Accident City', city.upper()), ('Accident State', state.upper())]
-                        )
-                     ]
-
-        return [[latitudes[i], longitudes[i]] for i, _ in enumerate(latitudes)]
+        cursor = self.connection.cursor()
+        cursor.execute("SELECT accident_latitude, accident_longitude "
+                       "FROM oil_pipeline_accidents "
+                       "WHERE accident_state=%s AND accident_city=%s", 
+                       (state, city))
+        return cursor.fetchall()
     
 
     def get_coordinates_by_county(self, county: str, state: str) -> list:
@@ -374,18 +352,12 @@ class DataAccessor:
         Returns: 
             list: a list of coordinates in the format [<latitude>, <longitude>].
         """
-        latitudes = [row[self.get_index_of('Accident Latitude')] 
-                        for row in self.select_matching_rows(
-                            [('Accident County', county.upper()), ('Accident State', state.upper())]
-                        )
-                    ]
-        longitudes = [row[self.get_index_of('Accident Longitude')] 
-                        for row in self.select_matching_rows(
-                            [('Accident County', county.upper()), ('Accident State', state.upper())]
-                        )
-                     ]
-
-        return [[latitudes[i], longitudes[i]] for i, _ in enumerate(latitudes)]
+        cursor = self.connection.cursor()
+        cursor.execute("SELECT accident_latitude, accident_longitude "
+                       "FROM oil_pipeline_accidents "
+                       "WHERE accident_state=%s AND accident_county=%s", 
+                       (state, county))
+        return cursor.fetchall()
     
 
     def get_coordinates_by_state(self, state: str) -> list:
@@ -398,16 +370,10 @@ class DataAccessor:
         Returns: 
             list: a list of coordinates in the format [<latitude>, <longitude>].
         """
-        latitudes = [row[self.get_index_of('Accident Latitude')] 
-                        for row in self.select_matching_rows(
-                            [('Accident State', state.upper())]
-                        )
-                    ]
-        longitudes = [row[self.get_index_of('Accident Longitude')] 
-                        for row in self.select_matching_rows(
-                            [('Accident State', state.upper())]
-                        )
-                     ]
-
-        return [[latitudes[i], longitudes[i]] for i, _ in enumerate(latitudes)]
+        cursor = self.connection.cursor()
+        cursor.execute("SELECT accident_latitude, accident_longitude "
+                       "FROM oil_pipeline_accidents "
+                       "WHERE accident_state=%s", 
+                       (state,))
+        return cursor.fetchall()
 
