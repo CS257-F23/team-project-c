@@ -106,8 +106,7 @@ class DataAccessor:
 
         Returns:
             dict: dictionary with, accidentCount, totalUnintentionalRelease, totalNetLoss and totalCosts
-        """   
-        #TODO: this doesn't work when only 1 accident is passed in from SQL. Probably because it's not a list. Need to fix. -Henry
+        """
         accidentCount = len(rows)
         if accidentCount > 0:
             totalUnintentionalRelease = 0 
@@ -138,6 +137,7 @@ class DataAccessor:
         Returns:
             dict: dictionary of summary data on company, from get_summary_stats()
         """
+        company = company.upper()
         cursor = self.connection.cursor()
 
         cursor.execute("SELECT unintentional_release_barrels, net_loss_barrels, all_costs FROM oil_pipeline_accidents WHERE operator_name = %s", (company,))

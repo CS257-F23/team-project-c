@@ -55,7 +55,7 @@
             </tr>
             <tr>
               <td>Net loss of oil released (barrels)</td>
-              {% if data != None %}
+              {% if data['totalNetLoss'] != None %}
               <td>{{ data['totalNetLoss'] }}</td>
               {% else %}
               <td>NO DATA</td>
