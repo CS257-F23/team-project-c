@@ -43,8 +43,7 @@ class TestLocationPage(unittest.TestCase):
         self.app = app.test_client()
         response = self.app.get('/search-by-location/results?state-search=dne&county-search=&city-search=', 
                                 follow_redirects=True).get_data()
-        self.assertIn(b'NO DATA', response)
-
+        self.assertIn(b'The location you entered was not found in our database. Try searching the whole state', response)
 
     def test_state_stats_correct(self):
         """location_page(): Request state statistics and make sure correct stats displayed. """
