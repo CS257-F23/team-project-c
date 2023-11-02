@@ -312,11 +312,8 @@ form h1 {
 }
 
 .error-msg{
-  color:black;
-  text-decoration: underline;
-  text-decoration-color: red;
-  width: 300px;
-  
+  color:rgb(130, 0, 0);
+  align-self: center;
 }
 
 /*RESULTS PAGE: 

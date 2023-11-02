@@ -1,5 +1,6 @@
 import csv
 import psycopg2
+import sys
 import ProductionCode.psqlConfig as config
 
 class DataAccessor:
@@ -37,14 +38,16 @@ class DataAccessor:
             if self.data:
                 self.headers = data[0]
 
-        self.connection = self.connect()
+        self.connection = self._get_connection()
 
-    # TODO: verify this works
-    def connect(self):
+    def _get_connection(self):
         try:
-            connection = psycopg2.connect(database=config.database, user=config.user, password=config.password, host="localhost")
+            connection = psycopg2.connect(database=config.database, 
+                                          user=config.user, 
+                                          password=config.password, 
+                                          host="localhost")
         except Exception as e:
-            print("Connection error: ", e)
+            print("Error connecting to database. Connection error: ", e, file=sys.stderr)
             exit()
         return connection
 
@@ -207,7 +210,10 @@ class DataAccessor:
         """
         cursor = self.connection.cursor()
 
-        cursor.execute("SELECT unintentional_release_barrels, net_loss_barrels, all_costs FROM oil_pipeline_accidents WHERE accident_city = %s AND accident_state = %s", (city, state))
+        cursor.execute("SELECT unintentional_release_barrels, net_loss_barrels, all_costs "
+                       "FROM oil_pipeline_accidents "
+                       "WHERE accident_city = %s AND accident_state = %s", 
+                       (city, state))
 
         selected_rows = cursor.fetchall()    
         return self.get_totals(selected_rows)
@@ -227,7 +233,10 @@ class DataAccessor:
         
         cursor = self.connection.cursor()
 
-        cursor.execute("SELECT unintentional_release_barrels, net_loss_barrels, all_costs FROM oil_pipeline_accidents WHERE accident_county = %s AND accident_state = %s", (county, state))
+        cursor.execute("SELECT unintentional_release_barrels, net_loss_barrels, all_costs "
+                       "FROM oil_pipeline_accidents "
+                       "WHERE accident_county = %s AND accident_state = %s", 
+                       (county, state))
 
         selected_rows = cursor.fetchall()
         print(selected_rows)    
@@ -246,7 +255,10 @@ class DataAccessor:
         """
         cursor = self.connection.cursor()
 
-        cursor.execute("SELECT unintentional_release_barrels, net_loss_barrels, all_costs FROM oil_pipeline_accidents WHERE accident_state = %s", (state,))
+        cursor.execute("SELECT unintentional_release_barrels, net_loss_barrels, all_costs "
+                       "FROM oil_pipeline_accidents "
+                       "WHERE accident_state = %s", 
+                       (state,))
 
         selected_rows = cursor.fetchall()    
         print(selected_rows)
@@ -295,10 +307,6 @@ class DataAccessor:
         Returns:
             list: list of companies. 
         """
-        companies_with_duplicates = [row[self.get_index_of('Operator Name')] for row in self.data[1:]]
-        companies = []
-        [companies.append(company) for company in companies_with_duplicates if company not in companies]
-        companies.sort()
         cursor = self.connection.cursor()
 
         cursor.execute("SELECT DISTINCT operator_name FROM oil_pipeline_accidents ORDER BY operator_name ASC",)

@@ -49,14 +49,14 @@
     </div>
 
     <div class="fullscreen-container gradient-background">
-      <form action="search-by-location/results">
+      <form action="/search-by-location/results">
         <div class="formCont">
           <h1>Select a Location</h1>
           
           <div class="error-msg">
-            {% for mesg in get_flashed_messages() %}
-            <p>{{ mesg }}<p>
-            {% endfor %}
+            {% if bad_input %}
+            <p>The location you entered was not found in our database. Try searching the whole state.<p>
+            {% endif %}
          </div>
 
 

@@ -18,6 +18,7 @@ def homepage():
     """
     return render_template("home.html")
 
+
 @app.route("/search-by-company")
 def search_by_company():
     """Render search by company form @ [/search-by-company]
@@ -58,7 +59,7 @@ def search_by_company_results():
     map_html = generate_map(company_spill_coordinates)
     return render_template("/search-by-company/results.html", data=company_data, company_name=company_name, mapHTML=map_html)
 
-@app.route("/search-by-location")
+@app.route("/search-by-location", strict_slashes=False)
 def search_by_location():
     """Render search by location search page  @ [/search-by-location/]
     Author: Henry
@@ -67,6 +68,7 @@ def search_by_location():
         str: HTML page @ /templates/search-by-location/form.html
     """
     return render_template("/search-by-location/form.html")
+
 
 @app.route("/search-by-location/results", methods=['GET'])
 def search_by_location_results():
@@ -81,16 +83,22 @@ def search_by_location_results():
     city_name = request.args["city-search"]
     location_data = data.lookup_by_location(city_name, county_name, state_name)
     if location_data == None:
-        flash("The location you entered was not found in our database. Try searching the whole state.")
-        return redirect("/search-by-location")
-
-        
+        return redirect("/search-by-location/bad-input")
 
     location_spill_coordinates = data.get_location_spill_coordinates(city_name, county_name, state_name)
     map_html = generate_map(location_spill_coordinates)
     return render_template("/search-by-location/results.html", data=location_data, 
                            location_name=get_location_name(state_name, county_name, city_name), 
                            mapHTML=map_html)
+
+
+@app.route("/search-by-location/bad-input", strict_slashes=False)
+def search_by_location_bad_input():
+    """ 
+    Returns the search by location page with an added error message 
+    directing the user to input a correct location. 
+    """
+    return render_template("/search-by-location/form.html", bad_input=True)
 
 
 @app.errorhandler(404)
@@ -139,11 +147,15 @@ def about():
     """ Render about page @ [/about] """
     return render_template('about.html')
 
+
 @app.route("/test")
 def test ():
     return str(data.lookup_by_location("", "Rice", "MN"))
 
+
 if __name__ == '__main__':
-    app.secret_key = 'i promise we really need this or else the app doesnt work. trust me.'
+
+    # IN GENERAL DO NOT JUST RUN THIS FILE. USE THE COMMAND:
+    # flask --app app.py run --host 0.0.0.0 --port <YOURPORTNUMBER>
     app.run(host='0.0.0.0', port=5015, debug=True)
 
