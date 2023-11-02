@@ -156,7 +156,7 @@ class TestList(unittest.TestCase):
     
     def test_get_list_of_locations(self):
         """ Test that all locations in data set are listed. """
-        expected = ['MCPHERSON', 'MCPHERSON', 'KS']
+        expected = ('PRUDHOE BAY ', 'NORTH SLOPE BOROUGH', 'AK')
         
         self.assertTrue(expected in self.data_accessor.get_list_of_locations())
 
@@ -174,10 +174,7 @@ class TestSpillCoordinates(unittest.TestCase):
     
     def test_get_company_spill_coordinates(self):
         """ Test that expected coordinates are returned when looking up a company. """
-        self.assertEqual(self.sample_data_accessor.get_company_spill_coordinates('OnEOK Ngl PIPeLINE lP'), [
-            ['38.6707', '-97.78123'],
-            ['35.203837', '-98.06593']
-        ])
+        self.assertEqual(self.sample_data_accessor.get_company_spill_coordinates('LOOP INC'), [(29.47, -90.25444)])
 
 
     def test_get_company_spill_coordinates_invalid(self):
@@ -187,10 +184,8 @@ class TestSpillCoordinates(unittest.TestCase):
 
     def test_get_coordinates_by_state(self):
         """ Test that expected coordinates are returned for the state. """
-        self.assertEqual(self.real_data_accessor.get_coordinates_by_state('Ma'), [
-            ['42.116313', '-72.580633'], 
-            ['42.115822', '-72.580744']
-        ])
+        self.assertEqual(self.real_data_accessor.get_coordinates_by_state('MA'),
+            [(42.116314, -72.580635), (42.11582, -72.58074)])
 
 
 class TestEmptyStringToNone(unittest.TestCase):

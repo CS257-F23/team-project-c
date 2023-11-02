@@ -175,7 +175,6 @@ class DataAccessor:
                        (county, state))
 
         selected_rows = cursor.fetchall()
-        print(selected_rows)    
         return self.get_totals(selected_rows)
     
 
