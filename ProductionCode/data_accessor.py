@@ -30,32 +30,6 @@ class DataAccessor:
         return connection
 
 
-    def get_index_of(self, column_name):
-        return self.headers.index(column_name)
-
-
-    def select_matching_rows(self, rules):
-        """
-        Subset rows from database based with string matching
-        Author: Henry Burkhardt
-
-        Pass an array of doubles (in the format below) to extract data from dataset by string matching columns.
-
-        Args: 
-            criteria (list of double): [(<column_name>, <string_to_match>), ...]
-        """
-        selected_rows = []
-        for row in self.data:
-            matches = []
-            for rule in rules:
-                columnIndex = self.get_index_of(rule[0])
-                matches.append(row[columnIndex].upper().strip() == rule[1].upper().strip())
-
-            if all(matches):
-                selected_rows.append(row)
-        return selected_rows
-
-
     def get_totals(self, rows):
         """
         Calculate summary statistics for a list of oil spill accidents by summing columns.

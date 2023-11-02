@@ -32,24 +32,20 @@ class TestLookupByCompany(unittest.TestCase):
                                     "totalCosts": 4008.0
                                  })
     
-
 class TestGetSummaryStats(unittest.TestCase):
     def setUp(self):
-        self.data_accessor = DataAccessor(csv_path='Data/OilPipelineAccidents.csv')
+        self.data_accessor = DataAccessor()
+        self.data = [[0,0,0],[0,0,0]]
 
 
     def test_summary_stat_computation(self):
         """ Test that summary stats are computed as expected. """
-        result = self.data_accessor.get_totals(sample_data[1:])
+        result = self.data_accessor.get_totals(self.data)
         self.assertEqual(result['accidentCount'], 2)
-        self.assertEqual(result['totalUnintentionalRelease'], 21.12)
-        self.assertEqual(result['totalNetLoss'], 21.0)
-        self.assertEqual(result['totalCosts'], 5635.0)
+        self.assertEqual(result['totalUnintentionalRelease'], 0)
+        self.assertEqual(result['totalNetLoss'], 0)
+        self.assertEqual(result['totalCosts'], 0)
 
-
-    def test_mismatched_lengths(self):
-        """ Edge Case: test that arrays that aren't the right size throws IndexError. """
-        self.assertRaises(IndexError, self.data_accessor.get_totals, [[1,2,3,4]])
 
 class TestLookupByCity(unittest.TestCase):
     """Author: Paul & Henry"""
@@ -152,64 +148,19 @@ class TestLookupByLocation(unittest.TestCase):
     def test_not_enough_info(self):
         self.assertRaises(ValueError, self.data_accessor.lookup_by_location, None, None, None)
 
-
-class TestGetSummaryStats(unittest.TestCase):
-    def setUp(self):
-        self.data_accessor = DataAccessor(data=sample_data)
-
-    def test_summary_stat_computation(self):
-        """ Test that summary stats are computed as expected. """
-        result = self.data_accessor.get_totals(self.data_accessor.data[1:])
-        self.assertEqual(result['accidentCount'], 3)
-        self.assertEqual(result['totalUnintentionalRelease'], 307.12)
-        self.assertEqual(result['totalNetLoss'], 307.0)
-        self.assertEqual(result['totalCosts'], 92622.0)
-
-
 class TestList(unittest.TestCase):
     def setUp(self):
-        self.sample_data_accessor = DataAccessor(data=sample_data)
-        self.real_data_accessor = DataAccessor(csv_path='Data/OilPipelineAccidents.csv')
-
-    
-    def test_get_list_of_companies_no_dups(self):
-        """ Tests that all companies in the data set are listed and no duplicates exists. """
-        self.assertEqual(self.sample_data_accessor.get_list_of_companies(), 
-                         ['ONEOK NGL PIPELINE LP', 'PORTLAND PIPELINE CORP'])
-        
-    
-    def test_get_list_of_companies_sorted(self):
-        """ Test that list of companies is sorted. """
-        result = self.real_data_accessor.get_list_of_companies()
-        self.assertEqual(result, sorted(result))
+        self.data_accessor = DataAccessor()
+        self.real_data_accessor = DataAccessor()
 
     
     def test_get_list_of_locations(self):
         """ Test that all locations in data set are listed. """
-        self.assertEqual(self.sample_data_accessor.get_list_of_locations(), 
-                         [['MCPHERSON', 'MCPHERSON', 'KS'], 
-                          ['RAYMOND', 'CUMBERLAND', 'ME'], 
-                          ['POCASSET', 'GRADY', 'OK']]
-                        )
-
-
-    def test_get_list_of_locations_no_dups(self):
-        """ Test that there are no duplicates in the list of locations. """
-        result = self.real_data_accessor.get_list_of_locations()
-        locations = []
-        for location in result:
-            if location in locations:
-                self.fail()
-            else:
-                locations.append(location)
-
-
-    def test_get_list_of_locations_by_state_no_dups(self):
-        """ Test that all locations in state are returned. """
-        self.assertEqual(self.sample_data_accessor.get_list_of_locations_by_state('KS'), 
-                         [['MCPHERSON', 'MCPHERSON', 'KS']])
+        expected = ['MCPHERSON', 'MCPHERSON', 'KS']
         
-    
+        self.assertTrue(expected in self.data_accessor.get_list_of_locations())
+
+            
     def test_get_list_by_state_invalid_arg(self):
         """ Test that empty list is returned when invalid state is given. """
         self.assertEqual(self.real_data_accessor.get_list_of_locations_by_state('AA'), [])

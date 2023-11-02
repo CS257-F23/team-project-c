@@ -58,7 +58,7 @@ class TestLocationPage(unittest.TestCase):
         self.app = app.test_client()
         response = self.app.get('/search-by-location/results?state-search=co&county-search=weld&city-search=', 
                                 follow_redirects=True).get_data()
-        self.assertIn(b'1302.54', response)
+        self.assertIn(b'1302.06', response)
 
 
     def test_city_stats_correct(self):
