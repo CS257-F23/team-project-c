@@ -127,7 +127,8 @@ class TestLookupByLocation(unittest.TestCase):
 
     def test_invalid_state(self):
         """lookup_by_location(): Tests for invalid state argument. """        
-        self.assertEqual(self.data_accessor.lookup_by_location("FLOODWOOD", "ST. LOUIS", "Random"), None)
+        self.assertRaises(ValueError, self.data_accessor.lookup_by_location, "FLOODWOOD", "ST. LOUIS", "Random")
+       
 
 
     def test_invalid_county(self):

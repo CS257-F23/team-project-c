@@ -59,7 +59,7 @@ class DataAccessor:
                     'totalNetLoss': totalNetLoss, 
                     'totalCosts' : totalCosts
                     } 
-        return None
+        raise ValueError("No data was passed in. If running from a query, this means the query returned no data.")
 
 
     def lookup_company(self, company):
@@ -99,11 +99,15 @@ class DataAccessor:
         county = self.empty_string_to_none(county)
         city = self.empty_string_to_none(city)
 
+        if state == None:
+            raise ValueError("State name was not given.")
+
         if len(state) != 2:
             state = self.get_state_abbreviation_from_name(state)
 
-        if state == None: 
-            raise ValueError("State argumnent was either not provided or could not be resolved to an abbreviation.") 
+
+        # if state == None: 
+        #     raise ValueError("State argumnent was either not provided or could not be resolved to an abbreviation.") 
    
         if city is not None:
             return self.lookup_by_city(city.upper(), state.upper())
@@ -134,7 +138,7 @@ class DataAccessor:
             state = cursor.fetchall()[0][0] 
         except IndexError:
             # Index error is throne when an invalid state name is passed.
-            return None
+            raise ValueError("State name did not resolve to an abreviation") 
         return state
     
     
