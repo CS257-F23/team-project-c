@@ -105,6 +105,15 @@ class DataAccessor:
         if state == None: 
             raise ValueError("State argument is required for all location queries.") 
 
+        if len(state) != 2:
+            cursor = self.connection.cursor()
+
+            cursor.execute("SELECT abbreviation FROM states WHERE state_name = %s", (state,))
+
+            state = cursor.fetchall()[0][0] 
+            print(state)
+   
+
         if city is not None:
             return self.lookup_by_city(city.upper(), state.upper())
         
