@@ -106,14 +106,8 @@ class DataAccessor:
             raise ValueError("State argument is required for all location queries.") 
 
         if len(state) != 2:
-            cursor = self.connection.cursor()
-
-            cursor.execute("SELECT abbreviation FROM states WHERE state_name = %s", (state,))
-
-            state = cursor.fetchall()[0][0] 
-            print(state)
+            state = self.get_state_abbreviation_from_name(state)
    
-
         if city is not None:
             return self.lookup_by_city(city.upper(), state.upper())
         
@@ -125,7 +119,14 @@ class DataAccessor:
         
         return ValueError("Not enough enough information was provided to complete your query.")
     
+    def get_state_abbreviation_from_name(self, name):
+        cursor = self.connection.cursor()
 
+        cursor.execute("SELECT abbreviation FROM states WHERE state_name = %s", (name,))
+
+        state = cursor.fetchall()[0][0] 
+        return state
+    
     def empty_string_to_none(self, string) -> str:
         """
         Convert empty strings to None
