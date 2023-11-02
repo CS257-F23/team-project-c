@@ -1,4 +1,3 @@
-import csv
 import psycopg2
 import sys
 import ProductionCode.psqlConfig as config
@@ -19,6 +18,11 @@ class DataAccessor:
 
 
     def _get_connection(self):
+        """Initiates connection to psql server
+
+        Returns:
+            psycopg2.connection: connection to the database
+        """        
         try:
             connection = psycopg2.connect(database=config.database, 
                                           user=config.user, 
@@ -31,8 +35,7 @@ class DataAccessor:
 
 
     def get_totals(self, rows):
-        """
-        Calculate summary statistics for a list of oil spill accidents by summing columns.
+        """Calculate summary statistics for a list of oil spill accidents by summing columns.
         Author: Henry Burkhardt
 
         Args:
@@ -61,8 +64,7 @@ class DataAccessor:
 
 
     def lookup_company(self, company):
-        """
-        Return a dictionary with summary statistics about all accidents involving the given company.
+        """Return a dictionary with summary statistics about all accidents involving the given company.
         Author: Henry Burkhardt
 
         Args:
@@ -81,13 +83,10 @@ class DataAccessor:
 
         selected_rows = cursor.fetchall()    
         return self.get_totals(selected_rows)
-    
-    # TODO: add method that returns all of the rows we are interested in
-    
+        
 
     def lookup_by_location(self, city, county, state): 
-        """
-        Get info about spills in a give city, county or state. 
+        """Get info about spills in a give city, county or state. 
         Author: Paul Claudel Izabayo
 
         Args:
@@ -119,17 +118,25 @@ class DataAccessor:
         
         return ValueError("Not enough enough information was provided to complete your query.")
     
-    def get_state_abbreviation_from_name(self, name):
+    
+    def get_state_abbreviation_from_name(self, state_name) -> str:
+        """Get the two letter abbreviation from the full state name 
+
+        Args:
+            state_name (str): full name of state
+
+        Returns:
+            str: two letter state abbreviation
+        """        
         cursor = self.connection.cursor()
 
-        cursor.execute("SELECT abbreviation FROM states WHERE state_name = %s", (name,))
+        cursor.execute("SELECT abbreviation FROM states WHERE state_name = %s", (state_name,))
 
         state = cursor.fetchall()[0][0] 
         return state
     
     def empty_string_to_none(self, string) -> str:
-        """
-        Convert empty strings to None
+        """Convert empty strings to None
         Author: Henry
 
         Args:
@@ -144,8 +151,7 @@ class DataAccessor:
 
 
     def lookup_by_city(self, city, state):
-        """
-        Returns total spill stats for a city.
+        """Returns total spill stats for a city.
 
         Args:
             city (str): name of city
@@ -166,8 +172,7 @@ class DataAccessor:
     
 
     def lookup_by_county(self, county, state):
-        """
-        Returns total spill stats for a county.
+        """Returns total spill stats for a county.
 
         Args:
             county (str): name of county
@@ -189,8 +194,7 @@ class DataAccessor:
     
 
     def lookup_by_state(self, state):
-        """
-        Returns total spill stats for a state
+        """Returns total spill stats for a state
 
         Args:
             state (str): name of state
@@ -211,8 +215,7 @@ class DataAccessor:
     
 
     def get_list_of_locations(self) -> list:
-        """
-        Returns a list of all locations in the dataset sorted by state.
+        """Returns a list of all locations in the dataset sorted by state.
 
         Returns
             list: list of locations.
@@ -228,8 +231,7 @@ class DataAccessor:
     
 
     def get_list_of_locations_by_state(self, state: str) -> list:
-        """
-        Returns a list of all locations in a state sorted by county.
+        """Returns a list of all locations in a state sorted by county.
 
         Args:
             state (str): the two letter abbreviation for the state.
@@ -250,8 +252,7 @@ class DataAccessor:
 
 
     def get_list_of_companies(self) -> list:
-        """ 
-        Returns a sorted list of all companies in the dataset. 
+        """Returns a sorted list of all companies in the dataset. 
         
         Returns:
             list: list of companies. 
@@ -265,8 +266,7 @@ class DataAccessor:
     
 
     def get_company_spill_coordinates(self, company) -> list:
-        """
-        Gets a list of coordinates for all the spills caused by specified company.
+        """Gets a list of coordinates for all the spills caused by specified company.
         
         Args:
             company (str): name of company
@@ -283,8 +283,7 @@ class DataAccessor:
         
 
     def get_location_spill_coordinates(self, city: str, county: str, state: str) -> list:
-        """ 
-        Gets a list of coordinates of all spills in a specific area. 
+        """Gets a list of coordinates of all spills in a specific area. 
         
         Args:
             city (str): specify the city, can be None.
@@ -306,8 +305,7 @@ class DataAccessor:
         
     
     def get_coordinates_by_city(self, city: str, state: str) -> list:
-        """ 
-        Gets a list of coordinates of all spills in city. 
+        """Gets a list of coordinates of all spills in city. 
 
         Args:
             city (str): the city.
@@ -325,8 +323,7 @@ class DataAccessor:
     
 
     def get_coordinates_by_county(self, county: str, state: str) -> list:
-        """ 
-        Gets a list of coordinates of all spills in county. 
+        """Gets a list of coordinates of all spills in county. 
 
         Args:
             county (str): the county.
@@ -344,8 +341,7 @@ class DataAccessor:
     
 
     def get_coordinates_by_state(self, state: str) -> list:
-        """ 
-        Gets a list of coordinates of all spills in state. 
+        """Gets a list of coordinates of all spills in state. 
 
         Args:
             state (str): the state.
