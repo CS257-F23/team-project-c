@@ -3,8 +3,7 @@ import sys
 import ProductionCode.psqlConfig as config
 
 class DataAccessor:
-    """ 
-    The DataAccessor class provides a wrapper around our dataset, which is loaded on
+    """The DataAccessor class provides a wrapper around our dataset, which is loaded on
     construction of a DataAccessor object. The class provides several methods for
     getting specific statistics, as well as many smaller helper functions.
     """
@@ -17,8 +16,8 @@ class DataAccessor:
         self.connection = self._get_connection()
 
 
-    def _get_connection(self):
-        """Initiates connection to psql server
+    def _get_connection(self) -> psycopg2.connect:
+        """Initiates psycopg2 connection to psql server
 
         Returns:
             psycopg2.connection: connection to the database
@@ -135,6 +134,7 @@ class DataAccessor:
         state = cursor.fetchall()[0][0] 
         return state
     
+    
     def empty_string_to_none(self, string) -> str:
         """Convert empty strings to None
         Author: Henry
@@ -214,7 +214,7 @@ class DataAccessor:
         return self.get_totals(selected_rows)
     
 
-    def get_list_of_locations(self) -> list:
+    def get_list_of_locations(self) -> list[str]:
         """Returns a list of all locations in the dataset sorted by state.
 
         Returns
@@ -230,7 +230,7 @@ class DataAccessor:
         return cursor.fetchall()
     
 
-    def get_list_of_locations_by_state(self, state: str) -> list:
+    def get_list_of_locations_by_state(self, state: str) -> list[str]:
         """Returns a list of all locations in a state sorted by county.
 
         Args:
@@ -251,7 +251,7 @@ class DataAccessor:
         return cursor.fetchall()
 
 
-    def get_list_of_companies(self) -> list:
+    def get_list_of_companies(self) -> list[str]:
         """Returns a sorted list of all companies in the dataset. 
         
         Returns:
@@ -265,7 +265,7 @@ class DataAccessor:
         return companies
     
 
-    def get_company_spill_coordinates(self, company) -> list:
+    def get_company_spill_coordinates(self, company) -> list[tuple[int, int]]:
         """Gets a list of coordinates for all the spills caused by specified company.
         
         Args:
@@ -282,7 +282,7 @@ class DataAccessor:
         return cursor.fetchall()
         
 
-    def get_location_spill_coordinates(self, city: str, county: str, state: str) -> list:
+    def get_location_spill_coordinates(self, city: str, county: str, state: str) -> list[tuple[int, int]]:
         """Gets a list of coordinates of all spills in a specific area. 
         
         Args:
@@ -304,7 +304,7 @@ class DataAccessor:
             return self.get_coordinates_by_state(state)
         
     
-    def get_coordinates_by_city(self, city: str, state: str) -> list:
+    def get_coordinates_by_city(self, city: str, state: str) -> list[tuple[int, int]]:
         """Gets a list of coordinates of all spills in city. 
 
         Args:
@@ -322,7 +322,7 @@ class DataAccessor:
         return cursor.fetchall()
     
 
-    def get_coordinates_by_county(self, county: str, state: str) -> list:
+    def get_coordinates_by_county(self, county: str, state: str) -> list[tuple[int, int]]:
         """Gets a list of coordinates of all spills in county. 
 
         Args:
@@ -340,7 +340,7 @@ class DataAccessor:
         return cursor.fetchall()
     
 
-    def get_coordinates_by_state(self, state: str) -> list:
+    def get_coordinates_by_state(self, state: str) -> list[tuple[int, int]]:
         """Gets a list of coordinates of all spills in state. 
 
         Args:
@@ -355,4 +355,3 @@ class DataAccessor:
                        "WHERE accident_state=%s", 
                        (state,))
         return cursor.fetchall()
-
