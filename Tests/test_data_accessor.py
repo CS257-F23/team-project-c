@@ -51,31 +51,6 @@ class TestGetSummaryStats(unittest.TestCase):
         """ Edge Case: test that arrays that aren't the right size throws IndexError. """
         self.assertRaises(IndexError, self.data_accessor.get_totals, [[1,2,3,4]])
 
-
-class TestGetNumericValue(unittest.TestCase):
-    def setUp(self):
-        self.data_accessor = DataAccessor(data=sample_data)
-        self.row = sample_data[1]
-
-
-    def test_get_values(self):
-        """ Make sure correct row value gets returned from this helper function. """
-        self.assertEqual(self.data_accessor.get_numeric_value(self.row, 'Report Number'), 20100016) 
-        self.assertEqual(self.data_accessor.get_numeric_value(self.row, 'Accident Year'), 2010) 
-        self.assertEqual(self.data_accessor.get_numeric_value(self.row, 'Operator ID'), 32109) 
-    
-
-    def test_out_of_bounds(self):
-        """ Edge case: testing out of bounds indexing. """
-        self.assertRaises(ValueError, self.data_accessor.get_numeric_value, self.row, "fake column")
-
-
-    def test_empty_arrays(self):
-        """ Edge case: testing empty row and column name values. """
-        self.assertRaises(ValueError, self.data_accessor.get_numeric_value, [], "fake column")
-        self.assertRaises(ValueError, self.data_accessor.get_numeric_value, [], "")
-
-
 class TestLookupByCity(unittest.TestCase):
     """Author: Paul & Henry"""
     def setUp(self):

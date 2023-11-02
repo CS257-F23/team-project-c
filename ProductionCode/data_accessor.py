@@ -56,24 +56,6 @@ class DataAccessor:
         return self.headers.index(column_name)
 
 
-    def get_numeric_value(self, row, column_name):
-        """
-        Given a list of headers, a row of data, and a column name, returns the value in the specified column as a float.
-        Author: Henry Burkhardt
-
-        Args:
-            headers (list): list of strings indicating column names 
-            row (list): a single row from the dataset
-            column_name (str): name of column to extract data from
-
-        Returns:
-            float: numeric value to extract
-        """    
-        
-        index = self.get_index_of(column_name)
-        return float(row[index])
-
-
     def select_matching_rows(self, rules):
         """
         Subset rows from database based with string matching
