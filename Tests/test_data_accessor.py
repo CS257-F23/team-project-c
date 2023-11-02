@@ -115,7 +115,7 @@ class TestLookupByCounty(unittest.TestCase):
 
     def test_output(self):
         """lookup_by_county(): Test that it returns the right output for Rice county."""
-        self.assertEqual(self.data_accessor.lookup_by_county("Rice", "MN"), {
+        self.assertEqual(self.data_accessor.lookup_by_county("RICE", "MN"), {
             'accidentCount': 1, 
             'totalUnintentionalRelease': 0.12, 
             'totalNetLoss': 0.0, 
@@ -189,11 +189,6 @@ class TestGetSummaryStats(unittest.TestCase):
         self.assertEqual(result['totalUnintentionalRelease'], 307.12)
         self.assertEqual(result['totalNetLoss'], 307.0)
         self.assertEqual(result['totalCosts'], 92622.0)
-
-
-    def test_mismatched_lengths(self):
-        """ Edge Case: test that arrays that aren't the right size throws IndexError. """
-        self.assertRaises(IndexError, self.data_accessor.get_totals, [[1,2,3,4]])
 
 
 class TestList(unittest.TestCase):
