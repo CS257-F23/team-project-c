@@ -31,6 +31,7 @@ def search_by_company():
     """
     return render_template("/search-by-company/form.html", rows=data.get_list_of_companies())
 
+
 @app.route("/search-by-company/results", methods=['GET'])
 def search_by_company_results():
     """Render company results page @ [/search-by-company/results]
@@ -53,11 +54,24 @@ def search_by_company_results():
         if request.args['company-name-search'] == "" and 'company-name-dropdown' not in request.args:
             return redirect("/search-by-company")
         company_name = request.args['company-name-search']
-
-    company_data = data.lookup_company(company_name)
+    
+    try:
+        company_data = data.lookup_company(company_name)
+    except ValueError:
+        return redirect("/search-by-company/bad-input")
+    
     company_spill_coordinates = data.get_company_spill_coordinates(company_name)
     map_html = generate_map(company_spill_coordinates)
     return render_template("/search-by-company/results.html", data=company_data, company_name=company_name, mapHTML=map_html)
+
+@app.route("/search-by-company/bad-input", strict_slashes=False)
+def search_by_company_bad_input():
+   """ 
+    Returns the search by location page with an added error message 
+    directing the user to input a correct location. 
+    """
+   return render_template("/search-by-company/form.html", bad_input=True, rows=data.get_list_of_companies())
+
 
 @app.route("/search-by-location", strict_slashes=False)
 def search_by_location():
@@ -117,6 +131,7 @@ def page_not_found(error):
         str: the html page for 404 error.
     """
     return render_template('page-not-found.html')
+
 
 @app.errorhandler(500)
 def internal_error(error):

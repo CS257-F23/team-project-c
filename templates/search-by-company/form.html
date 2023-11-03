@@ -52,6 +52,12 @@
       <form action="search-by-company/results">
         <div class="formCont">
           <h1>Find a Company</h1>
+         
+          <div class="error-msg">
+            {% if bad_input %}
+            <p>The company you entered was not found in our database.<p>
+            {% endif %}
+         </div>
 
           <select name="company-name-dropdown" id="company-name-dropdown">
             <option value="" disabled selected>Select a company...</option>
