@@ -89,8 +89,8 @@ def search_by_location_results():
     except ValueError:
         return redirect("/search-by-location/bad-input")
     
-    if len(state) != 2:
-        state = data.get_state_abbreviation_from_name(state)
+    if len(state_name) != 2:
+        state_name = data.get_state_abbreviation_from_name(state_name)
     
     location_spill_coordinates = data.get_location_spill_coordinates(city_name, county_name, state_name)
     map_html = generate_map(location_spill_coordinates)
