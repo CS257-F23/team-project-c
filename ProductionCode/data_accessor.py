@@ -383,6 +383,19 @@ class DataAccessor:
         return cursor.fetchall()[0]
     
 
+    def get_all_spill_coordinates(self) -> list[tuple[float, float]]:
+        """ 
+        Get a list of all the coordinates (i.e. every spill) in the dataset.
+
+        Returns:
+            list: a list of tuples for coordinates.
+        """
+        cursor = self.connection.cursor()
+        cursor.execute("SELECT accident_latitude, accident_longitude "
+                       "FROM oil_pipeline_accidents ")
+        return cursor.fetchall()
+    
+
     def get_leaders(self) -> list[tuple]:
         """ 
         Get all the data from the leaderboard. This returns the top 

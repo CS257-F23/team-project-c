@@ -187,6 +187,11 @@ class TestSpillCoordinates(unittest.TestCase):
         """ Test that expected coordinates are returned for the state. """
         self.assertEqual(self.real_data_accessor.get_coordinates_by_state('MA'),
             [(42.116314, -72.580635), (42.11582, -72.58074)])
+        
+
+    def test_get_all_coordinates(self):
+        """ Test that all coordinates are returned. """
+        self.assertEqual(len(self.real_data_accessor.get_all_spill_coordinates()), 2795)
 
 
 class TestEmptyStringToNone(unittest.TestCase):
