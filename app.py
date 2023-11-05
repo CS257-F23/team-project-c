@@ -64,6 +64,7 @@ def search_by_company_results():
     map_html = generate_map(company_spill_coordinates)
     return render_template("/search-by-company/results.html", data=company_data, company_name=company_name, mapHTML=map_html)
 
+
 @app.route("/search-by-company/bad-input", strict_slashes=False)
 def search_by_company_bad_input():
    """ 
@@ -122,26 +123,18 @@ def search_by_location_bad_input():
     return render_template("/search-by-location/form.html", bad_input=True)
 
 
-@app.errorhandler(404)
-def page_not_found(error):
-    """
-    Display the 404 error page with user submitted URL.
+# TODO, make an html page
+@app.route("/spillinfo/<latitude>/<longitude>", strict_slashes=False)
+def spillinfo(latitude, longitude):
+    """ 
+    A page that lists all available information about an oil spill at a 
+    particular location.
 
-    Returns:
-        str: the html page for 404 error.
+    Args:
+        latitude
+        longitude
     """
-    return render_template('page-not-found.html')
-
-
-@app.errorhandler(500)
-def internal_error(error):
-    """
-    Display the 500 error page with user caused an error. Yes it's the user's fault. 
-
-    Returns:
-        str: the html page for 505 error.
-    """
-    return render_template('internal-error.html', error=error)
+    return str(data.get_spill_data_by_location(latitude, longitude))
 
 
 @app.route("/leaderboard")
@@ -170,9 +163,26 @@ def about():
     return render_template('about.html')
 
 
-@app.route("/test")
-def test ():
-    return str(data.lookup_by_location("", "Rice", "MN"))
+@app.errorhandler(404)
+def page_not_found(error):
+    """
+    Display the 404 error page with user submitted URL.
+
+    Returns:
+        str: the html page for 404 error.
+    """
+    return render_template('page-not-found.html')
+
+
+@app.errorhandler(500)
+def internal_error(error):
+    """
+    Display the 500 error page with user caused an error. Yes it's the user's fault. 
+
+    Returns:
+        str: the html page for 505 error.
+    """
+    return render_template('internal-error.html', error=error)
 
 
 if __name__ == '__main__':

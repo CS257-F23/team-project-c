@@ -132,7 +132,7 @@ class DataAccessor:
         """        
         cursor = self.connection.cursor()
 
-        cursor.execute("SELECT abbreviation FROM states WHERE state_name = %s", (state_name,))
+        cursor.execute("SELECT abbreviation FROM states WHERE state_name = %s", (state_name.title(),))
 
         try:
             state = cursor.fetchall()[0][0] 
@@ -304,11 +304,11 @@ class DataAccessor:
             raise ValueError("State argument is required for all location queries.")
         
         if city:
-            return self.get_coordinates_by_city(city, state)
+            return self.get_coordinates_by_city(city.upper(), state.upper())
         elif county:
-            return self.get_coordinates_by_county(county, state)
+            return self.get_coordinates_by_county(county.upper(), state.upper())
         else:
-            return self.get_coordinates_by_state(state)
+            return self.get_coordinates_by_state(state.upper())
         
     
     def get_coordinates_by_city(self, city: str, state: str) -> list[tuple[int, int]]:
@@ -362,6 +362,25 @@ class DataAccessor:
                        "WHERE accident_state=%s", 
                        (state,))
         return cursor.fetchall()
+    
+
+    def get_spill_data_by_location(self, latitude: float, longitude: float) -> tuple:
+        """
+        Look up a specific location of an oil spill and return the entire row
+        from the database. Assumes no two spills are in the exact same location.
+
+        Args:
+            latitude (float): latitude.
+            longitude (float): longitude.
+
+        Returns:
+            tuple: the entire row corresponding to this location.
+        """
+        cursor = self.connection.cursor()
+        cursor.execute("SELECT * FROM oil_pipeline_accidents "
+                       "WHERE accident_latitude = %s AND accident_longitude = %s", 
+                       (latitude, longitude))
+        return cursor.fetchall()[0]
     
 
     def get_leaders(self) -> list[tuple]:
