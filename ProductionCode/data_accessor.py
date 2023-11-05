@@ -33,7 +33,7 @@ class DataAccessor:
         return connection
 
 
-    def get_totals(self, rows):
+    def _get_totals(self, rows):
         """Calculate summary statistics for a list of oil spill accidents by summing columns.
         Author: Henry Burkhardt
 
@@ -81,7 +81,7 @@ class DataAccessor:
                        (company,))
 
         selected_rows = cursor.fetchall()    
-        return self.get_totals(selected_rows)
+        return self._get_totals(selected_rows)
         
 
     def lookup_by_location(self, city, county, state): 
@@ -175,7 +175,7 @@ class DataAccessor:
                        (city, state))
 
         selected_rows = cursor.fetchall()    
-        return self.get_totals(selected_rows)
+        return self._get_totals(selected_rows)
     
 
     def lookup_by_county(self, county, state):
@@ -197,7 +197,7 @@ class DataAccessor:
                        (county, state))
 
         selected_rows = cursor.fetchall()
-        return self.get_totals(selected_rows)
+        return self._get_totals(selected_rows)
     
 
     def lookup_by_state(self, state):
@@ -218,7 +218,7 @@ class DataAccessor:
 
         selected_rows = cursor.fetchall()
         
-        return self.get_totals(selected_rows)
+        return self._get_totals(selected_rows)
     
 
     def get_list_of_locations(self) -> list[str]:
@@ -362,3 +362,71 @@ class DataAccessor:
                        "WHERE accident_state=%s", 
                        (state,))
         return cursor.fetchall()
+    
+
+    def get_leaders(self) -> list[tuple]:
+        """ 
+        Get all the data from the leaderboard. This returns the top 
+        10 worst offending companies and summary statistics about them.
+
+        Returns:
+            list[tuple]: data for the top ten companies.
+        """
+        cursor = self.connection.cursor()
+        cursor.execute("SELECT * FROM leaders")
+        return cursor.fetchall()
+    
+    
+    def _get_totals_for_all_companies(self) -> list:
+        """ 
+        A helper method to get summary statistics for every company and 
+        compile it into a list. 
+
+        Returns:
+            list: returns a list of dictionaries of the same form as the get_totals()
+                  method, with an additional key for companyName.
+        """
+        companies = self.get_list_of_companies()
+        company_data = []
+        for company in companies:
+            summary_stats = self.lookup_company(company)
+            summary_stats.update({'companyName': company})
+            company_data.append(summary_stats)
+        
+        return company_data
+    
+
+    def _compute_leaders(self):
+        """
+        DO NOT CALL THIS FUNCTION IF YOU JUST WANT A LIST OF THE LEADERS.
+
+        Computes the top ten worst offending companies in terms of total net loss,
+        which most directly correlates to environmental damage. Injuries are not
+        taken into account. This is a pretty inefficient way of doing this, so only
+        run using the update_leaders.py script when the data changes.
+        """
+        
+        company_data = self._get_totals_for_all_companies()
+        company_data.sort(key=lambda company: company['totalNetLoss'], reverse=True)
+
+        cursor = self.connection.cursor()        
+        cursor.execute("DROP TABLE IF EXISTS leaders")
+        cursor.execute("CREATE TABLE leaders ("
+                       "company_name text, "
+                       "accident_count int, "
+                       "total_unintentional_release real, "
+                       "total_net_loss real, "
+                       "total_costs int)"
+                       )
+
+        for company in company_data[:10]:
+            cursor.execute("INSERT INTO leaders VALUES (%s, %s, %s, %s, %s)", (
+                company['companyName'], 
+                company['accidentCount'], 
+                company['totalUnintentionalRelease'], 
+                company['totalNetLoss'], 
+                company['totalCosts']
+            ))
+
+        self.connection.commit() # Tell the database that I want these changes to happen
+        

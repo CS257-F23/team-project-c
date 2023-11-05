@@ -40,7 +40,7 @@ class TestGetSummaryStats(unittest.TestCase):
 
     def test_summary_stat_computation(self):
         """ Test that summary stats are computed as expected. """
-        result = self.data_accessor.get_totals(self.data)
+        result = self.data_accessor._get_totals(self.data)
         self.assertEqual(result['accidentCount'], 2)
         self.assertEqual(result['totalUnintentionalRelease'], 0)
         self.assertEqual(result['totalNetLoss'], 0)
