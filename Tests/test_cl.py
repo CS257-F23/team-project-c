@@ -134,10 +134,10 @@ class TestCLIntegration(unittest.TestCase):
         code = subprocess.Popen(['python3', '-u', 'pyspill.py', 'leaders'], 
                                 stdin=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf8')
         out, err = code.communicate()
-        code.terminate()        
+        code.terminate()      
 
         self.assertIn('10. NUSTAR LOGISTICS, L.P.', out)
-        
+
     
 if __name__ == "__main__":
     unittest.main()

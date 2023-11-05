@@ -207,3 +207,14 @@ class TestEmptyStringToNone(unittest.TestCase):
 
         result = self.data_accessor.empty_string_to_none("non empty")
         self.assertEqual(result, "non empty")
+
+
+class TestLeaders(unittest.TestCase):
+    def setUp(self):
+        self.data_accessor = DataAccessor()
+
+
+    def test_get_leaders(self):
+        """ Make sure that get_leaders() gives correct output. """
+        output = self.data_accessor.get_leaders()
+        self.assertIn(('ENTERPRISE PRODUCTS OPERATING LLC', 155, 114044.32, 112839.5, 40118252), output)
