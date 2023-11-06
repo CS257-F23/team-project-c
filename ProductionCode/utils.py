@@ -5,12 +5,17 @@ Contains helper functions for routes defined in app.py
 """
 from flask import render_template, render_template_string
 import plotly.graph_objects as go
+import geojson
+import pandas
+import json
+
 
 default_map_style = {
     'size':10, 
     'color':'#FEBF00',
     'map-type':'satellite-streets'
     }
+ 
 
 def generate_map(coordinates, style=default_map_style):
     """Create Plotly Scattermapbox figure object with points for a list of coordinates
@@ -24,7 +29,7 @@ def generate_map(coordinates, style=default_map_style):
 
     Returns:
         str: an HTML string with the map object (displayed in a <canvas> tag in HTML)
-    """    
+    """   
     mapbox_access_token = "pk.eyJ1IjoiYnVya2hhcmR0aCIsImEiOiJjbG5ydXUwOTIwdTJyMmtvMXVpZzFqdzg5In0.kUE_ksbHTedhgtgR7f8YVg"
 
     map = go.Figure(go.Scattermapbox(
@@ -35,7 +40,7 @@ def generate_map(coordinates, style=default_map_style):
                 size=style['size'],
                 color=style['color'],      
             ),
-            name="Pipeline Spill"
+            name="pipeline-map"
         )
     )
 
@@ -55,6 +60,17 @@ def generate_map(coordinates, style=default_map_style):
             zoom=3
         )
     )
+    # FEATURE IN PROGRESS
+    # map.update_layout(
+    #     mapbox_layers=[{
+    #         'name':'pipelines',
+    #         'sourcetype':'geojson',
+    #         'source':gj,
+    #         'type':'fill',
+    #         'color':'red'
+    #     }]
+    # )
+
 
     return plotly_object_to_html(map)
 
