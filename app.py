@@ -153,8 +153,8 @@ def map():
     """Render big map of all spills in the database @ [/map]
     """
     coordinates = data.get_all_spill_coordinates()
-    map_html = generate_map(coordinates)
-    return render_template('map.html', maphtml=map_html)
+    map_html = generate_map(coordinates, {'size':2, 'color':'red', 'map-type':'dark'})
+    return render_template('map.html', mapHTML=map_html)
 
 
 @app.route("/about")
@@ -189,5 +189,5 @@ if __name__ == '__main__':
 
     # IN GENERAL DO NOT JUST RUN THIS FILE. USE THE COMMAND:
     # flask --app app.py run --host 0.0.0.0 --port <YOURPORTNUMBER>
-    app.run(host='0.0.0.0', port=5015, debug=True)
+    app.run(host='0.0.0.0', port=5015)
 

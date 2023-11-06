@@ -5,9 +5,19 @@ Contains helper functions for routes defined in app.py
 """
 from flask import render_template, render_template_string
 import plotly.graph_objects as go
+import geojson
+import pandas
+import json
 
 
-def generate_map(coordinates):
+default_map_style = {
+    'size':10, 
+    'color':'#FEBF00',
+    'map-type':'satellite-streets'
+    }
+ 
+
+def generate_map(coordinates, style=default_map_style):
     """Create Plotly Scattermapbox figure object with points for a list of coordinates
     Author: Henry 
 
@@ -19,7 +29,7 @@ def generate_map(coordinates):
 
     Returns:
         str: an HTML string with the map object (displayed in a <canvas> tag in HTML)
-    """    
+    """   
     mapbox_access_token = "pk.eyJ1IjoiYnVya2hhcmR0aCIsImEiOiJjbG5ydXUwOTIwdTJyMmtvMXVpZzFqdzg5In0.kUE_ksbHTedhgtgR7f8YVg"
 
     map = go.Figure(go.Scattermapbox(
@@ -27,16 +37,15 @@ def generate_map(coordinates):
             lon=[pair[1] for pair in coordinates], # gets only the longitude from lat/lon pairs   
             mode='markers',
             marker=go.scattermapbox.Marker(
-                size=10,
-                # opacity=0.7,
-                color='#FEBF00',      
+                size=style['size'],
+                color=style['color'],      
             ),
-            name="Pipeline Spill"
+            name="pipeline-map"
         )
     )
 
     map.update_layout(
-        mapbox_style="satellite-streets",
+        mapbox_style=style['map-type'],
         hovermode='closest',
         margin={"r": 0, "t": 0, "l": 0, "b": 0},
         geo_scope='usa',
@@ -51,6 +60,17 @@ def generate_map(coordinates):
             zoom=3
         )
     )
+    # FEATURE IN PROGRESS
+    # map.update_layout(
+    #     mapbox_layers=[{
+    #         'name':'pipelines',
+    #         'sourcetype':'geojson',
+    #         'source':gj,
+    #         'type':'fill',
+    #         'color':'red'
+    #     }]
+    # )
+
 
     return plotly_object_to_html(map)
 
