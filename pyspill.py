@@ -132,6 +132,42 @@ def lookup(args: any, data: DataAccessor) -> any:
             sys.exit(1)
     else:
         return data.lookup_company(args.company)
+    
+
+def _sql_output_to_totals_object(sql_row: tuple) -> dict:
+    """ 
+    A helper method that converts the row data output by psycopg2 to 
+    the totals dictionary used elsewhere.
+
+    Args: 
+        sql_row (tuple): the SQL output.
+
+    Returns:
+        dict: the totals dictionary
+    """
+    totals = {
+        'companyName': sql_row[0],
+        'accidentCount': sql_row[1], 
+        'totalUnintentionalRelease': sql_row[2], 
+        'totalNetLoss': sql_row[3], 
+        'totalCosts' : sql_row[4]            
+    }
+    return totals
+
+
+def print_leaders(data: DataAccessor) -> list:
+    """ 
+    Prints the list of the top ten worst offending companies by total net loss. 
+    
+    Args:
+        data (DataAccessor): the data accessor.
+    """
+    leaders = data.get_leaders()
+    for rank, leader in enumerate(leaders):
+        leader = _sql_output_to_totals_object(leader)
+        print(f'{rank + 1}. {leader["companyName"]}')
+        print_totals(leader)
+        print('\n')
 
 
 def get_main_parser() -> ArgumentParser:
@@ -150,38 +186,6 @@ def get_main_parser() -> ArgumentParser:
                 epilog='Authors: Henry Burkhardt, Paul Claudel Izabayo, '
                         'Feraidon Abdul Rahimzai, James Commons'
             )
-
-
-def add_leaders_subparser(subparsers: ArgumentParser) -> ArgumentParser:
-    """ 
-    Add the leaders subparser to the subparsers object.
-
-    Args:
-        subparsers (ArgumentParser): the subparser object attatched to the main parser.
-
-    Returns:
-        ArgumentParser: the modified subparser object.
-    """
-    parser_leaders = subparsers.add_parser('leaders', 
-            help='list the top 10 worst polluters by state OR company')
-    
-    # Allow user to list top ten in a certain category
-    mutex_group_leaders_by = parser_leaders.add_mutually_exclusive_group(required=True)
-    mutex_group_leaders_by.add_argument('-n', '--number', action='store_true',
-            help='list the top 10 polluters by total number of spills')
-    mutex_group_leaders_by.add_argument('-a', '--amount', action='store_true',
-            help='list the top 10 polluters by total volume of oil released')
-    mutex_group_leaders_by.add_argument('-p', '--price', action='store_true',
-            help='list the top 10 polluters by total cost of pipeline accidents')
-    
-    # Do not allow user to list both locations and companies
-    mutex_group_leaders_type = parser_leaders.add_mutually_exclusive_group(required=True)
-    mutex_group_leaders_type.add_argument('-c', '--company', action='store_true',
-            help='list the top 10 companies')
-    mutex_group_leaders_type.add_argument('-s', '--state', action='store_true',
-            help='list the top 10 states')
-    
-    return subparsers
 
 
 def add_list_subparser(subparsers: ArgumentParser) -> ArgumentParser:
@@ -251,7 +255,7 @@ def setup_subparsers(main_parser: ArgumentParser) -> ArgumentParser:
     subparsers.add_parser('help', help='print the help message and exit')
     subparsers = add_lookup_subparser(subparsers)
     subparsers = add_list_subparser(subparsers)
-    subparsers = add_leaders_subparser(subparsers)
+    subparsers.add_parser('leaders', help='list the top 10 worst polluters by company')
     
     return main_parser
 
@@ -273,13 +277,13 @@ def execute_command(parser: ArgumentParser, data: DataAccessor):
         list_and_type = get_list(args, data)
         print_list(list_and_type[0], list_and_type[1])
     elif args.command == 'leaders':
-        print('Feature currently under development.')
+        print_leaders(data)
     else:
         pass # We should never reach this point thanks to argparse
 
 
 def main():
-    data = DataAccessor(csv_path='Data/OilPipelineAccidents.csv')
+    data = DataAccessor()
     parser = setup_subparsers(get_main_parser())
 
     if len(sys.argv) == 1: # User did not provide any command line arguments

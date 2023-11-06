@@ -128,6 +128,15 @@ class TestCLIntegration(unittest.TestCase):
         self.assertEqual(out, 'Total accidents: 2\n'
                               'Total volume of oil released (barrels): 0.00\n'
                               'Total cost: $543,943\n')
+        
+
+    def test_leaders(self):
+        code = subprocess.Popen(['python3', '-u', 'pyspill.py', 'leaders'], 
+                                stdin=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf8')
+        out, err = code.communicate()
+        code.terminate()      
+
+        self.assertIn('10. NUSTAR LOGISTICS, L.P.', out)
 
     
 if __name__ == "__main__":

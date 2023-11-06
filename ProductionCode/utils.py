@@ -29,11 +29,10 @@ def generate_map(coordinates):
             marker=go.scattermapbox.Marker(
                 size=10,
                 # opacity=0.7,
-                color='#FEBF00',
-
+                color='#FEBF00',      
             ),
             name="Pipeline Spill"
-        ), 
+        )
     )
 
     map.update_layout(
@@ -52,6 +51,7 @@ def generate_map(coordinates):
             zoom=3
         )
     )
+
     return plotly_object_to_html(map)
 
                                     
@@ -65,7 +65,7 @@ def plotly_object_to_html(plotly_object):
     Returns:
         str: An HTML string representing the object
     """    
-    outHTML = plotly_object.to_html(full_html=False)
+    outHTML = plotly_object.to_html(full_html=False, include_plotlyjs='cdn', div_id='plotlyjs-obj')
     return render_template_string(
         """ 
         <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>    

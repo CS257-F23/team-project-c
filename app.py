@@ -31,6 +31,7 @@ def search_by_company():
     """
     return render_template("/search-by-company/form.html", rows=data.get_list_of_companies())
 
+
 @app.route("/search-by-company/results", methods=['GET'])
 def search_by_company_results():
     """Render company results page @ [/search-by-company/results]
@@ -53,11 +54,25 @@ def search_by_company_results():
         if request.args['company-name-search'] == "" and 'company-name-dropdown' not in request.args:
             return redirect("/search-by-company")
         company_name = request.args['company-name-search']
-
-    company_data = data.lookup_company(company_name)
+    
+    try:
+        company_data = data.lookup_company(company_name)
+    except ValueError:
+        return redirect("/search-by-company/bad-input")
+    
     company_spill_coordinates = data.get_company_spill_coordinates(company_name)
     map_html = generate_map(company_spill_coordinates)
     return render_template("/search-by-company/results.html", data=company_data, company_name=company_name, mapHTML=map_html)
+
+
+@app.route("/search-by-company/bad-input", strict_slashes=False)
+def search_by_company_bad_input():
+   """ 
+    Returns the search by location page with an added error message 
+    directing the user to input a correct location. 
+    """
+   return render_template("/search-by-company/form.html", bad_input=True, rows=data.get_list_of_companies())
+
 
 @app.route("/search-by-location", strict_slashes=False)
 def search_by_location():
@@ -89,6 +104,9 @@ def search_by_location_results():
     except ValueError:
         return redirect("/search-by-location/bad-input")
     
+    if len(state_name) != 2:
+        state_name = data.get_state_abbreviation_from_name(state_name)
+    
     location_spill_coordinates = data.get_location_spill_coordinates(city_name, county_name, state_name)
     map_html = generate_map(location_spill_coordinates)
     return render_template("/search-by-location/results.html", data=location_data, 
@@ -105,27 +123,20 @@ def search_by_location_bad_input():
     return render_template("/search-by-location/form.html", bad_input=True)
 
 
-@app.errorhandler(404)
-def page_not_found(error):
+# TODO, make an html page
+@app.route("/spillinfo/<latitude>/<longitude>", strict_slashes=False)
+def spillinfo(latitude, longitude):
+    """ 
+    A page that lists all available information about an oil spill at a 
+    particular location.
+
+    Args:
+        latitude
+        longitude
     """
-    Display the 404 error page with user submitted URL.
+    return str(data.get_spill_data_by_location(latitude, longitude))
 
-    Returns:
-        str: the html page for 404 error.
-    """
-    return render_template('page-not-found.html')
-
-@app.errorhandler(500)
-def internal_error(error):
-    """
-    Display the 500 error page with user caused an error. Yes it's the user's fault. 
-
-    Returns:
-        str: the html page for 505 error.
-    """
-    return render_template('internal-error.html', error=error)
-
-
+# TODO: frontend. Backend functionality is done. Just call data.get_leaders()
 @app.route("/leaderboard")
 def leaderboard():
     """Render ranked list of companies @ [/leaderboard]
@@ -136,6 +147,7 @@ def leaderboard():
     return "Not yet implemented"
 
 
+# TODO: frontend. Backend is done. Just call data.get_all_spill_coordinates()
 @app.route("/map")
 def map():
     """Render big map of all spills in the database @ [/map]
@@ -152,9 +164,26 @@ def about():
     return render_template('about.html')
 
 
-@app.route("/test")
-def test ():
-    return str(data.lookup_by_location("", "Rice", "MN"))
+@app.errorhandler(404)
+def page_not_found(error):
+    """
+    Display the 404 error page with user submitted URL.
+
+    Returns:
+        str: the html page for 404 error.
+    """
+    return render_template('page-not-found.html')
+
+
+@app.errorhandler(500)
+def internal_error(error):
+    """
+    Display the 500 error page with user caused an error. Yes it's the user's fault. 
+
+    Returns:
+        str: the html page for 505 error.
+    """
+    return render_template('internal-error.html', error=error)
 
 
 if __name__ == '__main__':

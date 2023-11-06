@@ -40,7 +40,7 @@ class TestGetSummaryStats(unittest.TestCase):
 
     def test_summary_stat_computation(self):
         """ Test that summary stats are computed as expected. """
-        result = self.data_accessor.get_totals(self.data)
+        result = self.data_accessor._get_totals(self.data)
         self.assertEqual(result['accidentCount'], 2)
         self.assertEqual(result['totalUnintentionalRelease'], 0)
         self.assertEqual(result['totalNetLoss'], 0)
@@ -187,6 +187,11 @@ class TestSpillCoordinates(unittest.TestCase):
         """ Test that expected coordinates are returned for the state. """
         self.assertEqual(self.real_data_accessor.get_coordinates_by_state('MA'),
             [(42.116314, -72.580635), (42.11582, -72.58074)])
+        
+
+    def test_get_all_coordinates(self):
+        """ Test that all coordinates are returned. """
+        self.assertEqual(len(self.real_data_accessor.get_all_spill_coordinates()), 2795)
 
 
 class TestEmptyStringToNone(unittest.TestCase):
@@ -207,3 +212,14 @@ class TestEmptyStringToNone(unittest.TestCase):
 
         result = self.data_accessor.empty_string_to_none("non empty")
         self.assertEqual(result, "non empty")
+
+
+class TestLeaders(unittest.TestCase):
+    def setUp(self):
+        self.data_accessor = DataAccessor()
+
+
+    def test_get_leaders(self):
+        """ Make sure that get_leaders() gives correct output. """
+        output = self.data_accessor.get_leaders()
+        self.assertIn(('ENTERPRISE PRODUCTS OPERATING LLC', 155, 114044.32, 112839.5, 40118252), output)

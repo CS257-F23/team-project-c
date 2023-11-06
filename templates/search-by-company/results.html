@@ -75,6 +75,11 @@
         <div class="incident-list"></div>
       </div>
       <div class="resultsMap">{{ mapHTML | safe}}</div>
+      <script>
+        document.getElementById('plotlyjs-obj').on('plotly_click', function(data) {
+          window.location.href = '/spillinfo/' + data.points[0].lat + '/' + data.points[0].lon
+        });
+      </script>
     </div>
   </body>
 </html>
