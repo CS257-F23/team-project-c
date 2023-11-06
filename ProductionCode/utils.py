@@ -14,7 +14,7 @@ default_map_style = {
     'size':10, 
     'color':'#FEBF00',
     'map-type':'satellite-streets'
-    }
+}
  
 
 def generate_map(coordinates, style=default_map_style):

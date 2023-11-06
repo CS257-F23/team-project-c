@@ -3,6 +3,7 @@
   <head>
     <title>PySpill</title>
     <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
+    <script src="https://jamescommons.github.io/pong-website-plugin/pong.js"></script>
     <link
       rel="shortcut icon"
       href="{{ url_for('static', filename='favicon.png') }}"
@@ -42,12 +43,34 @@
     </div>
     <div class="about-page-container">
       <h1>About PySpill</h1>
+      <p class="about-intro-text">
+        Introducing PySpill, <strong>an app designed for tracking pipeline spills
+        across the nation.</strong> Users can access essential data like financial
+        implications, environmental impact, and human injuries resulting
+        from these incidents. By shedding light on the true costs and
+        consequences of spills, we want to encourage a broader
+        understanding of the pipeline industry.
+      </p>
+      <h2>Features:</h2>
+      <ul>
+        <li>Many pages feature a map! <strong>Click on a point to learn more about the particular spill</strong></li>
+        <li>Lookup all oil spills caused by a particular company</li>
+        <li>Lookup all oil spills that have occurred at a particular location</li>
+        <li>A leaderboard featuring the top ten worst offending companies by total volume of oil released</li>
+        <li>A map of all oil spills in the United States overlayed on top of a map of oil pipelines</li>
+      </ul>
+      <h2>About the Dataset</h2>
       <p>
-        Introducing PySpill, an app designed for tracking pipeline spills across
-        the nation. Users can access essential data like financial implications,
-        environmental impact, and human injuries resulting from these incidents.
-        By shedding light on the true costs and consequences of spills, we want
-        to encourage to a broader understanding of the pipeline industry.
+        This data comes from the 2022 annual report authored by the DOT Pipeline and Hazardous Materials 
+        Saftey Administration. Data ranges from the years 2010 to 2017, inclusive.
+      </p>
+      <p>
+        “Gas Distribution, Gas Gathering, Gas Transmission, Hazardous Liquids, Liquefied Natural Gas (LNG), 
+        and Underground Natural Gas Storage (UNGS) Annual Report Data.” PHMSA, 
+        <a href="https://www.phmsa.dot.gov/data-and-statistics/pipeline/gas-distribution-gas-gathering-gas-transmission-hazardous-liquids">
+          www.phmsa.dot.gov/data-and-statistics/pipeline/gas-distribution-gas-gathering-gas-transmission-hazardous-liquids
+        </a>. 
+        Accessed 25 Sept. 2023.
       </p>
     </div>
   </body>

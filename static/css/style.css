@@ -400,12 +400,34 @@ div.plot-container {
   text-align: center;
 }
 
+.about-intro-text {
+    padding-top: 50px;
+}
+
 .about-page-container p {
-  margin-top: 10%;
+  margin-top: 10px;
   margin-left: 20%;
   margin-right: 20%;
   text-align: left;
 }
+
+.about-page-container h2 {
+  margin-top: 70px;
+  margin-left: 20%;
+  margin-right: 20%;
+  text-decoration: underline;
+}
+
+.about-page-container a {
+    text-decoration: underline;
+}
+
+.about-page-container ul {
+    margin-top: 10px;
+    margin-left: 20%;
+    margin-right: 20%;
+    text-align: left;
+  }  
 
 .fullscreen-map {
   margin-top: 60px;
