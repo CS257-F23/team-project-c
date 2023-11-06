@@ -151,11 +151,10 @@ def leaderboard():
 @app.route("/map")
 def map():
     """Render big map of all spills in the database @ [/map]
-    Author: Henry
-
-    -- NOT YET BUILT -- 
     """
-    return "Not yet implemented"
+    coordinates = data.get_all_spill_coordinates()
+    map_html = generate_map(coordinates)
+    return render_template('map.html', maphtml=map_html)
 
 
 @app.route("/about")
