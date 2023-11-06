@@ -314,6 +314,11 @@ form h1 {
   font-size: 50px;
 }
 
+.error-page{
+  margin-top: 100px; 
+  text-align: center;
+}
+
 .error-msg{
   color:rgb(130, 0, 0);
   align-self: center;
