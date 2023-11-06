@@ -163,10 +163,12 @@ a {
 
 .nav-left,
 .nav-right {
+  color: var(--mintGreen);
   width: calc(100% / var(--homeColumnSize));
   display: flex;
   align-items: center;
   width: 100%;
+
   cursor: pointer;
   z-index: 1;
 }
@@ -190,6 +192,7 @@ a {
 /* Hover animation */
 .nav-left:hover p,
 .nav-right:hover p {
+  color: var(--federalBlue);
   transform: scale(1.2);
   background-color: rgb(194, 231, 217, 0.7);
   text-decoration: underline;
@@ -397,4 +400,8 @@ div.plot-container {
   margin-left: 20%;
   margin-right: 20%;
   text-align: left;
+}
+
+.fullscreen-map {
+  margin-top: 60px;
 }
