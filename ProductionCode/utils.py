@@ -6,8 +6,13 @@ Contains helper functions for routes defined in app.py
 from flask import render_template, render_template_string
 import plotly.graph_objects as go
 
+default_map_style = {
+    'size':10, 
+    'color':'#FEBF00',
+    'map-type':'satellite-streets'
+    }
 
-def generate_map(coordinates):
+def generate_map(coordinates, style=default_map_style):
     """Create Plotly Scattermapbox figure object with points for a list of coordinates
     Author: Henry 
 
@@ -27,16 +32,15 @@ def generate_map(coordinates):
             lon=[pair[1] for pair in coordinates], # gets only the longitude from lat/lon pairs   
             mode='markers',
             marker=go.scattermapbox.Marker(
-                size=10,
-                # opacity=0.7,
-                color='#FEBF00',      
+                size=style['size'],
+                color=style['color'],      
             ),
             name="Pipeline Spill"
         )
     )
 
     map.update_layout(
-        mapbox_style="satellite-streets",
+        mapbox_style=style['map-type'],
         hovermode='closest',
         margin={"r": 0, "t": 0, "l": 0, "b": 0},
         geo_scope='usa',
