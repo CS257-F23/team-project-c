@@ -1,6 +1,6 @@
   <html>
   <head>
-    <title>PySpill</title>
+    <title>PySpill: Map</title>
     <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
     <link
       rel="shortcut icon"
@@ -40,5 +40,10 @@
       </nav>
     </div>
     <div class="fullscreen-map">{{ mapHTML | safe}}</div>
+    <script>
+      document.getElementById('plotlyjs-obj').on('plotly_click', function(data) {
+        window.location.href = '/spillinfo/' + data.points[0].lat + '/' + data.points[0].lon
+      });
+    </script>
   </body>
 </html>

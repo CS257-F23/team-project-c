@@ -432,3 +432,9 @@ div.plot-container {
 .fullscreen-map {
   margin-top: 60px;
 }
+
+/* Spill info styles */
+.scrollable-container {
+    height: calc(100vh - 60px);
+    overflow: auto;
+}

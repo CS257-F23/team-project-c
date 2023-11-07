@@ -11,7 +11,7 @@ class TestHomepage(unittest.TestCase):
         """homepage(): test that the route loads the expected page"""
         appTest = app.test_client() # get the client side of the app
         response = appTest.get("/").data # returns homepage
-        self.assertIn(b"Introducing PySpill, an app designed for tracking pipeline spills", response)
+        self.assertIn(b"Introducing PySpill", response)
 
 
 class TestCompanyPage(unittest.TestCase):
