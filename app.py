@@ -142,15 +142,12 @@ def spillinfo(latitude, longitude):
                            })
                           )
 
-# TODO: frontend. Backend functionality is done. Just call data.get_leaders()
+
 @app.route("/leaderboard")
 def leaderboard():
     """Render ranked list of companies @ [/leaderboard]
-    Author: Henry
-
-    -- NOT YET BUILT -- 
     """
-    return "Not yet implemented"
+    return render_template("leaderboard.html", leaders=data.get_leaders())
 
 
 # TODO: frontend. Backend is done. Just call data.get_all_spill_coordinates()

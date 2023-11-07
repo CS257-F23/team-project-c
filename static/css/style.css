@@ -438,3 +438,26 @@ div.plot-container {
     height: calc(100vh - 60px);
     overflow: auto;
 }
+
+/* Leaderboard styles */
+.leaderboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.leaderboard-cont {
+    margin-top: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.leaderboard .horizontal-stack {
+    margin-bottom: 30px;
+}
+
+.leaderboard a {
+    margin-top: 10px;
+    text-decoration: underline;
+}
