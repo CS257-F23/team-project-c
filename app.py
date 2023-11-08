@@ -123,7 +123,6 @@ def search_by_location_bad_input():
     return render_template("/search-by-location/form.html", bad_input=True)
 
 
-# TODO, make an html page
 @app.route("/spillinfo/<latitude>/<longitude>", strict_slashes=False)
 def spillinfo(latitude, longitude):
     """ 
@@ -134,18 +133,21 @@ def spillinfo(latitude, longitude):
         latitude
         longitude
     """
-    return str(data.get_spill_data_by_location(latitude, longitude))
+    return render_template("spillinfo.html", 
+                           lat=latitude, 
+                           lon= longitude, 
+                           data=data.get_spill_data_by_location(latitude, longitude),
+                           mapHTML=generate_map([(latitude, longitude)], style={
+                                'size':8, 'color':'red','map-type':'satellite-streets'
+                           })
+                          )
 
-# TODO: frontend. Backend functionality is done. Just call data.get_leaders()
+
 @app.route("/leaderboard")
 def leaderboard():
     """Render ranked list of companies @ [/leaderboard]
-    Author: Henry
-
-    -- NOT YET BUILT -- 
     """
-    x = [row for row in data.get_leaders()]
-    return render_template('leaderboard.html', dataaa=x)
+    return render_template("leaderboard.html", leaders=data.get_leaders())
 
 
 # TODO: frontend. Backend is done. Just call data.get_all_spill_coordinates()
@@ -153,9 +155,9 @@ def leaderboard():
 def map():
     """Render big map of all spills in the database @ [/map]
     """
-    all_spill_coordinates = data.get_all_spill_coordinates()
-    map = Map(coordiantes=all_spill_coordinates, point_size=2, point_color='red', map_type='dark')
-    return render_template('map.html', mapHTML=map.get_html())
+    coordinates = data.get_all_spill_coordinates()
+    map_html = generate_map(coordinates, {'size':4, 'color':'red', 'map-type':'dark'})
+    return render_template('map.html', mapHTML=map_html)
 
 
 @app.route("/about")

@@ -1,8 +1,7 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en-US">
   <head>
-    <title>PySpill</title>
-    <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
+    <title>Pyspill: Leaderboard</title>
     <link
       rel="shortcut icon"
       href="{{ url_for('static', filename='favicon.png') }}"
@@ -41,42 +40,39 @@
       </nav>
     </div>
 
-    <table>
-        <tbody>
-          <tr>
-            <td>Number of accidents</td>
-            {% if data['accidentCount'] != None %}
-            <td>{{ data['accidentCount'] }}</td>
-            {% else %}
-            <td>NO DATA</td>
-            {% endif %}
-          </tr>
-          <tr>
-            <td>Total volume of oil released (barrels)</td>
-            {% if data['totalUnintentionalRelease'] != None%}
-            <td>{{ data['totalUnintentionalRelease'] }}</td>
-            {% else %}
-            <td>NO DATA</td>
-            {% endif %}
-          </tr>
-          <tr>
-            <td>Net loss of oil released (barrels)</td>
-            {% if data['totalNetLoss'] != None %}
-            <td>{{ data['totalNetLoss'] }}</td>
-            {% else %}
-            <td>NO DATA</td>
-            {% endif %}
-          </tr>
-          <tr>
-            <td>Total cost</td>
-            {% if data['totalCosts'] != None%}
-            <td>{{ "${:,}".format(data['totalCosts']|int) }}</td>
-            {% else %}
-            <td>NO DATA</td>
-            {% endif %}
-          </tr>
-        </tbody>
-      </table>
+    <div class="leaderboard-cont">
+      <div class="resultsInfo scrollable-container leaderboard">
+        <div class="horizontal-stack">
+          <h2>
+            <span class="mintUnderline">It's a competition, and they're all loosing</span>
+          </h2>
+        </div>
 
-    </body>
-    </html>
+        {% for data in leaders %}
+        <table>
+          <a href="/search-by-company/results?company-name-search={{ data[0] }}">{{ loop.index }}. {{ data[0] }}</a>
+          <tbody>
+            <tr>
+              <td>Accident Count</td>
+              <td>{{ data[1] }}</td>
+            </tr>
+            <tr>
+              <td>Total Unintentional Release (Barrels)</td>
+              <td>{{ '{:,.2f}'.format(data[2]|float) }}</td>
+            </tr>
+            <tr>
+              <td>Total Net Loss (Barrels)</td>
+              <td>{{ '{:,.2f}'.format(data[3]|float) }}</td>
+            </tr>
+            <tr>
+              <td>Total Costs</td>
+              <td>{{ '${:,}'.format(data[4]|int) }}</td>
+            </tr>
+          </tbody>
+        </table>
+        {% endfor %}
+        <div class="incident-list"></div>
+      </div>
+    </div>
+  </body>
+</html>

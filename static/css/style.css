@@ -400,13 +400,64 @@ div.plot-container {
   text-align: center;
 }
 
+.about-intro-text {
+    padding-top: 50px;
+}
+
 .about-page-container p {
-  margin-top: 10%;
+  margin-top: 10px;
   margin-left: 20%;
   margin-right: 20%;
   text-align: left;
 }
 
+.about-page-container h2 {
+  margin-top: 70px;
+  margin-left: 20%;
+  margin-right: 20%;
+  text-decoration: underline;
+}
+
+.about-page-container a {
+    text-decoration: underline;
+}
+
+.about-page-container ul {
+    margin-top: 10px;
+    margin-left: 20%;
+    margin-right: 20%;
+    text-align: left;
+  }  
+
 .fullscreen-map {
   margin-top: 60px;
+}
+
+/* Spill info styles */
+.scrollable-container {
+    height: calc(100vh - 60px);
+    overflow: auto;
+}
+
+/* Leaderboard styles */
+.leaderboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.leaderboard-cont {
+    margin-top: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.leaderboard .horizontal-stack {
+    margin-bottom: 30px;
+}
+
+.leaderboard a {
+    margin-top: 10px;
+    text-decoration: underline;
 }

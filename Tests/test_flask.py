@@ -11,7 +11,7 @@ class TestHomepage(unittest.TestCase):
         """homepage(): test that the route loads the expected page"""
         appTest = app.test_client() # get the client side of the app
         response = appTest.get("/").data # returns homepage
-        self.assertIn(b"Introducing PySpill, an app designed for tracking pipeline spills", response)
+        self.assertIn(b"Introducing PySpill", response)
 
 
 class TestCompanyPage(unittest.TestCase):
@@ -31,7 +31,7 @@ class TestCompanyPage(unittest.TestCase):
         self.app = app.test_client()
         response = self.app.get('/search-by-company/results?company-name-search=CONOCOPHILLIPS', 
                                 follow_redirects=True).get_data()
-        self.assertIn(b'4776.61', response)
+        self.assertIn(b'4,776.61', response)
     
 
 class TestLocationPage(unittest.TestCase):
@@ -50,7 +50,7 @@ class TestLocationPage(unittest.TestCase):
         self.app = app.test_client()
         response = self.app.get('/search-by-location/results?state-search=tx&county-search=&city-search=', 
                                 follow_redirects=True).get_data()
-        self.assertIn(b'135579.99', response)
+        self.assertIn(b'135,579.99', response)
 
 
     def test_county_stats_correct(self):
@@ -58,7 +58,7 @@ class TestLocationPage(unittest.TestCase):
         self.app = app.test_client()
         response = self.app.get('/search-by-location/results?state-search=co&county-search=weld&city-search=', 
                                 follow_redirects=True).get_data()
-        self.assertIn(b'1302.06', response)
+        self.assertIn(b'1,302.06', response)
 
 
     def test_city_stats_correct(self):

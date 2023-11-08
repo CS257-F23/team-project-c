@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title>PySpill: Company Search</title>
+    <title>PySpill: Location Search</title>
     <link
       rel="shortcut icon"
       href="{{ url_for('static', filename='favicon.png') }}"
@@ -61,7 +61,7 @@
             <tr>
               <td>Total volume of oil released (barrels)</td>
               {% if data['totalUnintentionalRelease'] != None%}
-              <td>{{ data['totalUnintentionalRelease'] }}</td>
+              <td>{{ '{:,.2f}'.format(data['totalUnintentionalRelease']|float) }}</td>
               {% else %}
               <td>NO DATA</td>
               {% endif %}
@@ -69,7 +69,7 @@
             <tr>
               <td>Net loss of oil released (barrels)</td>
               {% if data['totalNetLoss'] != None %}
-              <td>{{ data['totalNetLoss'] }}</td>
+              <td>{{ '{:,.2f}'.format(data['totalNetLoss']|float) }}</td>
               {% else %}
               <td>NO DATA</td>
               {% endif %}

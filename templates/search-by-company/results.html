@@ -48,7 +48,7 @@
             <tr>
               <td>Total volume of oil released (barrels)</td>
               {% if data != None %}
-              <td>{{ data['totalUnintentionalRelease'] }}</td>
+              <td>{{ '{:,.2f}'.format(data['totalUnintentionalRelease']|float) }}</td>
               {% else %}
               <td>NO DATA</td>
               {% endif %}
@@ -56,7 +56,7 @@
             <tr>
               <td>Net loss of oil released (barrels)</td>
               {% if data['totalNetLoss'] != None %}
-              <td>{{ data['totalNetLoss'] }}</td>
+              <td>{{ '{:,.2f}'.format(data['totalNetLoss']|float) }}</td>
               {% else %}
               <td>NO DATA</td>
               {% endif %}
