@@ -133,7 +133,12 @@ def spillinfo(latitude, longitude):
         latitude
         longitude
     """
-    map = Map(coordiantes=[(latitude, longitude)], point_size=8, point_color='red', map_type='satellite-streets')
+    map = Map(coordiantes=[(latitude, longitude)], 
+              point_size=10, point_color='red', 
+              map_type='satellite-streets', 
+              center=(float(latitude), float(longitude)),
+              zoom=15
+              )
     return render_template("spillinfo.html", 
                            lat=latitude, 
                            lon= longitude, 

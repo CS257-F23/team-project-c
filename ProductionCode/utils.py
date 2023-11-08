@@ -13,11 +13,13 @@ import json
 class Map:
     """HTML Plotly/Mapbox map object rendered on the results pages"""
     
-    def __init__(self, coordiantes, point_color='#FEBF00', point_size=10, map_type='satellite-streets') -> None:
+    def __init__(self, coordiantes, point_color='#FEBF00', point_size=10, map_type='satellite-streets', center=(39,-98), zoom=3) -> None:
         self.coordinates = coordiantes
         self.point_color = point_color
         self.point_size = point_size
         self.map_type = map_type
+        self.center = center
+        self.zoom = zoom
         self.map = self._generate_map()
 
     def _generate_map(self):
@@ -53,11 +55,11 @@ class Map:
                 accesstoken=mapbox_access_token,
                 bearing=0,  
                 center=go.layout.mapbox.Center(
-                    lat=39,
-                    lon=-98
+                    lat=self.center[0],
+                    lon=self.center[1]
                 ),
                 pitch=0,
-                zoom=3
+                zoom=self.zoom
             )
         )
         return map 
