@@ -133,13 +133,13 @@ def spillinfo(latitude, longitude):
         latitude
         longitude
     """
+    map = Map(coordiantes=[(latitude, longitude)], point_size=8, point_color='red', map_type='satellite-streets')
     return render_template("spillinfo.html", 
                            lat=latitude, 
                            lon= longitude, 
                            data=data.get_spill_data_by_location(latitude, longitude),
-                           mapHTML=generate_map([(latitude, longitude)], style={
-                                'size':8, 'color':'red','map-type':'satellite-streets'
-                           })
+                           mapHTML=map.get_html()
+
                           )
 
 
@@ -156,8 +156,8 @@ def map():
     """Render big map of all spills in the database @ [/map]
     """
     coordinates = data.get_all_spill_coordinates()
-    map_html = generate_map(coordinates, {'size':4, 'color':'red', 'map-type':'dark'})
-    return render_template('map.html', mapHTML=map_html)
+    map = Map(coordiantes=coordinates, point_color='red', point_size=4, map_type='dark')
+    return render_template('map.html', mapHTML=map.get_html())
 
 
 @app.route("/about")
