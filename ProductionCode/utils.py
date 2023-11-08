@@ -13,7 +13,7 @@ import json
 class Map:
     """HTML Plotly/Mapbox map object rendered on the results pages"""
     
-    def __init__(self, coordiantes, point_color='#FEBF00', point_size=10, map_type='satellite-streets', center=(39,-98), zoom=3) -> None:
+    def __init__(self, coordiantes, point_color='red', point_size=10, map_type='satellite-streets', center=(39,-98), zoom=3) -> None:
         self.coordinates = coordiantes
         self.point_color = point_color
         self.point_size = point_size
