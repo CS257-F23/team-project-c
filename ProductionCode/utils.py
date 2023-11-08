@@ -10,88 +10,74 @@ import pandas
 import json
 
 
-default_map_style = {
-    'size':10, 
-    'color':'#FEBF00',
-    'map-type':'satellite-streets'
-    }
- 
+class Map:
+    """HTML Plotly/Mapbox map object rendered on the results pages"""
+    
+    def __init__(self, coordiantes, point_color='#FEBF00', point_size=10, map_type='satellite-streets') -> None:
+        self.coordinates = coordiantes
+        self.point_color = point_color
+        self.point_size = point_size
+        self.map_type = map_type
+        self.map = self._generate_map()
 
-def generate_map(coordinates, style=default_map_style):
-    """Create Plotly Scattermapbox figure object with points for a list of coordinates
-    Author: Henry 
+    def _generate_map(self):
+        """Create Plotly Scattermapbox figure object with points for a list of coordinates
 
-    This function uses the Plotly library, for reference see https://plotly.com/python/scattermapbox/
+        This function uses the Plotly library, for reference see https://plotly.com/python/scattermapbox/
+        Requires coordinates (list of list): nested list of coordinates to display in format:
+                                        [[lat_1, long_1], [lat_2, long_2], ... , [lat_n, long_n]]
 
-    Args:
-        coordinates (list of list): nested list of coordinates to display in format:
-                                    [[lat_1, long_1], [lat_2, long_2], ... , [lat_n, long_n]]
+        Returns:
+            str: an HTML string with the map object (displayed in a <canvas> tag in HTML)
+        """   
+        mapbox_access_token = "pk.eyJ1IjoiYnVya2hhcmR0aCIsImEiOiJjbG5ydXUwOTIwdTJyMmtvMXVpZzFqdzg5In0.kUE_ksbHTedhgtgR7f8YVg"
 
-    Returns:
-        str: an HTML string with the map object (displayed in a <canvas> tag in HTML)
-    """   
-    mapbox_access_token = "pk.eyJ1IjoiYnVya2hhcmR0aCIsImEiOiJjbG5ydXUwOTIwdTJyMmtvMXVpZzFqdzg5In0.kUE_ksbHTedhgtgR7f8YVg"
-
-    map = go.Figure(go.Scattermapbox(
-            lat=[pair[0] for pair in coordinates], # gets only the latitude from lat/lon pairs 
-            lon=[pair[1] for pair in coordinates], # gets only the longitude from lat/lon pairs   
-            mode='markers',
-            marker=go.scattermapbox.Marker(
-                size=style['size'],
-                color=style['color'],      
-            ),
-            name="pipeline-map"
+        map = go.Figure(go.Scattermapbox(
+                lat=[pair[0] for pair in self.coordinates], # gets only the latitude from lat/lon pairs 
+                lon=[pair[1] for pair in self.coordinates], # gets only the longitude from lat/lon pairs   
+                mode='markers',
+                marker=go.scattermapbox.Marker(
+                    size=self.point_size,
+                    color=self.point_color,      
+                ),
+                name="pipeline-map"
+            )
         )
-    )
 
-    map.update_layout(
-        mapbox_style=style['map-type'],
-        hovermode='closest',
-        margin={"r": 0, "t": 0, "l": 0, "b": 0},
-        geo_scope='usa',
-        mapbox=dict(
-            accesstoken=mapbox_access_token,
-            bearing=0,  
-            center=go.layout.mapbox.Center(
-                lat=39,
-                lon=-98
-            ),
-            pitch=0,
-            zoom=3
+        map.update_layout(
+            mapbox_style=self.map_type,
+            hovermode='closest',
+            margin={"r": 0, "t": 0, "l": 0, "b": 0},
+            geo_scope='usa',
+            mapbox=dict(
+                accesstoken=mapbox_access_token,
+                bearing=0,  
+                center=go.layout.mapbox.Center(
+                    lat=39,
+                    lon=-98
+                ),
+                pitch=0,
+                zoom=3
+            )
         )
-    )
-    # FEATURE IN PROGRESS
-    # map.update_layout(
-    #     mapbox_layers=[{
-    #         'name':'pipelines',
-    #         'sourcetype':'geojson',
-    #         'source':gj,
-    #         'type':'fill',
-    #         'color':'red'
-    #     }]
-    # )
+        return map 
+    
+    def get_html(self):
+        """Convert Plotly map object to HTML that can be rendered in browser
+        Author: Henry
+        
+        Requires a self.plotly_object (Plotly.graph_objects.Figure): Plotly object (a map figure)
 
-
-    return plotly_object_to_html(map)
-
-                                    
-def plotly_object_to_html(plotly_object):
-    """Convert Plotly object to HTML that can be rendered in browser
-    Author: Henry
-
-    Args:
-        plotly_object (Plotly.graph_objects.Figure): Plotly object (a map figure)
-
-    Returns:
-        str: An HTML string representing the object
-    """    
-    outHTML = plotly_object.to_html(full_html=False, include_plotlyjs='cdn', div_id='plotlyjs-obj')
-    return render_template_string(
-        """ 
-        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>    
-        {{ div_placeholder|safe }}
-        """, 
-        div_placeholder=outHTML)
+        Returns:
+            str: An HTML string representing the object
+        """    
+        outHTML = self.map.to_html(full_html=False, include_plotlyjs='cdn', div_id='plotlyjs-obj')
+        return render_template_string(
+            """ 
+            <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>    
+            {{ div_placeholder|safe }}
+            """, 
+            div_placeholder=outHTML)
 
 
 def get_location_name(state, county, city):

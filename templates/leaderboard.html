@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>PySpill</title>
+    <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
+    <link
+      rel="shortcut icon"
+      href="{{ url_for('static', filename='favicon.png') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100;0,400;0,700;1,100;1,400;1,700&display=swap"
+    />
+  </head>
+  <body>
+    <div class="navbar">
+      <nav>
+        <ul>
+          <li>
+            <a class="home-link" href="/">PySpill</a>
+          </li>
+          <li>
+            <a href="/search-by-company" class="nav-item">
+              🏢 search by company</a
+            >
+          </li>
+          <li>
+            <a href="/search-by-location" class="nav-item"
+              >📍 search by location</a
+            >
+          </li>
+          <li><a href="/leaderboard" class="nav-item">📋 leaderboard</a></li>
+          <li><a href="/map" class="nav-item">🗺️ map </a></li>
+          <li><a href="/about" class="nav-item"> 🙋about</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <table>
+        <tbody>
+          <tr>
+            <td>Number of accidents</td>
+            {% if data['accidentCount'] != None %}
+            <td>{{ data['accidentCount'] }}</td>
+            {% else %}
+            <td>NO DATA</td>
+            {% endif %}
+          </tr>
+          <tr>
+            <td>Total volume of oil released (barrels)</td>
+            {% if data['totalUnintentionalRelease'] != None%}
+            <td>{{ data['totalUnintentionalRelease'] }}</td>
+            {% else %}
+            <td>NO DATA</td>
+            {% endif %}
+          </tr>
+          <tr>
+            <td>Net loss of oil released (barrels)</td>
+            {% if data['totalNetLoss'] != None %}
+            <td>{{ data['totalNetLoss'] }}</td>
+            {% else %}
+            <td>NO DATA</td>
+            {% endif %}
+          </tr>
+          <tr>
+            <td>Total cost</td>
+            {% if data['totalCosts'] != None%}
+            <td>{{ "${:,}".format(data['totalCosts']|int) }}</td>
+            {% else %}
+            <td>NO DATA</td>
+            {% endif %}
+          </tr>
+        </tbody>
+      </table>
+
+    </body>
+    </html>

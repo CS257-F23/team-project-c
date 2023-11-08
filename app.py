@@ -61,8 +61,8 @@ def search_by_company_results():
         return redirect("/search-by-company/bad-input")
     
     company_spill_coordinates = data.get_company_spill_coordinates(company_name)
-    map_html = generate_map(company_spill_coordinates)
-    return render_template("/search-by-company/results.html", data=company_data, company_name=company_name, mapHTML=map_html)
+    map = Map(coordiantes=company_spill_coordinates)
+    return render_template("/search-by-company/results.html", data=company_data, company_name=company_name, mapHTML=map.get_html())
 
 
 @app.route("/search-by-company/bad-input", strict_slashes=False)
@@ -108,10 +108,10 @@ def search_by_location_results():
         state_name = data.get_state_abbreviation_from_name(state_name)
     
     location_spill_coordinates = data.get_location_spill_coordinates(city_name, county_name, state_name)
-    map_html = generate_map(location_spill_coordinates)
+    map = Map(coordiantes=location_spill_coordinates)
     return render_template("/search-by-location/results.html", data=location_data, 
                            location_name=get_location_name(state_name, county_name, city_name), 
-                           mapHTML=map_html)
+                           mapHTML=map.get_html())
 
 
 @app.route("/search-by-location/bad-input", strict_slashes=False)
@@ -144,7 +144,8 @@ def leaderboard():
 
     -- NOT YET BUILT -- 
     """
-    return "Not yet implemented"
+    x = [row for row in data.get_leaders()]
+    return render_template('leaderboard.html', dataaa=x)
 
 
 # TODO: frontend. Backend is done. Just call data.get_all_spill_coordinates()
@@ -152,9 +153,9 @@ def leaderboard():
 def map():
     """Render big map of all spills in the database @ [/map]
     """
-    coordinates = data.get_all_spill_coordinates()
-    map_html = generate_map(coordinates, {'size':2, 'color':'red', 'map-type':'dark'})
-    return render_template('map.html', mapHTML=map_html)
+    all_spill_coordinates = data.get_all_spill_coordinates()
+    map = Map(coordiantes=all_spill_coordinates, point_size=2, point_color='red', map_type='dark')
+    return render_template('map.html', mapHTML=map.get_html())
 
 
 @app.route("/about")
