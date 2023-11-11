@@ -105,9 +105,6 @@ class DataAccessor:
         if len(state) != 2:
             state = self.get_state_abbreviation_from_name(state)
 
-
-        # if state == None: 
-        #     raise ValueError("State argumnent was either not provided or could not be resolved to an abbreviation.") 
    
         if city is not None:
             return self.lookup_by_city(city.upper(), state.upper())

@@ -5,10 +5,6 @@ Contains helper functions for routes defined in app.py
 """
 from flask import render_template, render_template_string
 import plotly.graph_objects as go
-import geojson
-import pandas
-import json
-
 
 class Map:
     """HTML Plotly/Mapbox map object rendered on the results pages"""
