@@ -144,7 +144,6 @@ def spillinfo(latitude, longitude):
                            lon= longitude, 
                            data=data.get_spill_data_by_location(latitude, longitude),
                            mapHTML=map.get_html()
-
                           )
 
 

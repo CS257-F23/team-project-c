@@ -403,7 +403,6 @@ class DataAccessor:
                        "FROM oil_pipeline_accidents ORDER BY RANDOM() LIMIT 1")
         return cursor.fetchall()
         
-    
 
     def get_leaders(self) -> list[tuple]:
         """ 
