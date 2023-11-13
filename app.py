@@ -170,6 +170,19 @@ def about():
     """ Render about page @ [/about] """
     return render_template('about.html')
 
+@app.route("/random/", strict_slashes=False)
+def random():
+    """
+    Select a random spill and show via redirect to [/spillinfo] 
+    
+    Returns: 
+        Flask.redirect: redirect user to /spillinfo
+    """
+    random_coordiantes = data.get_random_spill_coordinates()
+    latitude = float(random_coordiantes[0][0])
+    longitude = float(random_coordiantes[0][1])
+    return redirect(f'/spillinfo/{latitude}/{longitude}')
+
 
 @app.errorhandler(404)
 def page_not_found(error):
