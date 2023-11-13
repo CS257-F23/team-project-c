@@ -393,6 +393,18 @@ class DataAccessor:
         return cursor.fetchall()
     
 
+    def get_random_spill_coordinates(self) -> tuple:
+        """
+        Gets coordinates of a random spill from the database.
+        These coordiantes are used to render the individual spill data page (/spillinfo)
+        """
+        cursor = self.connection.cursor()
+        cursor.execute("SELECT accident_latitude, accident_longitude "
+                       "FROM oil_pipeline_accidents ORDER BY RANDOM() LIMIT 1")
+        return cursor.fetchall()
+        
+    
+
     def get_leaders(self) -> list[tuple]:
         """ 
         Get all the data from the leaderboard. This returns the top 
