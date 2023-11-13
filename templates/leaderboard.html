@@ -45,13 +45,15 @@
       <div class="resultsInfo scrollable-container leaderboard">
         <div class="horizontal-stack">
           <h2>
-            <span class="mintUnderline">It's a competition, and they're all loosing</span>
+            <span class="mintUnderline">It's a competition, and they're all loosing.</span>
           </h2>
         </div>
 
         {% for data in leaders %}
-        <table>
-          <a href="/search-by-company/results?company-name-search={{ data[0] }}">{{ loop.index }}. {{ data[0] }}</a>
+        <table class="leaderboard-table">
+          <div class="leaderboard-title-cont">
+            <a href="/search-by-company/results?company-name-search={{ data[0] }}"> <span class="leaderboard-number">{{ loop.index }}</span> <span class="leaderboard-title mintUnderline">{{ data[0] }} </span></a>
+          </div>
           <tbody>
             <tr>
               <td>Accident Count</td>

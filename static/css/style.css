@@ -459,6 +459,7 @@ div.plot-container {
     align-items: center;
 }
 
+
 .leaderboard-cont {
     margin-top: 60px;
     display: flex;
@@ -466,11 +467,36 @@ div.plot-container {
     align-items: center;
 }
 
+.leaderboard-cont h2 {
+  font-size:30px;
+}
+
 .leaderboard .horizontal-stack {
     margin-bottom: 30px;
 }
 
-.leaderboard a {
-    margin-top: 10px;
-    text-decoration: underline;
+.leaderboard-title-cont {
+  margin-top: 30px;
+  width: 100%;
+}
+.leaderboard-title{
+  margin-bottom: none;
+  text-align: left;
+  font-size:20px;
+  font-weight: 600;
+  padding:0px 0px 0px 4px;
+
+}
+
+.leaderboard-table {
+  width:100%;
+  margin:0;
+  border:none;
+}
+
+
+.leaderboard-number{
+  background-color: var(--mintGreen);
+  padding:10px 10px 10px 10px;
+  text-decoration: none !important;
 }
