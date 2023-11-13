@@ -484,7 +484,7 @@ div.plot-container {
   text-align: left;
   font-size:20px;
   font-weight: 600;
-  padding:0px 0px 0px 4px;
+  padding:0px 0px 0px 0px;
 
 }
 
@@ -499,4 +499,5 @@ div.plot-container {
   background-color: var(--mintGreen);
   padding:10px 10px 10px 10px;
   text-decoration: none !important;
+  font-weight: 800;
 }
