@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>PySpill: About</title>
+    <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
+    <script src="https://jamescommons.github.io/pong-website-plugin/pong.js"></script>
+    <link
+      rel="shortcut icon"
+      href="{{ url_for('static', filename='favicon.png') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100;0,400;0,700;1,100;1,400;1,700&display=swap"
+    />
+  </head>
+  <body>
+    <div class="navbar">
+      <nav>
+        <ul>
+          <li>
+            <a class="home-link" href="/">PySpill</a>
+          </li>
+          <li>
+            <a href="/search-by-company" class="nav-item">
+              🏢 search by company</a
+            >
+          </li>
+          <li>
+            <a href="/search-by-location" class="nav-item"
+              >📍 search by location</a
+            >
+          </li>
+          <li><a href="/leaderboard" class="nav-item">📋 leaderboard</a></li>
+          <li><a href="/map" class="nav-item">🗺️ map </a></li>
+          <li><a href="/about" class="nav-item focus"> 🙋about</a></li>
+          <li><a href="/random" class="nav-item random-link">🎲 random</a></li>
+
+        </ul>
+      </nav>
+    </div>
+    <div class="about-page-container">
+      <h1>About PySpill</h1>
+      <p class="about-intro-text">
+        Introducing PySpill, <strong>an app designed for tracking pipeline spills
+        across the nation.</strong> Users can access essential data like financial
+        implications, environmental impact, and human injuries resulting
+        from these incidents. By shedding light on the true costs and
+        consequences of spills, we want to encourage a broader
+        understanding of the pipeline industry.
+      </p>
+      <h2>Features</h2>
+      <ul>
+        <li>Many pages feature a map! <strong>Click on a point to learn more about the particular spill</strong></li>
+        <li>Lookup all oil spills caused by a particular company</li>
+        <li>Lookup all oil spills that have occurred at a particular location</li>
+        <li>A leaderboard featuring the top ten worst offending companies by total volume of oil released</li>
+        <li>A map of all oil spills in the United States overlayed on top of a map of oil pipelines</li>
+        <li>If you actually read all of this, triple click for a surprise</li>
+      </ul>
+      <h2>About the Dataset</h2>
+      <p>
+        This data comes from the 2022 annual report authored by the DOT Pipeline and Hazardous Materials 
+        Saftey Administration. Data ranges from the years 2010 to 2017, inclusive.
+      </p>
+      <p>
+        “Gas Distribution, Gas Gathering, Gas Transmission, Hazardous Liquids, Liquefied Natural Gas (LNG), 
+        and Underground Natural Gas Storage (UNGS) Annual Report Data.” PHMSA, 
+        <a href="https://www.phmsa.dot.gov/data-and-statistics/pipeline/gas-distribution-gas-gathering-gas-transmission-hazardous-liquids">
+          www.phmsa.dot.gov/data-and-statistics/pipeline/gas-distribution-gas-gathering-gas-transmission-hazardous-liquids
+        </a>. 
+        Accessed 25 Sept. 2023.
+      </p>
+    </div>
+  </body>
+</html>

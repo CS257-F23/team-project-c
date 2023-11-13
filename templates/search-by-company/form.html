@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>PySpill: Company Search</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
+    <link
+      href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      rel="shortcut icon"
+      href="{{ url_for('static', filename='favicon.png') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100;0,400;0,700;1,100;1,400;1,700&display=swap"
+    />
+  </head>
+  <body>
+    <div class="navbar">
+      <nav>
+        <ul>
+          <li>
+            <a class="home-link" href="/">PySpill</a>
+          </li>
+          <li>
+            <a href="/search-by-company" class="nav-item focus">
+              🏢 search by company</a
+            >
+          </li>
+          <li>
+            <a href="/search-by-location" class="nav-item"
+              >📍 search by location</a
+            >
+          </li>
+          <li><a href="/leaderboard" class="nav-item">📋 leaderboard</a></li>
+          <li><a href="/map" class="nav-item">🗺️ map </a></li>
+          <li><a href="/about" class="nav-item"> 🙋about</a></li>
+          <li><a href="/random" class="nav-item random-link">🎲 random</a></li>
+
+        </ul>
+      </nav>
+    </div>
+
+    <div class="fullscreen-container gradient-background">
+      <form action="/search-by-company/results">
+        <div class="formCont">
+          <h1>Find a Company</h1>
+         
+          <div class="error-msg">
+            {% if bad_input %}
+            <p>The company you entered was not found in our database.<p>
+            {% endif %}
+         </div>
+
+          <select name="company-name-dropdown" id="company-name-dropdown">
+            <option value="" disabled selected>Select a company...</option>
+            {% for row in rows: %}
+            <option value="{{row}}">{{row}}</option>
+            {% endfor %}
+          </select>
+
+          <label for="company-name-dropdown" class="visually-hidden">
+            Select a company
+          </label>
+
+          <p>or</p>
+
+          <input
+            name="company-name-search"
+            type="text"
+            id="tags"
+            placeholder="Search for a company..."
+          />
+          <label for="company-text-search" class="visually-hidden">
+            Search for a company
+          </label>
+
+          <button type="submit">See Results→</button>
+          <script>
+            $( function() {
+              var availableTags = [
+                  {% for row in rows: %}
+                      "{{row}}",
+                  {% endfor %}
+              ];
+              $( "#tags" ).autocomplete({
+                source: availableTags
+              });
+            });
+          </script>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

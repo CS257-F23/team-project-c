@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>PySpill | 500 Error</title>
+    <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
+    <link
+      rel="shortcut icon"
+      href="{{ url_for('static', filename='favicon.png') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100;0,400;0,700;1,100;1,400;1,700&display=swap"
+    />
+  </head>
+  <body>
+    <div class="navbar">
+      <nav>
+        <ul>
+          <li>
+            <a class="home-link" href="/">PySpill</a>
+          </li>
+          <li>
+            <a href="/search-by-company" class="nav-item">
+              🏢 search by company</a
+            >
+          </li>
+          <li>
+            <a href="/search-by-location" class="nav-item"
+              >📍 search by location</a
+            >
+          </li>
+          <li><a href="/leaderboard" class="nav-item">📋 leaderboard</a></li>
+          <li><a href="/map" class="nav-item">🗺️ map </a></li>
+          <li><a href="/about" class="nav-item"> 🙋about</a></li>
+          <li><a href="/random" class="nav-item random-link">🎲 random</a></li>
+
+        </ul>
+      </nav>
+    </div>
+    <h1>The page you were looking for was not found.</h1>
+
+    <div class="error-page">
+      <h1>Uh oh, an internal error has ocurred.</h1>
+      <br />
+      <h2>Try going back <a href="/" class="mintUnderline">home</a></h2>
+      <br />
+      <details>
+        <summary>More information...</summary>
+        <code>{{ error }}</code>
+      </details>
+    </div>
+  </body>
+</html>

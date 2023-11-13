@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Pyspill: Leaderboard</title>
+    <link
+      rel="shortcut icon"
+      href="{{ url_for('static', filename='favicon.png') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100;0,400;0,700;1,100;1,400;1,700&display=swap"
+    />
+  </head>
+  <body>
+    <div class="navbar">
+      <nav>
+        <ul>
+          <li>
+            <a class="home-link" href="/">PySpill</a>
+          </li>
+          <li>
+            <a href="/search-by-company" class="nav-item">
+              🏢 search by company</a
+            >
+          </li>
+          <li>
+            <a href="/search-by-location" class="nav-item"
+              >📍 search by location</a
+            >
+          </li>
+          <li><a href="/leaderboard" class="nav-item focus">📋 leaderboard</a></li>
+          <li><a href="/map" class="nav-item">🗺️ map </a></li>
+          <li><a href="/about" class="nav-item"> 🙋about</a></li>
+          <li><a href="/random" class="nav-item random-link">🎲 random</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="leaderboard-cont">
+      <div class="resultsInfo scrollable-container leaderboard">
+        <div class="horizontal-stack">
+          <h2>
+            <span class="mintUnderline">It's a competition, and they're all losing.</span>
+          </h2>
+        </div>
+
+        {% for data in leaders %}
+        <table class="leaderboard-table">
+          <div class="leaderboard-title-cont">
+            <a href="/search-by-company/results?company-name-search={{ data[0] }}"> <span class="leaderboard-number">{{ loop.index }}</span> <span class="leaderboard-title">{{ data[0] }} </span></a>
+          </div>
+          <tbody>
+            <tr>
+              <td>Accident Count</td>
+              <td>{{ data[1] }}</td>
+            </tr>
+            <tr>
+              <td>Total Unintentional Release (Barrels)</td>
+              <td>{{ '{:,.2f}'.format(data[2]|float) }}</td>
+            </tr>
+            <tr>
+              <td>Total Net Loss (Barrels)</td>
+              <td>{{ '{:,.2f}'.format(data[3]|float) }}</td>
+            </tr>
+            <tr>
+              <td>Total Costs</td>
+              <td>{{ '${:,}'.format(data[4]|int) }}</td>
+            </tr>
+          </tbody>
+        </table>
+        {% endfor %}
+        <div class="incident-list"></div>
+      </div>
+    </div>
+  </body>
+</html>

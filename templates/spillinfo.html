@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Pyspill: Spill Information</title>
+    <link
+      rel="shortcut icon"
+      href="{{ url_for('static', filename='favicon.png') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100;0,400;0,700;1,100;1,400;1,700&display=swap"
+    />
+  </head>
+  <body>
+    <div class="navbar">
+      <nav>
+        <ul>
+          <li>
+            <a class="home-link" href="/">PySpill</a>
+          </li>
+          <li>
+            <a href="/search-by-company" class="nav-item">
+              🏢 search by company</a
+            >
+          </li>
+          <li>
+            <a href="/search-by-location" class="nav-item"
+              >📍 search by location</a
+            >
+          </li>
+          <li><a href="/leaderboard" class="nav-item">📋 leaderboard</a></li>
+          <li><a href="/map" class="nav-item">🗺️ map </a></li>
+          <li><a href="/about" class="nav-item"> 🙋about</a></li>
+          <li><a href="/random" class="nav-item random-link">🎲 random</a></li>
+
+        </ul>
+      </nav>
+    </div>
+
+    <div class="resultsCont">
+      <div class="resultsInfo scrollable-container">
+        <div class="horizontal-stack">
+          <h2>
+            Oil spill at <span class="mintUnderline">{{ lat }}, {{ lon }}</span>
+          </h2>
+        </div>
+
+        <table>
+          <tbody>
+            <tr>
+              <td>report number</td>
+              <td>{{ data[0] }}</td>
+            </tr>
+            <tr>
+              <td>supplemental number</td>
+              <td>{{ data[1] }}</td>
+            </tr>
+            <tr>
+              <td>accident year</td>
+              <td>{{ data[2] }}</td>
+            </tr>
+            <tr>
+              <td>accident date time</td>
+              <td>{{ data[3] }}</td>
+            </tr>
+            <tr>
+              <td>operator id</td>
+              <td>{{ data[4] }}</td>
+            </tr>
+            <tr>
+              <td>operator name</td>
+              <td>{{ data[5] }}</td>
+            </tr>
+            <tr>
+              <td>pipeline facility name</td>
+              <td>{{ data[6] }}</td>
+            </tr>
+            <tr>
+              <td>pipeline location</td>
+              <td>{{ data[7] }}</td>
+            </tr>
+            <tr>
+              <td>pipeline type</td>
+              <td>{{ data[8] }}</td>
+            </tr>
+            <tr>
+              <td>liquid type</td>
+              <td>{{ data[9] }}</td>
+            </tr>
+            <tr>
+              <td>liquid subtype</td>
+              <td>{{ data[10] }}</td>
+            </tr>
+            <tr>
+              <td>liquid name</td>
+              <td>{{ data[11] }}</td>
+            </tr>
+            <tr>
+              <td>accident city</td>
+              <td>{{ data[12] }}</td>
+            </tr>
+            <tr>
+              <td>accident county</td>
+              <td>{{ data[13] }}</td>
+            </tr>
+            <tr>
+              <td>accident state</td>
+              <td>{{ data[14] }}</td>
+            </tr>
+            <tr>
+              <td>accident latitude</td>
+              <td>{{ data[15] }}</td>
+            </tr>
+            <tr>
+              <td>accident longitude</td>
+              <td>{{ data[16] }}</td>
+            </tr>
+            <tr>
+              <td>cause category</td>
+              <td>{{ data[17] }}</td>
+            </tr>
+            <tr>
+              <td>cause subcategory</td>
+              <td>{{ data[18] }}</td>
+            </tr>
+            <tr>
+              <td>unintentional release barrels</td>
+              <td>{{ data[19] }}</td>
+            </tr>
+            <tr>
+              <td>intentional release barrels</td>
+              <td>{{ data[20] }}</td>
+            </tr>
+            <tr>
+              <td>liquid recovery barrels</td>
+              <td>{{ data[21] }}</td>
+            </tr>
+            <tr>
+              <td>net loss barrels</td>
+              <td>{{ data[22] }}</td>
+            </tr>
+            <tr>
+              <td>liquid ignition</td>
+              <td>{{ data[23] }}</td>
+            </tr>
+            <tr>
+              <td>liquid explosion</td>
+              <td>{{ data[24] }}</td>
+            </tr>
+            <tr>
+              <td>pipeline shutdown</td>
+              <td>{{ data[25] }}</td>
+            </tr>
+            <tr>
+              <td>shutdown date time</td>
+              <td>{{ data[26] }}</td>
+            </tr>
+            <tr>
+              <td>restart date time</td>
+              <td>{{ data[27] }}</td>
+            </tr>
+            <tr>
+              <td>public evacuations</td>
+              <td>{{ data[28] }}</td>
+            </tr>
+            <tr>
+              <td>operator employee injuries</td>
+              <td>{{ data[29] }}</td>
+            </tr>
+            <tr>
+              <td>operator contractor injuries</td>
+              <td>{{ data[30] }}</td>
+            </tr>
+            <tr>
+              <td>emergency responder injuries</td>
+              <td>{{ data[31] }}</td>
+            </tr>
+            <tr>
+              <td>other injuries</td>
+              <td>{{ data[32] }}</td>
+            </tr>
+            <tr>
+              <td>public injuries</td>
+              <td>{{ data[33] }}</td>
+            </tr>
+            <tr>
+              <td>all injuries</td>
+              <td>{{ data[34] }}</td>
+            </tr>
+            <tr>
+              <td>operator employee fatalities</td>
+              <td>{{ data[35] }}</td>
+            </tr>
+            <tr>
+              <td>operator contractor fatalities</td>
+              <td>{{ data[36] }}</td>
+            </tr>
+            <tr>
+              <td>emergency responder fatalities</td>
+              <td>{{ data[37] }}</td>
+            </tr>
+            <tr>
+              <td>other fatalities</td>
+              <td>{{ data[38] }}</td>
+            </tr>
+            <tr>
+              <td>public fatalities</td>
+              <td>{{ data[39] }}</td>
+            </tr>
+            <tr>
+              <td>all fatalities</td>
+              <td>{{ data[40] }}</td>
+            </tr>
+            <tr>
+              <td>property damage costs</td>
+              <td>{{ data[41] }}</td>
+            </tr>
+            <tr>
+              <td>lost commodity costs</td>
+              <td>{{ data[42] }}</td>
+            </tr>
+            <tr>
+              <td>public private property damage costs</td>
+              <td>{{ data[43] }}</td>
+            </tr>
+            <tr>
+              <td>emergency response costs</td>
+              <td>{{ data[44] }}</td>
+            </tr>
+            <tr>
+              <td>environmental remediation costs</td>
+              <td>{{ data[45] }}</td>
+            </tr>
+            <tr>
+              <td>other costs</td>
+              <td>{{ data[46] }}</td>
+            </tr>
+            <tr>
+              <td>all costs</td>
+              <td>{{ data[47] }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="incident-list"></div>
+      </div>
+      <div class="resultsMap">{{ mapHTML | safe}}</div>
+    </div>
+  </body>
+</html>

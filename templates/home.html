@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>PySpill</title>
+    <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
+    <link
+      rel="shortcut icon"
+      href="{{ url_for('static', filename='favicon.png') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100;0,400;0,700;1,100;1,400;1,700&display=swap"
+    />
+  </head>
+  <body>
+    <div class="navbar">
+      <nav>
+        <ul>
+          <li>
+            <a class="home-link" href="/">PySpill</a>
+          </li>
+          <li>
+            <a href="/search-by-company" class="nav-item">
+              🏢 search by company</a
+            >
+          </li>
+          <li>
+            <a href="/search-by-location" class="nav-item"
+              >📍 search by location</a
+            >
+          </li>
+          <li><a href="/leaderboard" class="nav-item">📋 leaderboard</a></li>
+          <li><a href="/map" class="nav-item">🗺️ map </a></li>
+          <li><a href="/about" class="nav-item"> 🙋about</a></li>
+          <li><a href="/random" class="nav-item random-link">🎲 random</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="fullscreen-container home-container gradient-background">
+      <div class="nav-left">
+        <p><a href="/search-by-company">←Search by Company</a></p>
+      </div>
+      <div class="nav-center">
+        <div>
+          <h1>
+            <span id="pyspill-header">PySpill | Home</span>
+          </h1>
+          <p id="fadeInText">
+            Introducing PySpill, <strong>an app designed for tracking pipeline spills
+            across the nation.</strong> Users can access essential data like financial
+            implications, environmental impact, and human injuries resulting
+            from these incidents. By shedding light on the true costs and
+            consequences of spills, we want to encourage a broader
+            understanding of the pipeline industry.
+          </p>
+        </div>
+      </div>
+      <div class="nav-right">
+        <p><a href="/search-by-location">Search by Location→</a></p>
+      </div>
+    </div>
+
+    <script>
+      var typed = new Typed("#pyspill-header", {
+        strings: ["", "PySpill"],
+        typeSpeed: 10,
+        backSpeed: 0,
+        backDelay: 100,
+        startDelay: 0,
+        onComplete: async function (self) {
+          await new Promise((r) => setTimeout(r, 2200));
+          let c = document.getElementsByClassName("typed-cursor")[0];
+          c.style.opacity = "0";
+        },
+      });
+    </script>
+  </body>
+</html>
